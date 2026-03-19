@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de QR Code</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="script" href="script.js">
+</head>
+<body>
+
+  <h1>Gerador de QR Code</h1>
+
+  <input type="text" id="url" placeholder="Digite a URL aqui">
+  <br>
+  <button onclick="gerarQR()">Gerar QR Code</button>
+
+  <div id="qrcode"></div>
+
+  <br>
+  <button onclick="baixarQR()">Baixar QR Code</button>
+
+</body>
+</html>
