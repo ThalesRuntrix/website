@@ -36,6 +36,12 @@ body {
     margin-bottom: 5px;
 }
 
+.text {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
 .tag {
     font-size: 14px;
     color: #94a3b8;
