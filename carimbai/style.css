@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  }
+
+body {
+background: linear-gradient(135deg, #0f172a, #020617);
+color: white;
+padding: 20px;
+}
+
+.container {
+max-width: 500px;
+margin: auto;
+}
+
+.hero {
+text-align: center;
+margin-bottom: 30px;
+}
+
+.hero h1 {
+font-size: 26px;
+margin-bottom: 10px;
+}
+
+.hero p {
+color: #94a3b8;
+margin-bottom: 20px;
+}
+
+.btn-primary {
+display: block;
+text-align: center;
+background: #22c55e;
+color: #022c22;
+padding: 15px;
+border-radius: 12px;
+text-decoration: none;
+font-weight: 600;
+}
+
+.benefits {
+margin: 30px 0;
+display: grid;
+gap: 10px;
+color: #cbd5f5;
+}
+
+.products h2 {
+margin-bottom: 15px;
+}
+
+.card {
+background: rgba(255,255,255,0.05);
+padding: 15px;
+border-radius: 12px;
+margin-bottom: 10px;
+}
+
+.proof {
+margin: 30px 0;
+font-size: 14px;
+color: #94a3b8;
+}
+
+.cta {
+margin-top: 20px;
+}
