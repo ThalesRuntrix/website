@@ -1,0 +1,86 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.tag {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 25px;
+}
+
+.link {
+    display: block;
+    text-decoration: none;
+    margin: 12px 0;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.primary {
+    background: #22c55e;
+    color: #022c22;
+    font-weight: 600;
+}
+
+.primary:hover {
+    transform: scale(1.03);
+    background: #16a34a;
+}
+
+.secondary {
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.secondary:hover {
+    background: rgba(255,255,255,0.15);
+    transform: scale(1.02);
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.badge {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #22c55e;
+}
