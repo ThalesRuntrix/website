@@ -143,3 +143,16 @@ h2 {
 .location p {
     color: #94a3b8;
 }
+
+.address {
+margin: 20px 0;
+color: #94a3b8;
+}
+
+.map {
+margin: 20px 0;
+}
+
+.actions a {
+margin-bottom: 10px;
+}
