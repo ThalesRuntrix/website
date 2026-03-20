@@ -21,6 +21,20 @@ text-align: center;
 margin-bottom: 30px;
 }
 
+/* HERO COM IMAGEM */
+.hero {
+    background: url('../hero.jpg') center/cover no-repeat;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    background: rgba(2, 6, 23, 0.75);
+    padding: 40px 20px;
+    text-align: center;
+}
+
 .hero h1 {
 font-size: 26px;
 margin-bottom: 10px;
@@ -69,3 +83,4 @@ color: #94a3b8;
 .cta {
 margin-top: 20px;
 }
+
