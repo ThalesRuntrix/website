@@ -53,21 +53,6 @@ h2 {
     font-weight: 600;
 }
 
-.btn {
-  display: block;
-  margin: 10px 0;
-  padding: 15px;
-  border-radius: 10px;
-  text-decoration: none;
-  text-align: center;
-}
-
-.btn-copy {
-  background: #22c55e;
-  color: #022c22;
-  font-weight: 600;
-}
-
 button {
   border: none;
   cursor: pointer;
