@@ -38,6 +38,7 @@ section {
 }
 
 h2 {
+    font-size: 22px;
     margin-bottom: 10px;
 }
 
@@ -167,4 +168,41 @@ margin: 20px 0;
 
 .actions a {
 margin-bottom: 10px;
+}
+
+.info-pix {
+background: rgba(255, 255, 255, 0.05);
+padding: 20px;
+border-radius: 16px;
+margin: 20px 0;
+text-align: left;
+}
+
+.pix-item {
+display: flex;
+justify-content: space-between;
+margin-bottom: 10px;
+border-bottom: 1px solid rgba(255,255,255,0.05);
+padding-bottom: 8px;
+}
+
+.pix-item:last-child {
+border-bottom: none;
+}
+
+.label {
+color: #94a3b8;
+font-size: 14px;
+}
+
+.value {
+font-size: 14px;
+font-weight: 500;
+text-align: right;
+}
+
+.destaque {
+color: #22c55e;
+font-weight: 600;
+word-break: break-all;
 }
