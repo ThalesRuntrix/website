@@ -53,11 +53,6 @@ h2 {
     font-weight: 600;
 }
 
-button {
-  border: none;
-  cursor: pointer;
-}
-
 /* CARDS */
 .card {
     display: block;
