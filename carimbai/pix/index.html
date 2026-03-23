@@ -25,23 +25,18 @@
                 </div>
                 <h1>Pagamento via PIX</h1>
                 <p>Ecaneie o QR code ou copie a chave abaixo</p>
+                <!-- BOTÃO COPIAR -->
+                <button class="btn btn-copy" onclick="copyPix()">
+                    📋 Copiar chave PIX
+                </button>  
             </div>
         </section>
 
         <div class="pix-box">
-
-            <!-- QR CODE -->
-            <img src="qrcodepix.png" alt="QR Code PIX" class="qr">
-
             <!-- CHAVE PIX -->
-            <div class="pix-key" id="pixKey">
+            <div class="pix-key" id="pixKey" hidden="true">
             atendimento.carimbai@gmail.com
-            </div>
-
-            <!-- BOTÃO COPIAR -->
-            <button class="btn btn-copy" onclick="copyPix()">
-                📋 Copiar chave PIX
-            </button>          
+            </div>                    
 
         </div>
 
