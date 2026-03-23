@@ -56,8 +56,7 @@ h2 {
 .btn-copy {
     display: block;
     max-width: 300px;
-    margin: 20px auto;
-    text-align: center;
+    margin: 20px auto;    
     background: #22c55e;
     color: #022c22;
     padding: 15px;
