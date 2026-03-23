@@ -53,6 +53,12 @@ h2 {
     font-weight: 600;
 }
 
+.btn-copy {
+    display: block;
+    max-width: 300px;
+    margin: 20px auto;
+}
+
 /* CARDS */
 .card {
     display: block;
