@@ -62,6 +62,12 @@ h2 {
   text-align: center;
 }
 
+.btn-copy {
+  background: #22c55e;
+  color: #022c22;
+  font-weight: 600;
+}
+
 button {
   border: none;
   cursor: pointer;
