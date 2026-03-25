@@ -188,3 +188,40 @@ section {
 .logo-container img {
     max-width: 160px;
 }
+
+
+/* =========================
+   🖼 BOLINHAS SELEÇÃO COR
+========================= */
+
+.cores {
+    margin-top: 15px;
+}
+
+.cores p {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #94a3b8;
+}
+
+.cores-lista {
+    display: flex;
+    gap: 10px;
+}
+
+.cor-option {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.2s;
+}
+
+.cor-option:hover {
+    transform: scale(1.1);
+}
+
+.cor-option.ativa {
+    border: 2px solid #22c55e;
+}
