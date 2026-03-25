@@ -10,15 +10,19 @@ body {
     padding: 20px;
 }
 
-.container {
+.page {
     max-width: 1000px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
+    margin: auto;
+}
+
+.produto-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
 }
 
 /* HERO */

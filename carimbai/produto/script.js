@@ -14,15 +14,14 @@ function renderProduto(produto) {
 
   if (produto.detalhes) {
     for (const key in produto.detalhes) {
-      if (["id", "produto_id", "categoria_id"].includes(key)) continue;
-
-      detalhesHTML += `<p><strong>${key}:</strong> ${produto.detalhes[key]}</p>`;
+      if (["id", "produto_id", "categoria_id"].includes(key)) continue;      
+      detalhesHTML += `<p><strong>${key.replace("_", " ")}:</strong> ${produto.detalhes[key]}</p>`;
     }
   }
 
   container.innerHTML = `
     <div class="produto-img">
-      <img src="../img/texto1.jpg" alt="${produto.nome}">
+      <img src="../../img/texto1.jpg" alt="${produto.nome}">
     </div>
 
     <div class="produto-info">
