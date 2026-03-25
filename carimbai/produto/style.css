@@ -23,7 +23,7 @@ body {
    🎯 HERO
 ========================= */
 .hero {
-    background: url('../../hero.jpg') center/cover no-repeat;
+    background: url('../hero.jpg') center/cover no-repeat;
     border-radius: 20px;
     margin-bottom: 30px;
     overflow: hidden;
