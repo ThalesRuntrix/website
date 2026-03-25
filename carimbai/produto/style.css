@@ -309,12 +309,6 @@ margin-top: 10px;
     background: #0056b3;
 }
 
-@media(max-width: 768px) {
-    .container {
-    grid-template-columns: 1fr;
-    }
-}
-
 /* RESPONSIVO (desktop) */
 @media (min-width: 600px) {
 .grid {
