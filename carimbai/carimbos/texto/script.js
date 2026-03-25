@@ -26,7 +26,7 @@ async function carregarProdutos() {
             R$ ${Number(produto.preco).toFixed(2)}
           </div>
 
-          <a href="../produto.html?id=${produto.id}" class="btn-primary">
+          <a href="../../produto/index.html?id=${produto.id}" class="btn-primary">
                     
             Ver detalhes
           </a>
@@ -37,7 +37,7 @@ async function carregarProdutos() {
     });
 
   } catch (error) {
-    console.error("Erro ao carregar produtos:", error);
+    console.error("Erro ao carregar produtos:", error);    
   }
 }
 
