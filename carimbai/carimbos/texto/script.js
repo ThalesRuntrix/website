@@ -27,7 +27,7 @@ async function carregarProdutos() {
           </div>
 
           <a href="../produto.html?id=${produto.id}" class="btn-primary">
-          
+                    
             Ver detalhes
           </a>
         </div>
