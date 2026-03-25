@@ -17,46 +17,6 @@ function getProdutoId() {
 }
 
 // 🔥 renderizar produto
-/* function renderProduto(produto) {
-  const container = document.getElementById("produto-container");
-
-  let detalhesHTML = "";
-
-  if (produto.detalhes) {
-    for (const key in produto.detalhes) {
-      if (["id", "produto_id", "categoria_id"].includes(key)) continue;
-
-      detalhesHTML += `
-        <p><strong>${key.replace("_", " ")}:</strong> ${produto.detalhes[key]}</p>
-      `;
-    }
-  }
-
-  container.innerHTML = `
-    <div class="produto-content">
-      
-      <img src="../img/texto.jpg" alt="${produto.nome}">
-
-      <div class="produto-title">
-        ${produto.nome}
-      </div>
-
-      <div class="produto-preco">
-        R$ ${Number(produto.preco).toFixed(2)}
-      </div>
-
-      <div class="produto-detalhes">
-        ${detalhesHTML}
-      </div>
-
-      <a class="btn-primary" href="https://wa.me/5511943722620?text=Olá,%20quero%20um%20${produto.detalhes}">
-        📲 Comprar via WhatsApp
-      </a>
-
-    </div>
-  `;
-}
-  */
 function renderProduto(produto) {
   const container = document.getElementById("produto-container");
 
@@ -96,7 +56,7 @@ function renderProduto(produto) {
 
       ${coresHTML}
 
-      <a class="btn-primary">
+      <a class="btn-primary" href="https://wa.me/5511943722620?text=Olá,%20quero%20um%20${produto.detalhes}">
         📲 Comprar via WhatsApp
       </a>
 
