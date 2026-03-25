@@ -15,6 +15,11 @@ body {
     margin: auto;
 }
 
+.container {
+    max-width: 500px;
+    margin: auto;
+}
+
 .produto-container {
     background: white;
     padding: 20px;
@@ -326,6 +331,8 @@ grid-template-columns: 1fr 1fr;
     background: rgba(255,255,255,0.05);
     border-radius: 16px;
     padding: 20px;
+    width: 100%;
+    max-width: 100%;
 }
 
 .produto-content {
