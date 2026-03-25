@@ -20,6 +20,67 @@ function getProdutoId() {
 function renderProduto(produto) {
   const container = document.getElementById("produto-container");
 
+  let coresHTML = "";
+
+  if (produto.variacoes?.length > 0) {
+    coresHTML = `
+      <div class="cores">
+        <p>Escolha a cor:</p>
+        <div class="cores-lista">
+          ${produto.variacoes.map((v, i) => `
+            <div 
+              class="cor-option ${i === 0 ? 'ativa' : ''}"
+              style="background:${v.hex}"
+              onclick="trocarCor(${i})"
+              title="${v.cor}">
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  const imgInicial = produto.variacoes?.[0]?.imagem_url || "../img/texto.jpg";
+
+  container.innerHTML = `
+    <div class="produto-content">
+
+      <img id="produto-img" src="${imgInicial}">
+
+      <div class="produto-title">${produto.nome}</div>
+
+      <div class="produto-preco">
+        R$ ${Number(produto.preco).toFixed(2)}
+      </div>
+
+      ${coresHTML}
+
+      <a class="btn-primary">
+        📲 Comprar via WhatsApp
+      </a>
+
+    </div>
+  `;
+
+  // salvar global (pra trocar depois)
+  window._variacoes = produto.variacoes;
+}
+
+function trocarCor(index) {
+  const img = document.getElementById("produto-img");
+
+  img.src = window._variacoes[index].imagem_url;
+
+  document.querySelectorAll(".cor-option").forEach(el => {
+    el.classList.remove("ativa");
+  });
+
+  document.querySelectorAll(".cor-option")[index].classList.add("ativa");
+}
+
+/* function renderProduto(produto) {
+  const container = document.getElementById("produto-container");
+
   const variacoes = VARIACOES[produto.id];
   let coresHTML = "";
 
@@ -78,6 +139,7 @@ function trocarCor(produtoId, index) {
 
   document.querySelectorAll(".cor-option")[index].classList.add("ativa");
 }
+*/
 
 // 🔥 carregar produto
 async function carregarProduto() {
