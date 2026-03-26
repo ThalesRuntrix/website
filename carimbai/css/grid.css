@@ -37,6 +37,8 @@
     height: 160px;
     object-fit: cover;
     border-radius: 12px;
+    background: rgba(255,255,255,0.05);    
+    padding: 15px;
 }
 
 .product-info h3 {
