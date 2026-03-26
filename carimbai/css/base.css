@@ -48,6 +48,30 @@ section {
     margin-bottom: 25px;
 }
 
+
+h1 {
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+.textp {
+    display: block;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+.benefits div section {
+    margin: 5px 0;
+    color: #cbd5f5;
+}
+
 /* BOTÃO */
 .btn-primary {
     display: block;
