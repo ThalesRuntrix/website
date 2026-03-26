@@ -15,8 +15,8 @@ body {
     padding: 20px;
 
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    display: block;
+    
 }
 
 
@@ -25,9 +25,8 @@ body {
 ========================= */
 .container {
     max-width: 500px;
-    margin: auto;
-    width: 100%;
-    flex: 1; /* 🔥 faz crescer */
+    margin: 0 auto;
+    width: 100%;    
 }
 
 /* =========================
@@ -140,6 +139,7 @@ section {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    align-items: flex-start;
 }
 
 .produto-content img {
