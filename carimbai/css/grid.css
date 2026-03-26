@@ -1,0 +1,33 @@
+.grid {
+    display: grid;
+    gap: 15px;
+}
+
+@media (min-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.card-grid {
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: white;
+}
+
+.card-grid img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.card-grid h3 {
+    padding: 10px 15px 5px;
+}
+
+.card-grid p {
+    padding: 0 15px 15px;
+    color: #94a3b8;
+}

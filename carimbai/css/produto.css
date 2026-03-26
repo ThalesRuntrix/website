@@ -1,0 +1,54 @@
+.produto-box {
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.produto-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.produto-content img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.produto-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.produto-preco {
+    font-size: 22px;
+    font-weight: 600;
+    color: #22c55e;
+}
+
+/* CORES */
+.cores {
+    margin-top: 10px;
+}
+
+.cores p {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.cores-lista {
+    display: flex;
+    gap: 10px;
+}
+
+.cor-option {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.cor-option.ativa {
+    border: 2px solid #22c55e;
+}
