@@ -1,3 +1,4 @@
+/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -5,6 +6,7 @@
     font-family: 'Inter', sans-serif;
 }
 
+/* BASE */
 html, body {
     height: 100%;
 }
@@ -14,35 +16,39 @@ body {
     color: white;
     padding: 20px;
 
-    min-height: 100vh;
-    display: block;
-    
+    display: flex;
+    flex-direction: column;
 }
 
+/* ESTRUTURA GLOBAL */
+.page {
+    width: 100%;
+    flex: 1;
+}
 
-/* =========================
-   📦 CONTAINER PADRÃO
-========================= */
 .container {
     max-width: 500px;
     margin: 0 auto;
-    width: 100%;    
+    width: 100%;
 }
 
-/* =========================
-   🎯 HERO
-========================= */
+/* HERO */
 .hero {
     background: url('../hero.jpg') center/cover no-repeat;
     border-radius: 20px;
-    margin-bottom: 30px;
     overflow: hidden;
-    text-align: center;
+    margin-bottom: 30px;
 }
 
 .hero-overlay {
     background: rgba(2, 6, 23, 0.75);
     padding: 40px 20px;
+    text-align: center;
+}
+
+.logo-container img {
+    max-width: 160px;
+    margin-bottom: 10px;
 }
 
 .hero h1 {
@@ -54,16 +60,12 @@ body {
     color: #cbd5f5;
 }
 
-/* =========================
-   📦 SECTIONS
-========================= */
+/* SEÇÕES */
 section {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
-/* =========================
-   🔘 BOTÕES
-========================= */
+/* BOTÕES */
 .btn-primary {
     display: block;
     text-align: center;
@@ -75,71 +77,24 @@ section {
     font-weight: 600;
 }
 
-/* =========================
-   🧱 GRID
-========================= */
-.grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-    margin-top: 20px;
+/* FOOTER */
+.footer {
+    text-align: center;
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 30px;
 }
 
-@media (min-width: 600px) {
-    .grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-/* =========================
-   🧾 CARDS
-========================= */
-.card-grid {
-    display: block;
-    background: rgba(255,255,255,0.05);
-    border-radius: 16px;
-    overflow: hidden;
-    text-decoration: none;
-    color: white;
-    transition: 0.2s;
-}
-
-.card-grid:hover {
-    background: rgba(255,255,255,0.1);
-    transform: translateY(-2px);
-}
-
-.card-grid img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-}
-
-.card-grid h3 {
-    padding: 10px 15px 5px;
-}
-
-.card-grid p {
-    padding: 0 15px 15px;
-    color: #94a3b8;
-    font-size: 14px;
-}
-
-/* =========================
-   🏷 PRODUTO (PÁGINA)
-========================= */
 .produto-box {
     background: rgba(255,255,255,0.05);
     border-radius: 16px;
     padding: 20px;
-    width: 100%;
 }
 
 .produto-content {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    align-items: flex-start;
 }
 
 .produto-content img {
@@ -158,62 +113,15 @@ section {
     color: #22c55e;
 }
 
-.produto-detalhes p {
-    color: #cbd5f5;
-    font-size: 14px;
-}
-
-/* =========================
-   📊 BENEFÍCIOS
-========================= */
-.benefits div {
-    margin: 5px 0;
-    color: #cbd5f5;
-}
-
-/* =========================
-   📞 CTA
-========================= */
-.cta {
-    margin-top: 20px;
-}
-
-/* =========================
-   🦶 FOOTER
-========================= */
-.footer {
-    text-align: center;
-    font-size: 12px;
-    color: #64748b;
-    margin-top: 20px;
-    margin-top: auto;
-}
-
-/* =========================
-   🖼 LOGO
-========================= */
-.logo-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.logo-container img {
-    max-width: 160px;
-}
-
-
-/* =========================
-   🖼 BOLINHAS SELEÇÃO COR
-========================= */
-
+/* CORES */
 .cores {
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .cores p {
     font-size: 14px;
-    margin-bottom: 8px;
     color: #94a3b8;
+    margin-bottom: 8px;
 }
 
 .cores-lista {
@@ -227,11 +135,6 @@ section {
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid transparent;
-    transition: 0.2s;
-}
-
-.cor-option:hover {
-    transform: scale(1.1);
 }
 
 .cor-option.ativa {
