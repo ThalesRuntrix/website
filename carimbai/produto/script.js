@@ -95,18 +95,20 @@ async function carregarProduto() {
   }
 }
 
-function botaoVoltar() {
+carregarProduto();
 
-  const origem = getParam("from");
-  const btn = document.getElementById("btn-voltar"); 
 
-  if (origem) {
-    // usa lógica por parâmetro
-    btn.href = "/carimbai/" + origem.replace("-", "/") + "/index.html";
-  } else {
-    // fallback inteligente
-    btn.onclick = () => history.back();
-  }
+// Função Voltar do botão
+const origem = getParam("from");
+const btn = document.getElementById("btn-voltar"); 
+
+if (origem) {
+  // usa lógica por parâmetro
+  btn.href = "/carimbai/" + origem.replace("-", "/") + "/index.html";
+} else {
+  // fallback inteligente
+  btn.onclick = () => history.back();
 }
 
-carregarProduto();
+
+
