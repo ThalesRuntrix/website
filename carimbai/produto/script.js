@@ -100,7 +100,8 @@ carregarProduto();
 
 // Função Voltar do botão
 const origem = getParam("from");
-const btn = document.getElementById("btn-voltar"); 
+const btn = document.getElementById("btn-voltar");
+alert("Pagina de origem: " + origem ) ;
 
 if (origem) {
   // usa lógica por parâmetro
