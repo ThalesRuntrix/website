@@ -109,10 +109,8 @@ function configurarBotaoVoltar() {
 
   if (origem) {
     btn.href = "/carimbai/" + origem.replace("-", "/") + "/index.html";
-    console.log("PÁG DE ORIGEM: " + origem);
   } else {
     btn.href = "#"; // evita comportamento estranho
-    console.log("NÃO PEGOU PÁG DEORIGEM ");
     btn.onclick = (e) => {
       e.preventDefault();
       history.back();
