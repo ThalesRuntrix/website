@@ -94,6 +94,29 @@ async function carregarProduto() {
     document.getElementById("produto-container").innerHTML = "Erro ao carregar produto";
   }
 
+  function getParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+function configurarBotaoVoltar() {
+  const origem = getParam("from");
+  const btn = document.getElementById("btn-voltar");
+
+  if (!btn) return;
+
+  if (origem) {
+    btn.href = "/carimbai/" + origem.replace("-", "/") + "/index.html";
+  } else {
+    btn.href = "#"; // evita comportamento estranho
+    btn.onclick = (e) => {
+      e.preventDefault();
+      history.back();
+    };
+  }
+}
+
+
   // Função Voltar do botão
   const origem = getParam("from");
   const btn = document.getElementById("btn-voltar");
@@ -108,3 +131,4 @@ async function carregarProduto() {
 }
 
 carregarProduto();
+configurarBotaoVoltar();
