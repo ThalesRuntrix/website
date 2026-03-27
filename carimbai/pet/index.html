@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="/carimbai/css/base.css">
+    <link rel="stylesheet" href="/carimbai/css/grid.css">
 </head>
 
 <body>
@@ -16,10 +18,7 @@
     <div class="container">
 
         <!-- HEADER -->
-        <div id="header"></div>      
-
-        <h1>Plaquinhas inteligentes de identificação para PET</h1>
-        <p>Ideal para pessoas que se preocupam com seu PET</p>
+        <div id="header"></div>   
 
         <!-- PRODUTOS -->
         <div class="grid" id="pet"></div>
@@ -46,6 +45,17 @@
     </div>
 
     <script src="/carimbai/js/components.js"></script>
+    <script>
+        loadHeader({
+            title: "Plaquinhas inteligentes de identificação para PET",
+            description: "Ideal para pessoas que se preocupam com seu PET",
+            extra: `
+                <a class="btn-secondary" href="/carimbai/links">
+                    📲 Links de Contato
+                </a>
+            `
+        });
+    </script>
 
 </body>
 
