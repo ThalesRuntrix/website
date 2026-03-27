@@ -34,7 +34,7 @@ async function carregarProdutos() {
             R$ ${Number(produto.preco).toFixed(2)}
           </div>
 
-          <a href="../../produto/index.html?id=${produto.id}&from=carimbos-madeira" class="btn-primary">
+          <a href="../../produto/index.html?id=${produto.id}&from=carimbos-embalagem" class="btn-primary">
             Ver detalhes
           </a>
         </div>
