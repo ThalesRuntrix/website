@@ -18,24 +18,17 @@
 <body>
 
     <div class="container">
-        <!-- HERO COM IMAGEM -->
-        <section class="hero">
-            <div class="hero-overlay">
 
-                <!-- LOGO -->
-                <div class="logo-container">
-                    <img src="../img/logo.png" alt="Carimbai Logo">
-                </div>
-                <h1>Pagamento via PIX</h1>
-                <h2>Copie a chave abaixo</h2>
-                
-                <!-- BOTÃO COPIAR -->
-                <button class="btn-copy" onclick="copyPix()">
-                    📋 Copiar chave PIX
-                </button>
-
-            </div>
-        </section>
+        <!-- HEADER -->
+        <div id="header"></div>
+        
+        <h1>Pagamento via PIX</h1>
+        <h2>Copie a chave abaixo</h2>
+        
+        <!-- BOTÃO COPIAR -->
+        <button class="btn-copy" onclick="copyPix()">
+            📋 Copiar chave PIX
+        </button>
 
         <div class="pix-box">
             <!-- CHAVE PIX -->
@@ -69,20 +62,23 @@
             </div>
         </div>
 
+        <!-- CTA FINAL -->
+        <div id="cta"></div>
 
-        <section class="actions">             
-            <section class="cta">
-            <a class="btn-primary" href="../links">
-                🚀 Entrar em contato
+        <!-- BREAD CRUMB -->
+        <section class="bread-crumb">
+            <a class="btn-primary" href="/carimbai/index.html">
+                ← Voltar
             </a>
-        </section>         
+        </section>        
 
         <!-- FOOTER -->
-        <footer class="footer">© 2005 Carimbai</footer>
+        <div id="footer"></div>
 
     </div>
 
     <script src="script.js"></script>
+    <script src="/carimbai/js/components.js"></script>
 
 </body>
 

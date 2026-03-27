@@ -95,5 +95,18 @@ async function carregarProduto() {
   }
 }
 
-carregarProduto();
+function botaoVoltar() {
 
+  const origem = getParam("from");
+  const btn = document.getElementById("btn-voltar"); 
+
+  if (origem) {
+    // usa lógica por parâmetro
+    btn.href = "/carimbai/" + origem.replace("-", "/") + "/index.html";
+  } else {
+    // fallback inteligente
+    btn.onclick = () => history.back();
+  }
+}
+
+carregarProduto();

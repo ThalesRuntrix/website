@@ -9,4 +9,7 @@ async function loadComponent(id, file) {
 
 // carregar componentes
 loadComponent("header", "/carimbai/components/header.html");
+loadComponent("benefits", "/carimbai/components/benefits.html");
+loadComponent("proof", "/carimbai/components/proof.html");
+loadComponent("cta", "/carimbai/components/cta.html");
 loadComponent("footer", "/carimbai/components/footer.html");
