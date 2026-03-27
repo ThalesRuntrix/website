@@ -95,9 +95,6 @@ async function carregarProduto() {
   }
 }
 
-carregarProduto();
-
-
 // Função Voltar do botão
 const origem = getParam("from");
 const btn = document.getElementById("btn-voltar");
@@ -111,5 +108,4 @@ if (origem) {
   btn.onclick = () => history.back();
 }
 
-
-
+carregarProduto();
