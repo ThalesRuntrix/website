@@ -82,10 +82,10 @@ h2 {
 }
 
 .btn-secondary {
-    display: flex;
-    text-align: right;
-    background: linear-gradient(180deg, #020617, #0f172a);
-    color: #022c22;
+    display: block;
+    text-align: center;
+    background: #022c22;
+    color: #22c55e;
     padding: 15px;
     border-radius: 12px;
     text-decoration: none;
