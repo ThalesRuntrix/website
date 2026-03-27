@@ -18,10 +18,7 @@
     <div class="container">
 
         <!-- HEADER -->
-        <div id="header"></div>        
-
-        <h1>Carimbos Personalizados</h1>
-        <p>Escolha o tipo ideal para sua necessidade</p>            
+        <div id="header"></div>             
 
         <!-- DESCRIÇÃO -->
         <section>
@@ -63,7 +60,7 @@
 
         <!-- BREAD CRUMB -->
         <section class="bread-crumb">
-            <a class="btn-primary" href="/carimbai">
+            <a class="btn-tertiary" href="/carimbai">
                 ← Voltar
             </a>
         </section> 
@@ -74,6 +71,17 @@
     </div>
     
     <script src="/carimbai/js/components.js"></script>
+     <script>
+        loadHeader({
+            title: "Carimbos Personalizados",
+            description: "Escolha o tipo ideal para sua necessidade",
+            extra: `
+                <a class="btn-secondary" href="/carimbai/links">
+                    📲 Links de Contato
+                </a>
+            `
+        });
+    </script>
 
 </body>
 
