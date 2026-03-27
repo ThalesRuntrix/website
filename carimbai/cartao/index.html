@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="/carimbai/css/base.css">
+    <link rel="stylesheet" href="/carimbai/css/grid.css">
 </head>
 
 <body>
@@ -17,9 +19,6 @@
         
         <!-- HEADER -->
         <div id="header"></div>
-
-        <h1>Cartões de visita personalizados</h1>
-        <p>Ideal para empresas, embalagens e automação com QR Code</p>           
 
         <!-- PRODUTOS -->
         <div class="grid" id="cartao"></div>
@@ -35,7 +34,7 @@
         
         <!-- BREAD CRUMB -->
         <section class="bread-crumb">
-            <a class="btn-primary" href="/carimbai/index.html">
+            <a class="btn-tertiary" href="/carimbai/index.html">
                 ← Voltar
             </a>
         </section> 
@@ -46,6 +45,17 @@
     </div>
 
     <script src="/carimbai/js/components.js"></script>
+    <script>
+        loadHeader({
+            title: "Cartões de visita personalizados",
+            description: "Ideal para as empresas e para os profissionais do futuro",
+            extra: `
+                <a class="btn-secondary" href="/carimbai/links">
+                    📲 Links de Contato
+                </a>
+            `
+        });
+    </script>
 
 </body>
 
