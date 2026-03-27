@@ -81,6 +81,17 @@ h2 {
     font-weight: 600;
 }
 
+.btn-secondary {
+    display: block;
+    text-align: right;
+    background: #229fc5;
+    color: #022c22;
+    padding: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
 /* FOOTER */
 .footer {
     text-align: center;
