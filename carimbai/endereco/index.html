@@ -19,11 +19,7 @@
     <div class="container">
        
         <!-- HEADER -->
-        <div id="header"></div>
-
-        <h1>📍 Nossa localização</h1>
-        <p>Venha nos visitar ou fale conosco online</p>
-        <div class="tag">Atendimento de SEG. A SEX. DAS 9H ÀS 11:30H E DAS 13H ÀS 16:30H</div>
+        <div id="header"></div>        
 
         <!-- ADDRESS -->
         <section class="address">
@@ -65,6 +61,17 @@
     </div>
 
     <script src="/carimbai/js/components.js"></script>
+    <script>
+        loadHeader({
+            title: "📍 Nossa localização",
+            description: "Venha nos visitar ou fale conosco online",
+            extra: `
+                <div class="tag">
+                    Atendimento de SEG. A SEX. DAS 9H ÀS 11:30H E DAS 13H ÀS 16:30H
+                </div>            
+            `
+        });
+    </script>
 
 </body>
 
