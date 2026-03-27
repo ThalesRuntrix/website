@@ -28,6 +28,7 @@ async function loadHeader(config) {
 }
 
 // carregar componentes
+loadHeader();
 loadComponent("benefits", "/carimbai/components/benefits.html");
 loadComponent("proof", "/carimbai/components/proof.html");
 loadComponent("cta", "/carimbai/components/cta.html");
