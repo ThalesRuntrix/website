@@ -98,7 +98,7 @@ async function carregarProduto() {
 // Função Voltar do botão
 const origem = getParam("from");
 const btn = document.getElementById("btn-voltar");
-window.alert("Pagina de origem: " + origem );
+console.log('PÁG DE ORIGEM: ' + origem);
 
 if (origem) {
   // usa lógica por parâmetro
