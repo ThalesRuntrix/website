@@ -69,7 +69,15 @@ h2 {
     color: #cbd5f5;
 }
 
-/* BOTÃO */
+/* BOTÕES */
+.btn {
+    display: block;
+    text-align: center;
+    padding: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: 0.2s;
+}
 .btn-primary {
     display: block;
     text-align: center;
@@ -79,17 +87,44 @@ h2 {
     border-radius: 12px;
     text-decoration: none;
     font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-primary:hover {
+    background: #16a34a;
+    transform: scale(1.02);
 }
 
 .btn-secondary {
     display: block;
     text-align: center;
-    background: #022c22;
-    color: #22c55e;
+    background: rgba(255,255,255,0.08);
+    color: white;
     padding: 15px;
     border-radius: 12px;
     text-decoration: none;
     font-weight: 500;
+    transition: 0.2s;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-1px);
+}
+
+.btn-tertiary {
+    display: block;
+    text-align: center;
+    background: transparent;
+    color: #94a3b8;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-tertiary:hover {
+    color: white;
 }
 
 /* FOOTER */
