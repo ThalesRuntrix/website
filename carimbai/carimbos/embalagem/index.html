@@ -21,9 +21,6 @@
         
         <div id="header"></div>
 
-        <h1>Carimbos de Madeira</h1>
-        <p>Escolha o modelo ideal para seu uso profissional</p>
-        
         <!-- GRID DE PRODUTOS -->         
         <div class="grid" id="carimbos"></div>
 
@@ -38,7 +35,7 @@
 
         <!-- BREAD CRUMB -->
         <section class="bread-crumb">
-            <a class="btn-primary" href="../../carimbos/index.html">
+            <a class="btn-tertiary" href="../../carimbos/index.html">
                 ← Voltar
             </a>
         </section>
@@ -50,6 +47,17 @@
 
     <script src="script.js"></script>
     <script src="/carimbai/js/components.js"></script>
+    <script>
+        loadHeader({
+            title: "Carimbos de Madeira",
+            description: "Escolha o modelo ideal para seu uso profissional",
+            extra: `
+                <a class="btn-secondary" href="/carimbai/links">
+                    📲 Links de Contato
+                </a>
+            `
+        });
+    </script>
 
 </body>
 
