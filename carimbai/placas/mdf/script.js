@@ -4,7 +4,7 @@ async function carregarProdutos() {
   try {    
     // 🔥 FILTRO
     const response = await fetch(
-      `${API_URL}/produtos?categoria=placas&tipo_material=mdf`
+      `${API_URL}/produtos?categoria=placa&tipo_material=mdf`
     );
 
     const produtos = await response.json();
