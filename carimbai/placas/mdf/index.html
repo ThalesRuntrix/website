@@ -4,36 +4,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Carimbai | Placas com QR Code</title>
+    <title>Carimbai | Placas de MDF</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="/carimbai/css/base.css">
     <link rel="stylesheet" href="/carimbai/css/grid.css">
+    <link rel="stylesheet" href="/carimbai/css/produto-list.css">
+    
 </head>
 
 <body>
 
     <div class="container">
         
-        <!-- HEADER -->
         <div id="header"></div>
 
-        <!-- PRODUTOS -->
-        <section class="grid"> 
-            <a href="/carimbai/placas/acrilico" class="card-grid"> 
-                <img src="img/acrilico.jpg"alt="Placas de Acrílico">
-                <h3>Placas de acrílico</h3>
-                <p>Ideal para uso profissional e moderno</p>
-            </a> 
-            
-            <a href="/carimbai/placas/mdf" class="card-grid"> 
-                <img src="img/metal.jpg" alt="Placas de MDF">
-                <h3>Placas de MDF</h3>
-                <p>Ideal para uso profissional e moderno</p>
-            </a> 
-        </section>
+        <!-- GRID DE PRODUTOS -->         
+        <div class="grid" id="placas"></div>
 
         <!-- BENEFÍCIOS -->
         <div id="benefits"></div>
@@ -41,26 +30,27 @@
         <!-- PROVA -->
         <div id="proof"></div>
 
-        <!-- CTA FINAL -->
+        <!-- CTA -->
         <div id="cta"></div>
-        
+
         <!-- BREAD CRUMB -->
         <section class="bread-crumb">
-            <a class="btn-tertiary" href="/carimbai/index.html">
+            <a class="btn-tertiary" href="../../placas/index.html">
                 ← Voltar
             </a>
-        </section> 
+        </section>
 
         <!-- FOOTER -->
-        <div id="footer"></div>
+        <div id="footer"></div>      
 
     </div>
 
+    <script src="script.js"></script>
     <script src="/carimbai/js/components.js"></script>
     <script>
         loadHeader({
-            title: "Placas Personalizadas com QR Code",
-            description: "Ideal para empresas e profissionais que precisam de integração entre o seu negócio físico e ambiente digital",
+            title: "Placas de MDF",
+            description: "Escolha o modelo ideal para seu uso profissional",
             extra: `
                 <a class="btn-secondary" href="/carimbai/links">
                     📲 Links de Contato
