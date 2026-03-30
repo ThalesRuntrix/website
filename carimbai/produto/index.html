@@ -45,10 +45,11 @@
     <script src="script.js"></script>
     <script src="/carimbai/js/components.js"></script>
     <script>
-        loadHeader({
-            title: "Carimbo Automático",
-            description: "Lembre-se de selecionar a cor desejada antes de clicar em comprar."
-        });
+        const context = getContextFromParam() || {
+        title: "Produto",
+        description: "Confira os detalhes do produto"
+        };
+        loadHeader(context);        
     </script>
 
 </body>

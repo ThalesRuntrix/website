@@ -101,6 +101,60 @@ function getParam(param) {
   return urlParams.get(param);
 }
 
+function getContextFromParam() {
+  const from = getParam("from");
+
+  if (!from) return null;
+
+  if (from.includes("carimbos")) {
+    return {
+      title: "Carimbos",
+      description: "Escolha o modelo ideal para seu uso profissional"
+    };
+  }
+
+  if (from.includes("placas")) {
+    return {
+      title: "Placas",
+      description: "Escolha o material ideal para sua placa"
+    };
+  }
+
+  if (from.includes("cartoes")) {
+    return {
+      title: "Cartões",
+      description: "Escolha o tipo ideal"
+    };
+  }
+
+  return null;
+}
+
+async function loadHeader(config = {}) {
+  // 🔥 carrega HTML do header
+  await loadComponent("header", "/carimbai/components/header.html");
+
+  // 🔥 pega elementos
+  const titleEl = document.getElementById("header-title");
+  const descEl = document.getElementById("header-desc");
+  const extraEl = document.getElementById("header-extra");
+
+  // 🔥 título
+  if (titleEl) {
+    titleEl.textContent = config.title || "Carimbai";
+  }
+
+  // 🔥 descrição
+  if (descEl) {
+    descEl.textContent = config.description || "";
+  }
+
+  // 🔥 conteúdo extra (botão, etc)
+  if (extraEl) {
+    extraEl.innerHTML = config.extra || "";
+  }
+}
+
 function configurarBotaoVoltar() {
   const origem = getParam("from");
   const btn = document.getElementById("btn-voltar");
