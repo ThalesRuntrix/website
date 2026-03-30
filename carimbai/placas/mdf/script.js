@@ -9,7 +9,7 @@ async function carregarProdutos() {
 
     const produtos = await response.json();
 
-    const container = document.getElementById("cartoes");
+    const container = document.getElementById("placas");
     container.innerHTML = "";
 
     if (!produtos.length) {
