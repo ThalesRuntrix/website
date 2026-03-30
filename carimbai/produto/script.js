@@ -108,22 +108,29 @@ function getContextFromParam() {
 
   if (from.includes("carimbos")) {
     return {
-      title: "Carimbos",
-      description: "Escolha o modelo ideal para seu uso profissional"
+      title: "Carimbo",
+      description: "Para seu uso profissional ou pessoal"
     };
   }
 
   if (from.includes("placas")) {
     return {
-      title: "Placas",
-      description: "Escolha o material ideal para sua placa"
+      title: "Placa de Identificação QR",
+      description: "Para identificação e conexão com o ambiente digital"
     };
   }
 
   if (from.includes("cartoes")) {
     return {
-      title: "Cartões",
-      description: "Escolha o tipo ideal"
+      title: "Cartão de Visita QR",
+      description: "Ideal para te conectar com o futuro"
+    };
+  }
+
+  if (from.includes("pet")) {
+    return {
+      title: "Plaquinha QR",
+      description: "Ideal para segurança do seu PET"
     };
   }
 
