@@ -54,17 +54,29 @@ async function calcularFrete(cep) {
 
     if (!res.ok) throw new Error();
 
-    // 🔥 salva global
+    // 🔥 sucesso real
     window.frete = data.valor;
     window.prazo = data.prazo;
 
-    mostrarFrete(data);
-    atualizarResumo();
+    mostrarFrete({
+      valor: data.valor,
+      prazo: data.prazo
+    });
 
   } catch (err) {
-    console.error(err);
-    alert("Erro ao calcular frete");
+    console.warn("Frete real falhou, usando fallback");
+
+    // 🔥 FALLBACK PROFISSIONAL
+    window.frete = 15;
+    window.prazo = 3;
+
+    mostrarFrete({
+      valor: 15,
+      prazo: 3
+    });
   }
+
+  atualizarResumo();
 }
 
 // 🔥 mostrar frete na tela
@@ -122,6 +134,8 @@ document.getElementById("entrega").addEventListener("change", function () {
     document.getElementById("frete-info").style.display = "none";
     window.frete = 0;
     window.prazo = 0;
+    document.getElementById("frete-valor").textContent = "";
+    document.getElementById("frete-prazo").textContent = "";
   }
 
   atualizarResumo();
@@ -171,8 +185,8 @@ document.getElementById("pedido-form")
     cep: document.getElementById("cep").value,
 
     entrega: document.getElementById("entrega").value,
-    frete: window.frete || 0,
-    prazo: window.prazo || 0,
+    frete: window.frete ?? 0,
+    prazo: window.prazo ?? 0,
     pagamento: document.getElementById("pagamento").value
   };
 
