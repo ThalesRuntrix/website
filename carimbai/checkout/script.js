@@ -24,7 +24,6 @@ async function getProdutoById() {
     // 🔥 salva preço base
     window.precoBase = Number(produto.preco);
 
-    // 🔥 atualiza resumo após carregar
     atualizarResumo();
 
   } catch (error) {
@@ -34,12 +33,13 @@ async function getProdutoById() {
 
 // 🔥 formatar moeda
 function formatar(valor) {
-  return valor.toLocaleString("pt-BR", {
+  return (valor || 0).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL"
   });
 }
 
+// 🔥 calcular frete
 async function calcularFrete(cep) {
   try {
     const res = await fetch(`${API_URL}/frete`, {
@@ -58,9 +58,7 @@ async function calcularFrete(cep) {
     window.frete = data.valor;
     window.prazo = data.prazo;
 
-    // 🔥 mostra na tela
     mostrarFrete(data);
-
     atualizarResumo();
 
   } catch (err) {
@@ -69,6 +67,7 @@ async function calcularFrete(cep) {
   }
 }
 
+// 🔥 mostrar frete na tela
 function mostrarFrete(data) {
   const box = document.getElementById("frete-info");
 
@@ -78,43 +77,19 @@ function mostrarFrete(data) {
   box.style.display = "block";
 }
 
-// 🔥 atualizar resumo do pedido
+// 🔥 atualizar resumo
 function atualizarResumo() {
   const preco = window.precoBase || 0;
 
-  const entregaEl = document.getElementById("entrega");
-  const pagamentoEl = document.getElementById("pagamento");
-
-  const entrega = entregaEl ? entregaEl.value : "";
-  const pagamento = pagamentoEl ? pagamentoEl.value : "";
+  const entrega = document.getElementById("entrega").value;
+  const pagamento = document.getElementById("pagamento").value;
 
   let frete = 0;
   let desconto = 0;
 
   // 🔥 frete
   if (entrega === "frete") {
-    document.getElementById("cep").addEventListener("blur", async function () {
-    const cep = this.value.replace(/\D/g, "");
-
-    if (cep.length !== 8) return;
-
-    calcularFrete(cep);
-
-    // 🔥 entrega
-    document.getElementById("entrega").addEventListener("change", function () {
-    const cepField = document.getElementById("cep-container");
-
-    if (this.value === "frete") {
-      cepField.style.display = "block";
-    } else {
-      cepField.style.display = "none";
-      window.frete = 0;
-      atualizarResumo();
-    }
-});
-
-
-    });
+    frete = window.frete || 0;
   }
 
   // 🔥 desconto PIX
@@ -130,25 +105,51 @@ function atualizarResumo() {
   document.getElementById("resumo-desconto").textContent = `- ${formatar(desconto)}`;
   document.getElementById("resumo-total").textContent = formatar(total);
 
-  // 🔥 salva global (vamos usar no WhatsApp e backend)
+  // 🔥 salvar global
   window.totalPedido = total;
 }
 
-// 🔥 eventos de mudança
-document.getElementById("entrega").addEventListener("change", atualizarResumo);
+
+// 🔥 EVENTOS
+
+// entrega
+document.getElementById("entrega").addEventListener("change", function () {
+  const entrega = this.value;
+
+  if (entrega === "frete") {
+    document.getElementById("frete-info").style.display = "block";
+  } else {
+    document.getElementById("frete-info").style.display = "none";
+    window.frete = 0;
+    window.prazo = 0;
+  }
+
+  atualizarResumo();
+});
+
+// CEP → calcular frete
+document.getElementById("cep").addEventListener("blur", function () {
+  const cep = this.value.replace(/\D/g, "");
+
+  if (cep.length === 8 && document.getElementById("entrega").value === "frete") {
+    calcularFrete(cep);
+  }
+});
+
+// pagamento
 document.getElementById("pagamento").addEventListener("change", atualizarResumo);
 
-// 🔥 carregar produto ao iniciar
+
+// 🔥 INIT
 getProdutoById();
 
-// 🔥 submit do formulário
+// 🔥 SUBMIT
 document.getElementById("pedido-form")
 .addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  // 🔥 proteção (produto ainda não carregou)
   if (!produtoGlobal) {
-    alert("Produto ainda está carregando. Tente novamente.");
+    alert("Produto ainda está carregando.");
     return;
   }
 
@@ -174,7 +175,7 @@ document.getElementById("pedido-form")
   };
 
   try {
-    // 🔥 1. criar pedido no backend
+    // 🔥 salvar pedido no backend
     const res = await fetch(`${API_URL}/pedidos`, {
       method: "POST",
       headers: {
@@ -185,45 +186,42 @@ document.getElementById("pedido-form")
 
     const result = await res.json();
 
-    if (!res.ok) {
-      throw new Error("Erro ao criar pedido");
-    }
+    if (!res.ok) throw new Error();
 
     const pedidoId = result.pedido_codigo;
 
-    // 🔥 2. montar mensagem
-    const mensagem = `
-        🛒 *NOVO PEDIDO - CARIMBAI*
+    // 🔥 mensagem WhatsApp
+    const mensagem = `🛒 *NOVO PEDIDO - CARIMBAI*
 
-        🆔 Pedido: *${pedidoId}*
+🆔 Pedido: *${pedidoId}*
 
-        📦 *Produto:*
-        ${dados.produto_nome}
+📦 *Produto:*
+${dados.produto_nome}
 
-        💰 *Total:*
-        ${formatar(window.totalPedido)}
+💰 *Total:*
+${formatar(window.totalPedido)}
 
-        👤 *Cliente:*
-        Nome: ${dados.nome}
-        Email: ${dados.email}
-        CPF: ${dados.cpf}
+👤 *Cliente:*
+${dados.nome}
+${dados.email}
+${dados.cpf}
 
-        📍 *Endereço:*
-        ${dados.rua}, ${dados.numero}
-        ${dados.complemento ? "Comp: " + dados.complemento : ""}
-        Bairro: ${dados.bairro}
-        ${dados.cidade} - ${dados.estado}
-        CEP: ${dados.cep}
+📍 *Endereço:*
+${dados.rua}, ${dados.numero}
+${dados.complemento ? "Comp: " + dados.complemento : ""}
+${dados.bairro}
+${dados.cidade} - ${dados.estado}
+CEP: ${dados.cep}
 
-        🚚 *Entrega:*
-        ${dados.entrega}
+🚚 *Entrega:*
+${dados.entrega}
 
-        🚚 *Frete:*
-        ${formatar(window.frete)} (${window.prazo} dias)
+🚚 *Frete:*
+${formatar(window.frete || 0)} (${window.prazo || 0} dias)
 
-        💳 *Pagamento:*
-        ${dados.pagamento}
-    `;
+💳 *Pagamento:*
+${dados.pagamento}
+`;
 
     const url = `https://wa.me/5511943722620?text=${encodeURIComponent(mensagem)}`;
 
