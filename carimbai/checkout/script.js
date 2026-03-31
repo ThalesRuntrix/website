@@ -40,6 +40,44 @@ function formatar(valor) {
   });
 }
 
+async function calcularFrete(cep) {
+  try {
+    const res = await fetch(`${API_URL}/frete`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ cep })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error();
+
+    // 🔥 salva global
+    window.frete = data.valor;
+    window.prazo = data.prazo;
+
+    // 🔥 mostra na tela
+    mostrarFrete(data);
+
+    atualizarResumo();
+
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao calcular frete");
+  }
+}
+
+function mostrarFrete(data) {
+  const box = document.getElementById("frete-info");
+
+  document.getElementById("frete-valor").textContent = formatar(data.valor);
+  document.getElementById("frete-prazo").textContent = data.prazo;
+
+  box.style.display = "block";
+}
+
 // 🔥 atualizar resumo do pedido
 function atualizarResumo() {
   const preco = window.precoBase || 0;
@@ -53,9 +91,30 @@ function atualizarResumo() {
   let frete = 0;
   let desconto = 0;
 
-  // 🔥 frete (placeholder por enquanto)
+  // 🔥 frete
   if (entrega === "frete") {
-    frete = window.frete || 0;
+    document.getElementById("cep").addEventListener("blur", async function () {
+    const cep = this.value.replace(/\D/g, "");
+
+    if (cep.length !== 8) return;
+
+    calcularFrete(cep);
+
+    // 🔥 entrega
+    document.getElementById("entrega").addEventListener("change", function () {
+    const cepField = document.getElementById("cep-container");
+
+    if (this.value === "frete") {
+      cepField.style.display = "block";
+    } else {
+      cepField.style.display = "none";
+      window.frete = 0;
+      atualizarResumo();
+    }
+});
+
+
+    });
   }
 
   // 🔥 desconto PIX
@@ -158,6 +217,9 @@ document.getElementById("pedido-form")
 
         🚚 *Entrega:*
         ${dados.entrega}
+
+        🚚 *Frete:*
+        ${formatar(window.frete)} (${window.prazo} dias)
 
         💳 *Pagamento:*
         ${dados.pagamento}
