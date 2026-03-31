@@ -6,21 +6,15 @@ function getParam(name) {
 }
 
 // 🔥 pegar produto (id vindo do banco de dados)
-const id = getParam("id");
+const produtoId = getParam("id");
+console.log("PRODUTO ID: " + produtoId);
 try {
-    const res = await fetch(`${API_URL}/produto/${id}`);    
+    const res = await fetch(`${API_URL}/produto/${produtoId}`);    
     const produto = await res.json();
     console.log("PRODUTO: " + produto);
 
 } catch (error) {
     console.error(error);    
-}
-
-
-// 🔥 pegar produto (nome vindo da URL)
-const produtoNome = getParam("produto") || "Produto";
-if (produtoNome) {
-    document.getElementById("produto-nome").textContent = produtoNome;
 }
 
 document.getElementById("pedido-form")

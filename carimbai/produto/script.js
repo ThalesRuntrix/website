@@ -63,7 +63,7 @@ function renderProduto(produto) {
       ${coresHTML}
 
       <a class="btn-primary" 
-         <a class="btn-primary" href="/carimbai/checkout/index.html?produto=${encodeURIComponent(produto.nome)}&id=${produto.id}">
+         <a class="btn-primary" href="/carimbai/checkout/index.html?id=${produto.id}">
         📲 Comprar Agora
       </a>
 
