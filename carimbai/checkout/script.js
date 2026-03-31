@@ -1,3 +1,5 @@
+const API_URL = "https://carimbai-api.vercel.app/api";
+
 function getParam(name) {
     const params = new URLSearchParams(window.location.search);
     return params.get(name);
