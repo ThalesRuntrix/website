@@ -16,3 +16,22 @@ input, select {
   border: none;
   outline: none;
 }
+
+#pedido-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#pedido-form input,
+#pedido-form select {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+}
+
+#pedido-form h3 {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #94a3b8;
+}

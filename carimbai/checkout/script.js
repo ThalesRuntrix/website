@@ -21,34 +21,58 @@ function getParam(name) {
 document.getElementById("pedido-form")
     .addEventListener("submit", function (e) {
         e.preventDefault();
+         const dados = {
+            nome: document.getElementById("nome").value,
+            email: document.getElementById("email").value,
+            cpf: document.getElementById("cpf").value,
 
-        const form = new FormData(e.target);
+            rua: document.getElementById("rua").value,
+            numero: document.getElementById("numero").value,
+            complemento: document.getElementById("complemento").value,
+            bairro: document.getElementById("bairro").value,
+            cidade: document.getElementById("cidade").value,
+            estado: document.getElementById("estado").value,
+            cep: document.getElementById("cep").value,
 
-        const nome = form.get("nome");
-        const email = form.get("email");
-        const cpf = form.get("cpf");
-        const endereco = form.get("endereco");
-        const entrega = form.get("entrega");
-        const pagamento = form.get("pagamento");
+            entrega: document.getElementById("entrega").value,
+            pagamento: document.getElementById("pagamento").value
+        };
 
-        // 🔥 montar mensagem
-        const mensagem = `
-        🛒 *NOVO PEDIDO*
+  // 🔥 mensagem formatada PROFISSIONAL
+  const mensagem = `
+    🛒 *NOVO PEDIDO - CARIMBAI*
 
-        📦 Produto: ${produtoNome}
+    📦 *Produto:*
+    ${nomeProduto}
 
-        👤 Nome: ${nome}
-        📧 Email: ${email}
-        🪪 CPF: ${cpf}
-        📍 Endereço: ${endereco || "Retirada na loja"}
+    👤 *Cliente:*
+    Nome: ${dados.nome}
+    Email: ${dados.email}
+    CPF: ${dados.cpf}
 
-        🚚 Entrega: ${entrega}
-        💳 Pagamento: ${pagamento}        
-        `;
+    📍 *Endereço:*
+    ${dados.rua}, ${dados.numero}
+    ${dados.complemento ? "Comp: " + dados.complemento : ""}
+    Bairro: ${dados.bairro}
+    ${dados.cidade} - ${dados.estado}
+    CEP: ${dados.cep}
 
-        const url = `https://wa.me/5511943722620?text=${encodeURIComponent(mensagem)}`;
+    🚚 *Entrega:*
+    ${dados.entrega}
 
-        window.location.href = url;
+    💳 *Pagamento:*
+    ${dados.pagamento}
+    `;
+
+  // 🔥 codificação correta (resolve bug dos ???)
+  const mensagemFormatada = encodeURIComponent(mensagem);
+
+  const telefone = "5511943722620";
+
+  const url = `https://wa.me/${telefone}?text=${mensagemFormatada}`;
+
+  window.open(url, "_blank");
+        
 });
 
 getProdutoById();
