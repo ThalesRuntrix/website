@@ -44,8 +44,11 @@ function formatar(valor) {
 function atualizarResumo() {
   const preco = window.precoBase || 0;
 
-  const entrega = document.getElementById("entrega").value;
-  const pagamento = document.getElementById("pagamento").value;
+  const entregaEl = document.getElementById("entrega");
+  const pagamentoEl = document.getElementById("pagamento");
+
+  const entrega = entregaEl ? entregaEl.value : "";
+  const pagamento = pagamentoEl ? pagamentoEl.value : "";
 
   let frete = 0;
   let desconto = 0;
@@ -67,6 +70,9 @@ function atualizarResumo() {
   document.getElementById("resumo-frete").textContent = formatar(frete);
   document.getElementById("resumo-desconto").textContent = `- ${formatar(desconto)}`;
   document.getElementById("resumo-total").textContent = formatar(total);
+
+  // 🔥 salva global (vamos usar no WhatsApp e backend)
+  window.totalPedido = total;
 }
 
 // 🔥 eventos de mudança
@@ -90,6 +96,7 @@ document.getElementById("pedido-form")
   const dados = {
     produto_id: getParam("id"),
     produto_nome: produtoGlobal.nome,
+    total: window.totalPedido,
 
     nome: document.getElementById("nome").value,
     email: document.getElementById("email").value,
@@ -127,30 +134,33 @@ document.getElementById("pedido-form")
 
     // 🔥 2. montar mensagem
     const mensagem = `
-🛒 *NOVO PEDIDO - CARIMBAI*
+        🛒 *NOVO PEDIDO - CARIMBAI*
 
-🆔 Pedido: *${pedidoId}*
+        🆔 Pedido: *${pedidoId}*
 
-📦 *Produto:*
-${dados.produto_nome}
+        📦 *Produto:*
+        ${dados.produto_nome}
 
-👤 *Cliente:*
-Nome: ${dados.nome}
-Email: ${dados.email}
-CPF: ${dados.cpf}
+        💰 *Total:*
+        ${formatar(window.totalPedido)}
 
-📍 *Endereço:*
-${dados.rua}, ${dados.numero}
-${dados.complemento ? "Comp: " + dados.complemento : ""}
-Bairro: ${dados.bairro}
-${dados.cidade} - ${dados.estado}
-CEP: ${dados.cep}
+        👤 *Cliente:*
+        Nome: ${dados.nome}
+        Email: ${dados.email}
+        CPF: ${dados.cpf}
 
-🚚 *Entrega:*
-${dados.entrega}
+        📍 *Endereço:*
+        ${dados.rua}, ${dados.numero}
+        ${dados.complemento ? "Comp: " + dados.complemento : ""}
+        Bairro: ${dados.bairro}
+        ${dados.cidade} - ${dados.estado}
+        CEP: ${dados.cep}
 
-💳 *Pagamento:*
-${dados.pagamento}
+        🚚 *Entrega:*
+        ${dados.entrega}
+
+        💳 *Pagamento:*
+        ${dados.pagamento}
     `;
 
     const url = `https://wa.me/5511943722620?text=${encodeURIComponent(mensagem)}`;
