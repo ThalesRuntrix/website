@@ -63,8 +63,8 @@ function renderProduto(produto) {
       ${coresHTML}
 
       <a class="btn-primary" 
-         href="https://wa.me/5511943722620?text=Olá,%20quero%20o%20produto%20${encodeURIComponent(produto.nome)}">
-        📲 Comprar via WhatsApp
+         <a class="btn-primary" href="/carimbai/checkout/index.html?produto=${encodeURIComponent(produto.nome)}&id=${produto.id}">
+        📲 Comprar Agora
       </a>
 
     </div>
