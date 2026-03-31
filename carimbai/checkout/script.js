@@ -1,30 +1,46 @@
 const API_URL = "https://carimbai-api.vercel.app/api";
+
 let produtoGlobal = null;
 
-// 🔥 pegar produto
-async function getProdutoById() {
-    const produtoId = getParam("id");
-    try {
-        const res = await fetch(`${API_URL}/produto/${produtoId}`);    
-        const produto = await res.json();
-
-        produtoGlobal = produto;
-        
-        document.getElementById("produto-nome").textContent = produto.nome;
-        window.precoBase = Number(produto.preco);
-
-
-    } catch (error) {
-        console.error(error);    
-    }
-}
-
+// 🔥 pegar parâmetro da URL
 function getParam(name) {
-    const params = new URLSearchParams(window.location.search);
-    return params.get(name);
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
 }
 
-// 🔥 atualiza resumo do pedido
+// 🔥 buscar produto
+async function getProdutoById() {
+  const produtoId = getParam("id");
+
+  try {
+    const res = await fetch(`${API_URL}/produto/${produtoId}`);
+    const produto = await res.json();
+
+    produtoGlobal = produto;
+
+    // 🔥 render nome
+    document.getElementById("produto-nome").textContent = produto.nome;
+
+    // 🔥 salva preço base
+    window.precoBase = Number(produto.preco);
+
+    // 🔥 atualiza resumo após carregar
+    atualizarResumo();
+
+  } catch (error) {
+    console.error("Erro ao buscar produto:", error);
+  }
+}
+
+// 🔥 formatar moeda
+function formatar(valor) {
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
+
+// 🔥 atualizar resumo do pedido
 function atualizarResumo() {
   const preco = window.precoBase || 0;
 
@@ -34,7 +50,7 @@ function atualizarResumo() {
   let frete = 0;
   let desconto = 0;
 
-  // 🔥 frete (por enquanto fixo)
+  // 🔥 frete (placeholder por enquanto)
   if (entrega === "frete") {
     frete = window.frete || 0;
   }
@@ -46,35 +62,34 @@ function atualizarResumo() {
 
   const total = preco + frete - desconto;
 
-  // 🔥 renderiza
+  // 🔥 render
   document.getElementById("resumo-produto").textContent = formatar(preco);
   document.getElementById("resumo-frete").textContent = formatar(frete);
   document.getElementById("resumo-desconto").textContent = `- ${formatar(desconto)}`;
   document.getElementById("resumo-total").textContent = formatar(total);
 }
 
+// 🔥 eventos de mudança
 document.getElementById("entrega").addEventListener("change", atualizarResumo);
 document.getElementById("pagamento").addEventListener("change", atualizarResumo);
 
-// 🔥 inicia carregamento
-await getProdutoById();
-atualizarResumo();
+// 🔥 carregar produto ao iniciar
+getProdutoById();
 
-function formatar(valor) {
-  return valor.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  });
-}
-
-// 🔥 submit
+// 🔥 submit do formulário
 document.getElementById("pedido-form")
 .addEventListener("submit", async function (e) {
   e.preventDefault();
 
+  // 🔥 proteção (produto ainda não carregou)
+  if (!produtoGlobal) {
+    alert("Produto ainda está carregando. Tente novamente.");
+    return;
+  }
+
   const dados = {
     produto_id: getParam("id"),
-    produto_nome: produtoGlobal?.nome,
+    produto_nome: produtoGlobal.nome,
 
     nome: document.getElementById("nome").value,
     email: document.getElementById("email").value,
@@ -93,7 +108,7 @@ document.getElementById("pedido-form")
   };
 
   try {
-    // 🔥 1. cria pedido no backend
+    // 🔥 1. criar pedido no backend
     const res = await fetch(`${API_URL}/pedidos`, {
       method: "POST",
       headers: {
@@ -104,33 +119,37 @@ document.getElementById("pedido-form")
 
     const result = await res.json();
 
+    if (!res.ok) {
+      throw new Error("Erro ao criar pedido");
+    }
+
     const pedidoId = result.pedido_codigo;
 
-    // 🔥 2. monta mensagem
+    // 🔥 2. montar mensagem
     const mensagem = `
 🛒 *NOVO PEDIDO - CARIMBAI*
 
 🆔 Pedido: *${pedidoId}*
 
-📦 Produto:
+📦 *Produto:*
 ${dados.produto_nome}
 
-👤 Cliente:
-${dados.nome}
-${dados.email}
-${dados.cpf}
+👤 *Cliente:*
+Nome: ${dados.nome}
+Email: ${dados.email}
+CPF: ${dados.cpf}
 
-📍 Endereço:
+📍 *Endereço:*
 ${dados.rua}, ${dados.numero}
 ${dados.complemento ? "Comp: " + dados.complemento : ""}
-${dados.bairro}
+Bairro: ${dados.bairro}
 ${dados.cidade} - ${dados.estado}
-${dados.cep}
+CEP: ${dados.cep}
 
-🚚 Entrega:
+🚚 *Entrega:*
 ${dados.entrega}
 
-💳 Pagamento:
+💳 *Pagamento:*
 ${dados.pagamento}
     `;
 
@@ -139,7 +158,7 @@ ${dados.pagamento}
     window.open(url, "_blank");
 
   } catch (error) {
-    console.error(error);
+    console.error("Erro:", error);
     alert("Erro ao enviar pedido");
   }
 });
