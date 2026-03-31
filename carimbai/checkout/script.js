@@ -1,20 +1,22 @@
 const API_URL = "https://carimbai-api.vercel.app/api";
 
+// 🔥 pegar produto (id vindo do banco de dados)
+async function getProdutoById() {
+    const produtoId = getParam("id");
+    console.log("PRODUTO ID: " + produtoId);
+    try {
+        const res = await fetch(`${API_URL}/produto/${produtoId}`);    
+        const produto = await res.json();
+        console.log("PRODUTO: " + produto);
+
+    } catch (error) {
+        console.error(error);    
+    }
+}
+
 function getParam(name) {
     const params = new URLSearchParams(window.location.search);
     return params.get(name);
-}
-
-// 🔥 pegar produto (id vindo do banco de dados)
-const produtoId = getParam("id");
-console.log("PRODUTO ID: " + produtoId);
-try {
-    const res = await fetch(`${API_URL}/produto/${produtoId}`);    
-    const produto = await res.json();
-    console.log("PRODUTO: " + produto);
-
-} catch (error) {
-    console.error(error);    
 }
 
 document.getElementById("pedido-form")
