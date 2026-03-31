@@ -11,6 +11,8 @@ async function getProdutoById() {
         produtoGlobal = produto;
         
         document.getElementById("produto-nome").textContent = produto.nome;
+        window.precoBase = Number(produto.preco);
+
 
     } catch (error) {
         console.error(error);    
@@ -22,8 +24,48 @@ function getParam(name) {
     return params.get(name);
 }
 
+// 🔥 atualiza resumo do pedido
+function atualizarResumo() {
+  const preco = window.precoBase || 0;
+
+  const entrega = document.getElementById("entrega").value;
+  const pagamento = document.getElementById("pagamento").value;
+
+  let frete = 0;
+  let desconto = 0;
+
+  // 🔥 frete (por enquanto fixo)
+  if (entrega === "frete") {
+    frete = window.frete || 0;
+  }
+
+  // 🔥 desconto PIX
+  if (pagamento === "pix") {
+    desconto = preco * 0.05;
+  }
+
+  const total = preco + frete - desconto;
+
+  // 🔥 renderiza
+  document.getElementById("resumo-produto").textContent = formatar(preco);
+  document.getElementById("resumo-frete").textContent = formatar(frete);
+  document.getElementById("resumo-desconto").textContent = `- ${formatar(desconto)}`;
+  document.getElementById("resumo-total").textContent = formatar(total);
+}
+
+document.getElementById("entrega").addEventListener("change", atualizarResumo);
+document.getElementById("pagamento").addEventListener("change", atualizarResumo);
+
 // 🔥 inicia carregamento
-getProdutoById();
+await getProdutoById();
+atualizarResumo();
+
+function formatar(valor) {
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
 
 // 🔥 submit
 document.getElementById("pedido-form")
