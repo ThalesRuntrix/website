@@ -6,7 +6,7 @@ function getParam(name) {
 // 🔥 pegar produto (id vindo do banco de dados)
 const id = getParam("id");
 try {
-    const res = await fetch(`/api/produto/${id}`);
+    const res = await fetch(`${API_URL}/produto/${id}`);    
     const produto = await res.json();
     console.log("PRODUTO: " + produto);
 
