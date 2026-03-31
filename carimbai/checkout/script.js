@@ -1,11 +1,15 @@
 const API_URL = "https://carimbai-api.vercel.app/api";
+let produtoGlobal = null;
 
-// 🔥 pegar produto (id vindo do banco de dados)
+// 🔥 pegar produto
 async function getProdutoById() {
     const produtoId = getParam("id");
     try {
         const res = await fetch(`${API_URL}/produto/${produtoId}`);    
         const produto = await res.json();
+
+        produtoGlobal = produto;
+        
         document.getElementById("produto-nome").textContent = produto.nome;
 
     } catch (error) {
@@ -18,8 +22,10 @@ function getParam(name) {
     return params.get(name);
 }
 
-const produto = getProdutoById();
+// 🔥 inicia carregamento
+getProdutoById();
 
+// 🔥 submit
 document.getElementById("pedido-form")
     .addEventListener("submit", function (e) {
         e.preventDefault();
@@ -45,7 +51,7 @@ document.getElementById("pedido-form")
     🛒 *NOVO PEDIDO - CARIMBAI*
 
     📦 *Produto:*
-    ${produto.nome}
+    ${produtoGlobal?.nome || "Produto não identificado"}
 
     👤 *Cliente:*
     Nome: ${dados.nome}
