@@ -18,6 +18,8 @@ function getParam(name) {
     return params.get(name);
 }
 
+const produto = getProdutoById();
+
 document.getElementById("pedido-form")
     .addEventListener("submit", function (e) {
         e.preventDefault();
@@ -43,7 +45,7 @@ document.getElementById("pedido-form")
     🛒 *NOVO PEDIDO - CARIMBAI*
 
     📦 *Produto:*
-    ${nomeProduto}
+    ${produto.nome}
 
     👤 *Cliente:*
     Nome: ${dados.nome}
@@ -74,5 +76,3 @@ document.getElementById("pedido-form")
   window.open(url, "_blank");
         
 });
-
-getProdutoById();
