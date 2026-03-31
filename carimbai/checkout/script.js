@@ -171,8 +171,18 @@ document.getElementById("pedido-form")
     cep: document.getElementById("cep").value,
 
     entrega: document.getElementById("entrega").value,
+    frete: window.frete || 0,
+    prazo: window.prazo || 0,
     pagamento: document.getElementById("pagamento").value
   };
+
+  // bloquear envio sem frete
+  if (dados.entrega === "frete" && !window.frete) {
+    window.frete = 15; // valor fixo provisório
+    window.prazo = 3;
+    //alert("⚠️ Calcule o frete antes de enviar o pedido");
+    //return;
+  }
 
   try {
     // 🔥 salvar pedido no backend
