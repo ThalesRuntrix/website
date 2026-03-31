@@ -5,6 +5,7 @@ function getParam(name) {
 
 // 🔥 pegar produto (nome vindo da URL)
 const produtoNome = getParam("produto") || "Produto";
+const produtoId = getParam("id") || "id";
 
 document.getElementById("pedido-form")
   .addEventListener("submit", function(e) {
