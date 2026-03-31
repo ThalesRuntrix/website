@@ -27,58 +27,77 @@ getProdutoById();
 
 // 🔥 submit
 document.getElementById("pedido-form")
-    .addEventListener("submit", function (e) {
-        e.preventDefault();
-         const dados = {
-            nome: document.getElementById("nome").value,
-            email: document.getElementById("email").value,
-            cpf: document.getElementById("cpf").value,
+.addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-            rua: document.getElementById("rua").value,
-            numero: document.getElementById("numero").value,
-            complemento: document.getElementById("complemento").value,
-            bairro: document.getElementById("bairro").value,
-            cidade: document.getElementById("cidade").value,
-            estado: document.getElementById("estado").value,
-            cep: document.getElementById("cep").value,
+  const dados = {
+    produto_id: getParam("id"),
+    produto_nome: produtoGlobal?.nome,
 
-            entrega: document.getElementById("entrega").value,
-            pagamento: document.getElementById("pagamento").value
-        };
+    nome: document.getElementById("nome").value,
+    email: document.getElementById("email").value,
+    cpf: document.getElementById("cpf").value,
 
-  // 🔥 mensagem formatada PROFISSIONAL
-  const mensagem = `
-    🛒 *NOVO PEDIDO - CARIMBAI*
+    rua: document.getElementById("rua").value,
+    numero: document.getElementById("numero").value,
+    complemento: document.getElementById("complemento").value,
+    bairro: document.getElementById("bairro").value,
+    cidade: document.getElementById("cidade").value,
+    estado: document.getElementById("estado").value,
+    cep: document.getElementById("cep").value,
 
-    📦 *Produto:*
-    ${produtoGlobal?.nome || "Produto não identificado"}
+    entrega: document.getElementById("entrega").value,
+    pagamento: document.getElementById("pagamento").value
+  };
 
-    👤 *Cliente:*
-    Nome: ${dados.nome}
-    Email: ${dados.email}
-    CPF: ${dados.cpf}
+  try {
+    // 🔥 1. cria pedido no backend
+    const res = await fetch(`${API_URL}/pedidos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dados)
+    });
 
-    📍 *Endereço:*
-    ${dados.rua}, ${dados.numero}
-    ${dados.complemento ? "Comp: " + dados.complemento : ""}
-    Bairro: ${dados.bairro}
-    ${dados.cidade} - ${dados.estado}
-    CEP: ${dados.cep}
+    const result = await res.json();
 
-    🚚 *Entrega:*
-    ${dados.entrega}
+    const pedidoId = result.pedido_codigo;
 
-    💳 *Pagamento:*
-    ${dados.pagamento}
+    // 🔥 2. monta mensagem
+    const mensagem = `
+🛒 *NOVO PEDIDO - CARIMBAI*
+
+🆔 Pedido: *${pedidoId}*
+
+📦 Produto:
+${dados.produto_nome}
+
+👤 Cliente:
+${dados.nome}
+${dados.email}
+${dados.cpf}
+
+📍 Endereço:
+${dados.rua}, ${dados.numero}
+${dados.complemento ? "Comp: " + dados.complemento : ""}
+${dados.bairro}
+${dados.cidade} - ${dados.estado}
+${dados.cep}
+
+🚚 Entrega:
+${dados.entrega}
+
+💳 Pagamento:
+${dados.pagamento}
     `;
 
-  // 🔥 codificação correta (resolve bug dos ???)
-  const mensagemFormatada = encodeURIComponent(mensagem);
+    const url = `https://wa.me/5511943722620?text=${encodeURIComponent(mensagem)}`;
 
-  const telefone = "5511943722620";
+    window.open(url, "_blank");
 
-  const url = `https://wa.me/${telefone}?text=${mensagemFormatada}`;
-
-  window.open(url, "_blank");
-        
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao enviar pedido");
+  }
 });
