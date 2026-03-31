@@ -39,6 +39,16 @@ function formatar(valor) {
   });
 }
 
+// 🔥 tentar calcular frete
+function tentarCalcularFrete() {
+  const cep = document.getElementById("cep").value.replace(/\D/g, "");
+  const entrega = document.getElementById("entrega").value;
+
+  if (cep.length === 8 && entrega === "frete") {
+    calcularFrete(cep);
+  }
+}
+
 // 🔥 calcular frete
 async function calcularFrete(cep) {
   try {
@@ -139,14 +149,15 @@ document.getElementById("entrega").addEventListener("change", function () {
   }
 
   atualizarResumo();
+  tentarCalcularFrete();
 });
 
 // CEP → calcular frete
-document.getElementById("cep").addEventListener("blur", function () {
+document.getElementById("cep").addEventListener("input", function () {
   const cep = this.value.replace(/\D/g, "");
 
-  if (cep.length === 8 && document.getElementById("entrega").value === "frete") {
-    calcularFrete(cep);
+  if (cep.length === 8) {
+    tentarCalcularFrete();
   }
 });
 
