@@ -29,6 +29,15 @@
   font-weight: 600;
 }
 
+.frete-header span:last-child {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.frete-header span:first-child {
+  color: #111827;
+}
+
 .frete-empresa {
   font-size: 14px;
   color: #6b7280;
