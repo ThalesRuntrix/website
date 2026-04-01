@@ -251,10 +251,8 @@ document.getElementById("pedido-form")
 
   // bloquear envio sem frete
   if (dados.entrega === "frete" && !window.frete) {
-    window.frete = 15; // valor fixo provisório
-    window.prazo = 3;
-    //alert("⚠️ Calcule o frete antes de enviar o pedido");
-    //return;
+    alert("⚠️ Selecione uma opção de frete antes de continuar");
+    return;
   }
 
   try {
@@ -274,20 +272,25 @@ document.getElementById("pedido-form")
     const pedidoId = result.pedido_codigo;
 
     // 🔥 mensagem WhatsApp
-    const mensagem = `🛒 *NOVO PEDIDO - CARIMBAI*
+    const mensagem = `🛒 *PEDIDO N°: ${pedidoId}*
 
-🆔 Pedido: *${pedidoId}*
+👤 *Comprador:*
+${dados.nome}
 
 📦 *Produto:*
 ${dados.produto_nome}
 
-💰 *Total:*
+💰 *Valor Total:*
 ${formatar(window.totalPedido)}
 
-👤 *Cliente:*
-${dados.nome}
-${dados.email}
-${dados.cpf}
+💳 *Forma de Pagamento:*
+${dados.pagamento}
+
+🚚 *Forma de Entrega:*
+${dados.entrega}
+
+🚚 *Transportadora:*
+${window.freteNome} - ${formatar(window.frete)} (${window.prazo} dias)
 
 📍 *Endereço:*
 ${dados.rua}, ${dados.numero}
@@ -295,15 +298,6 @@ ${dados.complemento ? "Comp: " + dados.complemento : ""}
 ${dados.bairro}
 ${dados.cidade} - ${dados.estado}
 CEP: ${dados.cep}
-
-🚚 *Entrega:*
-${dados.entrega}
-
-🚚 *Frete:*
-${window.freteNome} - ${formatar(window.frete)} (${window.prazo} dias)
-
-💳 *Pagamento:*
-${dados.pagamento}
 `;
 
     const url = `https://wa.me/5511943722620?text=${encodeURIComponent(mensagem)}`;
