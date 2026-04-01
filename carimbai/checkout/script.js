@@ -166,6 +166,42 @@ function mostrarFrete(opcoes) {
   box.style.display = "block";
 }
 
+// mostrar campos de endereço
+function toggleEndereco() {
+  const entrega = document.getElementById("entrega").value;
+  const box = document.getElementById("endereco-box");
+
+  const campos = [
+    "rua", "numero", "bairro", "cidade", "estado", "cep"
+  ];
+
+  if (entrega === "frete") {
+    box.style.display = "block";
+
+    // torna obrigatório
+    campos.forEach(id => {
+      document.getElementById(id).setAttribute("required", true);
+    });
+
+  } else {
+    box.style.display = "none";
+
+    // remove obrigatoriedade
+    campos.forEach(id => {
+      document.getElementById(id).removeAttribute("required");
+    });
+
+    // limpa valores (opcional, mas recomendado)
+    campos.forEach(id => {
+      document.getElementById(id).value = "";
+    });
+
+    // zera frete também
+    window.frete = 0;
+    window.prazo = 0;
+  }
+}
+
 // 🔥 atualizar resumo
 function atualizarResumo() {
   const preco = window.precoBase || 0;
@@ -203,6 +239,11 @@ function atualizarResumo() {
 
 // entrega
 document.getElementById("entrega").addEventListener("change", function () {
+  toggleEndereco();
+  atualizarResumo();
+  tentarCalcularFrete();
+});
+/*document.getElementById("entrega").addEventListener("change", function () {
   const entrega = this.value;
 
   if (entrega === "frete") {
@@ -217,6 +258,7 @@ document.getElementById("entrega").addEventListener("change", function () {
     atualizarResumo();
   }
 });
+*/
 
 // selecionar opção de frete
 document.addEventListener("change", function (e) {
@@ -251,6 +293,28 @@ document.getElementById("pedido-form")
     return;
   }
 
+  const isFrete = dados.entrega === "frete";
+
+  const endereco = isFrete
+    ? {
+        rua: document.getElementById("rua").value,
+        numero: document.getElementById("numero").value,
+        complemento: document.getElementById("complemento").value,
+        bairro: document.getElementById("bairro").value,
+        cidade: document.getElementById("cidade").value,
+        estado: document.getElementById("estado").value,
+        cep: document.getElementById("cep").value
+      }
+    : {
+        rua: null,
+        numero: null,
+        complemento: null,
+        bairro: null,
+        cidade: null,
+        estado: null,
+        cep: null
+      };
+
   const dados = {
     produto_id: getParam("id"),
     produto_nome: produtoGlobal.nome,
@@ -260,13 +324,7 @@ document.getElementById("pedido-form")
     email: document.getElementById("email").value,
     cpf: document.getElementById("cpf").value,
 
-    rua: document.getElementById("rua").value,
-    numero: document.getElementById("numero").value,
-    complemento: document.getElementById("complemento").value,
-    bairro: document.getElementById("bairro").value,
-    cidade: document.getElementById("cidade").value,
-    estado: document.getElementById("estado").value,
-    cep: document.getElementById("cep").value,
+    ...endereco,    
 
     entrega: document.getElementById("entrega").value,
     frete_valor: window.frete ?? 0,
@@ -297,6 +355,17 @@ document.getElementById("pedido-form")
 
     const pedidoId = result.pedido_codigo;
 
+    const enderecoTexto = isFrete
+      ? `
+📍 *Endereço de Entrega:*
+${dados.rua}, ${dados.numero}
+${dados.complemento ? "Comp: " + dados.complemento : ""}
+${dados.bairro}
+${dados.cidade} - ${dados.estado}
+CEP: ${dados.cep}
+`
+: "";
+
     // 🔥 mensagem WhatsApp
     const mensagem = `🛒 *PEDIDO N°: ${pedidoId}*
 
@@ -315,15 +384,10 @@ ${dados.pagamento}
 🚚 *Forma de Entrega:*
 ${dados.entrega}
 
+${enderecoTexto}
+
 🚚 *Transportadora:*
 ${window.freteNome} - ${formatar(window.frete)} (${window.prazo} dias)
-
-📍 *Endereço:*
-${dados.rua}, ${dados.numero}
-${dados.complemento ? "Comp: " + dados.complemento : ""}
-${dados.bairro}
-${dados.cidade} - ${dados.estado}
-CEP: ${dados.cep}
 `;
 
     const url = `https://wa.me/5511943722620?text=${encodeURIComponent(mensagem)}`;
