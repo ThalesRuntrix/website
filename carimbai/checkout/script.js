@@ -293,8 +293,9 @@ document.getElementById("pedido-form")
     return;
   }
 
-  const isFrete = dados.entrega === "frete";
-
+  const entrega = document.getElementById("entrega").value;
+  const isFrete = entrega === "frete";
+  
   const endereco = isFrete
     ? {
         rua: document.getElementById("rua").value,
@@ -326,7 +327,7 @@ document.getElementById("pedido-form")
 
     ...endereco,    
 
-    entrega: document.getElementById("entrega").value,
+    entrega: entrega,
     frete_valor: window.frete ?? 0,
     frete_prazo: window.prazo ?? 0,
     frete_nome: window.freteNome ?? "",
@@ -366,6 +367,11 @@ CEP: ${dados.cep}
 `
 : "";
 
+    const freteTexto = isFrete
+      ? `🚚 *Transportadora:*
+${window.freteNome} - ${formatar(window.frete)} (${window.prazo} dias)`
+  : "";
+
     // 🔥 mensagem WhatsApp
     const mensagem = `🛒 *PEDIDO N°: ${pedidoId}*
 
@@ -386,8 +392,7 @@ ${dados.entrega}
 
 ${enderecoTexto}
 
-🚚 *Transportadora:*
-${window.freteNome} - ${formatar(window.frete)} (${window.prazo} dias)
+${freteTexto}
 `;
 
     const url = `https://wa.me/5511943722620?text=${encodeURIComponent(mensagem)}`;
