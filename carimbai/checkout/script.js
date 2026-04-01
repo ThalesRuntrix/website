@@ -207,18 +207,20 @@ function toggleFrete() {
 
   if (entrega === "frete") {
     freteBox.style.display = "block";
+    
     tentarCalcularFrete();
 
   } else {
-    freteBox.style.display = "none";
-
+    freteBox.style.display = "none";    
     if (freteContainer) {
-      freteContainer.innerHTML = "";
+     freteContainer.replaceChildren();
     }
 
     window.frete = 0;
     window.prazo = 0;
     window.freteNome = "";
+    
+    atualizarResumo();
   }
 }
 
