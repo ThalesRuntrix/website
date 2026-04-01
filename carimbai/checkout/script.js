@@ -62,7 +62,7 @@ async function calcularFrete(cep) {
 
     const data = await res.json();
 
-    if (!res.ok) throw new Error();
+    if (!res.ok || !Array.isArray(data)) throw new Error();
 
     mostrarFrete(data);
 
@@ -108,36 +108,62 @@ function selecionarFrete() {
 
 // 🔥 mostrar opões de frete
 function mostrarFrete(opcoes) {
-  const box = document.getElementById("frete-info");
   const container = document.getElementById("frete-opcoes");
+  const box = document.getElementById("frete-info");
 
   container.innerHTML = "";
 
+  // 🔥 encontrar mais barato e mais rápido
+  let maisBarato = opcoes.reduce((a, b) => a.valor < b.valor ? a : b);
+  let maisRapido = opcoes.reduce((a, b) => a.prazo < b.prazo ? a : b);
+
   opcoes.forEach((opcao, index) => {
-    const div = document.createElement("label");
-    
-    div.style.display = "block";
-    div.style.marginBottom = "10px";
-    div.style.cursor = "pointer";
+    const div = document.createElement("div");
+    div.classList.add("frete-card");
+
+    // badges
+    let badge = "";
+    if (opcao === maisBarato) badge += `<span class="frete-badge">Mais barato</span>`;
+    if (opcao === maisRapido) badge += `<span class="frete-badge">Mais rápido</span>`;
 
     div.innerHTML = `
-      <input type="radio" name="frete" 
-        value="${opcao.valor}" 
-        data-prazo="${opcao.prazo}" 
-        data-nome="${opcao.nome}"
-        ${index === 0 ? "checked" : ""}
-      >
-      🚚 ${opcao.empresa} - ${opcao.nome}  
-      (${formatar(opcao.valor)} • ${opcao.prazo} dias)
+      <div class="frete-header">
+        <span>${opcao.nome} ${badge}</span>
+        <span>${formatar(opcao.valor)}</span>
+      </div>
+
+      <div class="frete-empresa">
+        ${opcao.empresa} • ${opcao.prazo} dias
+      </div>
     `;
+
+    // 🔥 clique seleciona
+    div.addEventListener("click", () => {
+      document.querySelectorAll(".frete-card").forEach(el =>
+        el.classList.remove("selected")
+      );
+
+      div.classList.add("selected");
+
+      window.frete = opcao.valor;
+      window.prazo = opcao.prazo;
+      window.freteNome = opcao.nome;
+
+      atualizarResumo();
+    });
+
+    // 🔥 selecionar primeiro automaticamente
+    if (index === 0) {
+      div.classList.add("selected");
+      window.frete = opcao.valor;
+      window.prazo = opcao.prazo;
+      window.freteNome = opcao.nome;
+    }
 
     container.appendChild(div);
   });
 
   box.style.display = "block";
-
-  // 🔥 selecionar automaticamente o primeiro
-  selecionarFrete();
 }
 
 // 🔥 atualizar resumo

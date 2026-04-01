@@ -1,0 +1,44 @@
+.frete-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.frete-card {
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+.frete-card:hover {
+  border-color: #22c55e;
+  transform: translateY(-2px);
+}
+
+.frete-card.selected {
+  border-color: #22c55e;
+  background: #ecfdf5;
+}
+
+.frete-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.frete-empresa {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.frete-badge {
+  background: #22c55e;
+  color: #022c22;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 6px;
+}
