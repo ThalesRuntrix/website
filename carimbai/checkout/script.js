@@ -93,6 +93,7 @@ async function calcularFrete(cep) {
   atualizarResumo();
 }
 
+// 🔥 selecionar frete
 function selecionarFrete() {
   const selecionado = document.querySelector('input[name="frete"]:checked');
 
@@ -105,7 +106,7 @@ function selecionarFrete() {
   atualizarResumo();
 }
 
-// 🔥 mostrar frete na tela
+// 🔥 mostrar opões de frete
 function mostrarFrete(opcoes) {
   const box = document.getElementById("frete-info");
   const container = document.getElementById("frete-opcoes");
@@ -114,12 +115,14 @@ function mostrarFrete(opcoes) {
 
   opcoes.forEach((opcao, index) => {
     const div = document.createElement("label");
+    
     div.style.display = "block";
     div.style.marginBottom = "10px";
     div.style.cursor = "pointer";
 
     div.innerHTML = `
-      <input type="radio" name="frete" value="${opcao.valor}" 
+      <input type="radio" name="frete" 
+        value="${opcao.valor}" 
         data-prazo="${opcao.prazo}" 
         data-nome="${opcao.nome}"
         ${index === 0 ? "checked" : ""}
@@ -177,27 +180,26 @@ document.getElementById("entrega").addEventListener("change", function () {
   const entrega = this.value;
 
   if (entrega === "frete") {
-    document.getElementById("frete-info").style.display = "block";
+    tentarCalcularFrete();
   } else {
     document.getElementById("frete-info").style.display = "none";
+    
     window.frete = 0;
     window.prazo = 0;
-    document.getElementById("frete-valor").textContent = "";
-    document.getElementById("frete-prazo").textContent = "";
+    window.freteNome = "";    
+    
+    atualizarResumo();
   }
-
-  atualizarResumo();
-  tentarCalcularFrete();
 });
 
-// mudança de frete
+// selecionar opção de frete
 document.addEventListener("change", function (e) {
   if (e.target.name === "frete") {
     selecionarFrete();
   }
 });
 
-// CEP → calcular frete
+// CEP
 document.getElementById("cep").addEventListener("input", function () {
   const cep = this.value.replace(/\D/g, "");
 
