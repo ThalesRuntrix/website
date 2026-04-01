@@ -166,7 +166,7 @@ function mostrarFrete(opcoes) {
   box.style.display = "block";
 }
 
-// mostrar campos de endereço
+// controla form (UI + required)
 function toggleEndereco() {
   const entrega = document.getElementById("entrega").value;
   const box = document.getElementById("endereco-box");
@@ -191,14 +191,34 @@ function toggleEndereco() {
       document.getElementById(id).removeAttribute("required");
     });
 
-    // limpa valores (opcional, mas recomendado)
+    // limpa valores
     campos.forEach(id => {
       document.getElementById(id).value = "";
     });
+  }
+}
 
-    // zera frete também
+// controla lógica de frete (estado + opções + cálculo)
+function toggleFrete() {
+  const entrega = document.getElementById("entrega").value;
+
+  const freteBox = document.getElementById("frete-info");
+  const freteContainer = document.getElementById("frete-opcoes");
+
+  if (entrega === "frete") {
+    freteBox.style.display = "block";
+    tentarCalcularFrete();
+
+  } else {
+    freteBox.style.display = "none";
+
+    if (freteContainer) {
+      freteContainer.innerHTML = "";
+    }
+
     window.frete = 0;
     window.prazo = 0;
+    window.freteNome = "";
   }
 }
 
@@ -240,10 +260,10 @@ function atualizarResumo() {
 // entrega
 document.getElementById("entrega").addEventListener("change", function () {
   toggleEndereco();
+  toggleFrete();
   atualizarResumo();
-  tentarCalcularFrete();
 });
-/*document.getElementById("entrega").addEventListener("change", function () {
+/* ENTREGA V1 - document.getElementById("entrega").addEventListener("change", function () {
   const entrega = this.value;
 
   if (entrega === "frete") {
@@ -338,6 +358,12 @@ document.getElementById("pedido-form")
   if (dados.entrega === "frete" && !window.frete) {
     alert("⚠️ Selecione uma opção de frete antes de continuar");
     return;
+  }
+
+  if (dados.entrega !== "frete") {
+    window.frete = 0;
+    window.prazo = 0;
+    window.freteNome = "";
   }
 
   try {
