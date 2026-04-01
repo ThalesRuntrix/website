@@ -64,39 +64,77 @@ async function calcularFrete(cep) {
 
     if (!res.ok) throw new Error();
 
-    // 🔥 sucesso real
-    window.frete = data.valor;
-    window.prazo = data.prazo;
-
-    mostrarFrete({
-      valor: data.valor,
-      prazo: data.prazo
-    });
+    mostrarFrete(data);
 
   } catch (err) {
     console.warn("Frete real falhou, usando fallback");
 
-    // 🔥 FALLBACK PROFISSIONAL
-    window.frete = 15;
-    window.prazo = 3;
+    // 🔥 FALLBACK
+    const fallback = [
+      {
+        id: 1,
+        nome: "Entrega Econômica",
+        empresa: "Carimbai",
+        valor: 15,
+        prazo: 5
+      },
+      {
+        id: 2,
+        nome: "Entrega Rápida",
+        empresa: "Carimbai",
+        valor: 25,
+        prazo: 3
+      }
+    ];
 
-    mostrarFrete({
-      valor: 15,
-      prazo: 3
-    });
+  mostrarFrete(fallback);    
   }
 
   atualizarResumo();
 }
 
-// 🔥 mostrar frete na tela
-function mostrarFrete(data) {
-  const box = document.getElementById("frete-info");
+function selecionarFrete() {
+  const selecionado = document.querySelector('input[name="frete"]:checked');
 
-  document.getElementById("frete-valor").textContent = formatar(data.valor);
-  document.getElementById("frete-prazo").textContent = data.prazo;
+  if (!selecionado) return;
+
+  window.frete = Number(selecionado.value);
+  window.prazo = Number(selecionado.dataset.prazo);
+  window.freteNome = selecionado.dataset.nome;
+
+  atualizarResumo();
+}
+
+// 🔥 mostrar frete na tela
+function mostrarFrete(opcoes) {
+  const box = document.getElementById("frete-info");
+  const container = document.getElementById("frete-opcoes");
+
+  container.innerHTML = "";
+
+  opcoes.forEach((opcao, index) => {
+    const div = document.createElement("label");
+    div.style.display = "block";
+    div.style.marginBottom = "10px";
+    div.style.cursor = "pointer";
+
+    div.innerHTML = `
+      <input type="radio" name="frete" value="${opcao.valor}" 
+        data-prazo="${opcao.prazo}" 
+        data-nome="${opcao.nome}"
+        ${index === 0 ? "checked" : ""}
+      >
+      🚚 ${opcao.empresa} - ${opcao.nome}  
+      (${formatar(opcao.valor)} • ${opcao.prazo} dias)
+    `;
+
+    container.appendChild(div);
+  });
 
   box.style.display = "block";
+
+  // 🔥 selecionar automaticamente o primeiro
+  selecionarFrete();
 }
 
 // 🔥 atualizar resumo
@@ -152,6 +190,13 @@ document.getElementById("entrega").addEventListener("change", function () {
   tentarCalcularFrete();
 });
 
+// mudança de frete
+document.addEventListener("change", function (e) {
+  if (e.target.name === "frete") {
+    selecionarFrete();
+  }
+});
+
 // CEP → calcular frete
 document.getElementById("cep").addEventListener("input", function () {
   const cep = this.value.replace(/\D/g, "");
@@ -196,8 +241,9 @@ document.getElementById("pedido-form")
     cep: document.getElementById("cep").value,
 
     entrega: document.getElementById("entrega").value,
-    frete: window.frete ?? 0,
-    prazo: window.prazo ?? 0,
+    frete_valor: window.frete ?? 0,
+    frete_prazo: window.prazo ?? 0,
+    frete_nome: window.freteNome ?? "",
     pagamento: document.getElementById("pagamento").value
   };
 
@@ -252,7 +298,7 @@ CEP: ${dados.cep}
 ${dados.entrega}
 
 🚚 *Frete:*
-${formatar(window.frete || 0)} (${window.prazo || 0} dias)
+${window.freteNome} - ${formatar(window.frete)} (${window.prazo} dias)
 
 💳 *Pagamento:*
 ${dados.pagamento}
