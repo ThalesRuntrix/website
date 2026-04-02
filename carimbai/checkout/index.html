@@ -35,13 +35,26 @@
 
         <div id="endereco-box" style="display:none;">
           <h3>📍 Endereço de Entrega</h3>
-          <input type="text" id="cep" placeholder="CEP">
-          <input type="text" id="rua" placeholder="Rua">
-          <input type="text" id="numero" placeholder="Número">
-          <input type="text" id="complemento" placeholder="Complemento">
-          <input type="text" id="bairro" placeholder="Bairro">
-          <input type="text" id="cidade" placeholder="Cidade">
-          <input type="text" id="estado" placeholder="Estado (UF)">          
+
+          <div class="form-grid">
+
+            <input type="text" id="cep" placeholder="CEP">
+
+            <input type="text" id="rua" placeholder="Rua">
+
+            <div class="form-row">
+              <input type="text" id="numero" placeholder="Número">
+              <input type="text" id="complemento" placeholder="Complemento">
+            </div>
+
+            <input type="text" id="bairro" placeholder="Bairro">
+
+            <div class="form-row">
+              <input type="text" id="cidade" placeholder="Cidade">
+              <input type="text" id="estado" placeholder="Estado (UF)">
+            </div>
+
+          </div>
         </div>
         
         <div id="frete-info" style="display:none;">

@@ -112,6 +112,14 @@
   color: #374151;
 }
 
+#cep {
+  max-width: 180px;
+}
+
+#estado {
+  max-width: 100px;
+}
+
 /* botão trocar */
 .btn-trocar-frete {
   margin-top: 10px;
