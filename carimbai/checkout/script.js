@@ -114,28 +114,23 @@ function mostrarFrete(opcoes) {
 
   container.innerHTML = "";
 
-  // 🔥 encontrar mais barato e mais rápido
-  let maisBarato = opcoes.reduce((a, b) => a.valor < b.valor ? a : b);
-  let maisRapido = opcoes.reduce((a, b) => a.prazo < b.prazo ? a : b);
+  const maisBarato = opcoes.reduce((a, b) => a.valor < b.valor ? a : b);
+  const maisRapido = opcoes.reduce((a, b) => a.prazo < b.prazo ? a : b);
 
-  // 🔥 calcular score (quanto menor, melhor)
   const recomendada = opcoes.reduce((melhor, atual) => {
-    const scoreAtual = atual.valor * atual.prazo;
-    const scoreMelhor = melhor.valor * melhor.prazo;
-
-    return scoreAtual < scoreMelhor ? atual : melhor;
+    return (atual.valor * atual.prazo) < (melhor.valor * melhor.prazo)
+      ? atual
+      : melhor;
   });
 
-  opcoes.forEach((opcao, index) => {
+  opcoes.forEach((opcao) => {
     const div = document.createElement("label");
     div.classList.add("frete-card");
 
-    // badges
     let badge = "";
     if (opcao.id === maisBarato.id) badge += `<span class="frete-badge">Mais barato</span>`;
     if (opcao.id === maisRapido.id) badge += `<span class="frete-badge">Mais rápido</span>`;
     if (opcao.id === recomendada.id) badge += `<span class="frete-badge destaque">Recomendado</span>`;
-
 
     div.innerHTML = `
       <input 
@@ -157,45 +152,70 @@ function mostrarFrete(opcoes) {
         ${opcao.empresa} • ${opcao.prazo} dias
       </div>
     `;
-    
-    // 🔥 clique seleciona
+
     div.addEventListener("click", () => {
-      document.querySelectorAll(".frete-card").forEach(el =>
-        el.classList.remove("selected")
-      );
-
-      div.classList.add("selected");
-      div.querySelector("input").checked = true;
-
-      window.frete = opcao.valor;
-      window.prazo = opcao.prazo;
-      window.freteNome = opcao.nome;
-
-      atualizarResumo();
+      selecionarFrete();
+      mostrarFreteSelecionado(opcao); // 🔥 AGORA SIM
     });
-
-    // 🔥 selecionar automaticamente recomendada
-    if (opcao.id === recomendada.id) {
-      div.classList.add("selected");
-      window.frete = opcao.valor;
-      window.prazo = opcao.prazo;
-      window.freteNome = opcao.nome;
-    }
 
     container.appendChild(div);
   });
 
-  box.style.display = "block";
+  // 🔥 salva recomendada como default
+  window.frete = recomendada.valor;
+  window.prazo = recomendada.prazo;
+  window.freteNome = recomendada.nome;
 
-  if (!window.modoTrocaFrete) {
-    setTimeout(() => {
-      recolherOpcoesFrete();
-    }, 50);
-  } else {
-    // 🔥 reset modo troca
-    window.modoTrocaFrete = false;
-  }
+  atualizarResumo();
+  box.style.display = "block";
 }
+
+function mostrarFreteSelecionado(opcao) {
+  const container = document.getElementById("frete-opcoes");
+
+  container.innerHTML = `
+    <div class="frete-selecionado">
+      
+      <div class="frete-selecionado-header">
+        🚚 Frete selecionado
+      </div>
+
+      <div class="frete-selecionado-content">
+        
+        <div class="frete-selecionado-info">
+          <span class="frete-selecionado-nome">${opcao.nome}</span>
+          <span class="frete-selecionado-empresa">${opcao.empresa}</span>
+        </div>
+
+        <div style="text-align:right;">
+          <div class="frete-selecionado-preco">${formatar(opcao.valor)}</div>
+          <div class="frete-selecionado-prazo">${opcao.prazo} dias</div>
+        </div>
+
+      </div>
+
+      <button type="button" class="btn-trocar-frete" id="trocar-frete">
+        Alterar opção
+      </button>
+
+    </div>
+  `;
+
+  // 🔥 atualiza global
+  window.frete = opcao.valor;
+  window.prazo = opcao.prazo;
+  window.freteNome = opcao.nome;
+
+  atualizarResumo();
+
+  document.getElementById("trocar-frete").addEventListener("click", () => {
+    const cep = document.getElementById("cep").value.replace(/\D/g, "");
+    if (cep.length === 8) {
+      calcularFrete(cep);
+    }
+  });
+}
+
 
 // Buscar endereço pelo campo de cep
 async function buscarEnderecoPorCEP(cep) {
