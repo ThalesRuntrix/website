@@ -1,6 +1,7 @@
 const API_URL = "https://carimbai-api.vercel.app/api";
 
 let produtoGlobal = null;
+window.modoTrocaFrete = false;
 
 // 🔥 pegar parâmetro da URL
 function getParam(name) {
@@ -186,9 +187,14 @@ function mostrarFrete(opcoes) {
 
   box.style.display = "block";
 
-  setTimeout(() => {
-    recolherOpcoesFrete();
-  }, 50);
+  if (!window.modoTrocaFrete) {
+    setTimeout(() => {
+      recolherOpcoesFrete();
+    }, 50);
+  } else {
+    // 🔥 reset modo troca
+    window.modoTrocaFrete = false;
+  }
 }
 
 // Buscar endereço pelo campo de cep
@@ -321,14 +327,15 @@ function recolherOpcoesFrete() {
   `;
 
   document.getElementById("trocar-frete").addEventListener("click", () => {
-  const cep = document.getElementById("cep").value.replace(/\D/g, "");
-  
-  if (cep.length === 8) {
-    calcularFrete(cep);
-  } else {
-    alert("Digite um CEP válido para recalcular o frete");
-  }
-});
+    window.modoTrocaFrete = false;
+    const cep = document.getElementById("cep").value.replace(/\D/g, "");
+    
+    if (cep.length === 8) {
+      calcularFrete(cep);
+    } else {
+      alert("Digite um CEP válido para recalcular o frete");
+    }
+  });
 }
 
 // 🔥 atualizar resumo
