@@ -247,6 +247,40 @@ async function buscarEnderecoPorCEP(cep) {
   }
 }
 
+// validação de cep
+function validarCEP(cep) {
+  return /^\d{5}-?\d{3}$/.test(cep);
+}
+
+document.getElementById("cep").addEventListener("blur", function () {
+  const input = this;
+
+  if (validarCEP(input.value)) {
+    input.classList.remove("input-erro");
+    input.classList.add("input-ok");
+  } else {
+    input.classList.add("input-erro");
+    input.classList.remove("input-ok");
+  }
+});
+
+// validação de cpf
+function validarCPF(cpf) {
+  return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
+}
+
+document.getElementById("cpf").addEventListener("blur", function () {
+  const input = this;
+
+  if (validarCPF(input.value)) {
+    input.classList.remove("input-erro");
+    input.classList.add("input-ok");
+  } else {
+    input.classList.add("input-erro");
+    input.classList.remove("input-ok");
+  }
+});
+
 // controla form (UI + required)
 function toggleEndereco() {
   const entrega = document.getElementById("entrega").value;
@@ -305,58 +339,6 @@ function toggleFrete() {
     atualizarResumo();
   }
 }
-
-// recolher opões de transportadora após seleção
-/*function recolherOpcoesFrete() {
-  const selecionado = document.querySelector('input[name="frete"]:checked');
-  const container = document.getElementById("frete-opcoes");
-
-  if (!selecionado) return;
-
-  const nome = selecionado.dataset.nome;
-  const empresa = selecionado.dataset.empresa;
-  const prazo = selecionado.dataset.prazo;
-  const valor = Number(selecionado.value);
-
-  container.innerHTML = `
-    <div class="frete-selecionado">
-      
-      <div class="frete-selecionado-header">
-        🚚 Frete selecionado
-      </div>
-
-      <div class="frete-selecionado-content">
-        
-        <div class="frete-selecionado-info">
-          <span class="frete-selecionado-nome">${nome}</span>
-          <span class="frete-selecionado-empresa">${empresa}</span>
-        </div>
-
-        <div style="text-align:right;">
-          <div class="frete-selecionado-preco">${formatar(valor)}</div>
-          <div class="frete-selecionado-prazo">${prazo} dias</div>
-        </div>
-
-      </div>
-
-      <button type="button" class="btn-trocar-frete" id="trocar-frete">
-        Alterar opção
-      </button>
-
-    </div>
-  `;
-
-  document.getElementById("trocar-frete").addEventListener("click", () => {
-    window.modoTrocaFrete = false;
-    const cep = document.getElementById("cep").value.replace(/\D/g, "");
-    
-    if (cep.length === 8) {
-      calcularFrete(cep);
-    } else {
-      alert("Digite um CEP válido para recalcular o frete");
-    }
-  });
-} */
 
 // 🔥 atualizar resumo
 function atualizarResumo() {
@@ -420,6 +402,29 @@ document.getElementById("cep").addEventListener("input", function () {
 // pagamento
 document.getElementById("pagamento").addEventListener("change", atualizarResumo);
 
+// máscara de cep
+document.getElementById("cep").addEventListener("input", function (e) {
+  let v = e.target.value.replace(/\D/g, "");
+
+  if (v.length > 5) {
+    v = v.replace(/^(\d{5})(\d{1,3})$/, "$1-$2");
+  }
+
+  e.target.value = v;
+});
+
+// máscara de cpf
+document.getElementById("cpf").addEventListener("input", function (e) {
+  let v = e.target.value.replace(/\D/g, "");
+
+  v = v
+    .replace(/^(\d{3})(\d)/, "$1.$2")
+    .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/\.(\d{3})(\d)/, ".$1-$2");
+
+  e.target.value = v;
+});
+
 
 // 🔥 INIT
 getProdutoById();
@@ -475,7 +480,13 @@ document.getElementById("pedido-form")
     pagamento: document.getElementById("pagamento").value
   };
 
-  // bloquear envio sem frete
+  
+
+  if (!validarCPF(dados.cpf)) {
+    alert("CPF inválido");
+    return;
+  }
+  
   if (dados.entrega === "frete" && !window.frete) {
     alert("⚠️ Selecione uma opção de frete antes de continuar");
     return;

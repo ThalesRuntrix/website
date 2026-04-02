@@ -68,3 +68,11 @@ input, select {
   flex: 1;
   width: 100%;
 }
+
+.input-erro {
+  border: 2px solid #ef4444 !important;
+}
+
+.input-ok {
+  border: 2px solid #22c55e !important;
+}
