@@ -254,6 +254,38 @@ function toggleFrete() {
   }
 }
 
+// recolher opões de transportadora após seleção
+function recolherOpcoesFrete() {
+  const selecionado = document.querySelector('input[name="frete"]:checked');
+  const container = document.getElementById("frete-opcoes");
+
+  if (!selecionado) return;
+
+  const labelSelecionado = selecionado.closest("label");
+
+  // limpa tudo
+  container.innerHTML = "";
+
+  // cria versão "resumida"
+  const resumo = document.createElement("div");
+  resumo.className = "frete-selecionado";
+
+  resumo.innerHTML = `
+    <p><strong>🚚 Frete selecionado:</strong></p>
+    <p>${labelSelecionado.innerText}</p>
+    <button type="button" id="trocar-frete" class="btn-tertiary">
+      Trocar opção
+    </button>
+  `;
+
+  container.appendChild(resumo);
+
+  // botão pra reabrir
+  document.getElementById("trocar-frete").addEventListener("click", () => {
+    tentarCalcularFrete(); // 🔥 recarrega lista
+  });
+}
+
 // 🔥 atualizar resumo
 function atualizarResumo() {
   const preco = window.precoBase || 0;
@@ -295,27 +327,12 @@ document.getElementById("entrega").addEventListener("change", function () {
   toggleFrete();
   atualizarResumo();
 });
-/* ENTREGA V1 - document.getElementById("entrega").addEventListener("change", function () {
-  const entrega = this.value;
-
-  if (entrega === "frete") {
-    tentarCalcularFrete();
-  } else {
-    document.getElementById("frete-info").style.display = "none";
-    
-    window.frete = 0;
-    window.prazo = 0;
-    window.freteNome = "";    
-    
-    atualizarResumo();
-  }
-});
-*/
 
 // selecionar opção de frete
 document.addEventListener("change", function (e) {
   if (e.target.name === "frete") {
     selecionarFrete();
+    recolherOpcoesFrete();
   }
 });
 
