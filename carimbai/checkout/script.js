@@ -123,8 +123,8 @@ function mostrarFrete(opcoes) {
 
     // badges
     let badge = "";
-    if (opcao === maisBarato) badge += `<span class="frete-badge">Mais barato</span>`;
-    if (opcao === maisRapido) badge += `<span class="frete-badge">Mais rápido</span>`;
+    if (opcao.id === maisBarato.id) badge += `<span class="frete-badge">Mais barato</span>`;
+    if (opcao.id === maisRapido.id) badge += `<span class="frete-badge">Mais rápido</span>`;
 
     div.innerHTML = `
       <input 
