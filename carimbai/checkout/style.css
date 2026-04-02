@@ -112,6 +112,10 @@
   color: #374151;
 }
 
+#endereco-box {
+  width: 100%;
+}
+
 #cep {
   max-width: 180px;
 }

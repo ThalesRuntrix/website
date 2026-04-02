@@ -25,6 +25,9 @@ input, select {
 
 #pedido-form input,
 #pedido-form select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   padding: 12px;
   border-radius: 10px;
   border: none;
@@ -41,10 +44,10 @@ input, select {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 100%;
   margin-top: 10px;
 }
 
-/* 🔥 INPUT PADRÃO (igual seus outros campos) */
 .form-grid input {
   width: 100%;
   padding: 14px;
@@ -57,9 +60,11 @@ input, select {
 .form-row {
   display: flex;
   gap: 10px;
+  width: 100%;
 }
 
 /* 🔥 CAMPOS LADO A LADO */
 .form-row input {
   flex: 1;
+  width: 100%;
 }
