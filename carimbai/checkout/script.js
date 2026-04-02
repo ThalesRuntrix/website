@@ -118,7 +118,7 @@ function mostrarFrete(opcoes) {
   let maisRapido = opcoes.reduce((a, b) => a.prazo < b.prazo ? a : b);
 
   opcoes.forEach((opcao, index) => {
-    const div = document.createElement("div");
+    const div = document.createElement("label");
     div.classList.add("frete-card");
 
     // badges
@@ -127,8 +127,18 @@ function mostrarFrete(opcoes) {
     if (opcao === maisRapido) badge += `<span class="frete-badge">Mais rápido</span>`;
 
     div.innerHTML = `
+      <input 
+        type="radio" 
+        name="frete" 
+        value="${opcao.valor}" 
+        data-prazo="${opcao.prazo}" 
+        data-nome="${opcao.nome}"
+        data-empresa="${opcao.empresa}"  <!-- 🔥 AQUI ESTÁ A CORREÇÃO -->
+        ${index === 0 ? "checked" : ""}
+      >
+
       <div class="frete-header">
-        <span>${opcao.nome} ${badge}</span>
+        <span>${opcao.nome}</span>
         <span>${formatar(opcao.valor)}</span>
       </div>
 
@@ -136,7 +146,7 @@ function mostrarFrete(opcoes) {
         ${opcao.empresa} • ${opcao.prazo} dias
       </div>
     `;
-
+    
     // 🔥 clique seleciona
     div.addEventListener("click", () => {
       document.querySelectorAll(".frete-card").forEach(el =>
@@ -261,28 +271,41 @@ function recolherOpcoesFrete() {
 
   if (!selecionado) return;
 
-  const labelSelecionado = selecionado.closest("label");
+  const nome = selecionado.dataset.nome;
+  const empresa = selecionado.dataset.empresa;
+  const prazo = selecionado.dataset.prazo;
+  const valor = Number(selecionado.value);
 
-  // limpa tudo
-  container.innerHTML = "";
+  container.innerHTML = `
+    <div class="frete-selecionado">
+      
+      <div class="frete-selecionado-header">
+        🚚 Frete selecionado
+      </div>
 
-  // cria versão "resumida"
-  const resumo = document.createElement("div");
-  resumo.className = "frete-selecionado";
+      <div class="frete-selecionado-content">
+        
+        <div class="frete-selecionado-info">
+          <span class="frete-selecionado-nome">${nome}</span>
+          <span class="frete-selecionado-empresa">${empresa}</span>
+        </div>
 
-  resumo.innerHTML = `
-    <p><strong>🚚 Frete selecionado:</strong></p>
-    <p>${labelSelecionado.innerText}</p>
-    <button type="button" id="trocar-frete" class="btn-tertiary">
-      Trocar opção
-    </button>
+        <div style="text-align:right;">
+          <div class="frete-selecionado-preco">${formatar(valor)}</div>
+          <div class="frete-selecionado-prazo">${prazo} dias</div>
+        </div>
+
+      </div>
+
+      <button type="button" class="btn-trocar-frete" id="trocar-frete">
+        Alterar opção
+      </button>
+
+    </div>
   `;
 
-  container.appendChild(resumo);
-
-  // botão pra reabrir
   document.getElementById("trocar-frete").addEventListener("click", () => {
-    tentarCalcularFrete(); // 🔥 recarrega lista
+    tentarCalcularFrete(); // recarrega opções
   });
 }
 
