@@ -133,12 +133,12 @@ function mostrarFrete(opcoes) {
         value="${opcao.valor}" 
         data-prazo="${opcao.prazo}" 
         data-nome="${opcao.nome}"
-        data-empresa="${opcao.empresa}"  <!-- 🔥 AQUI ESTÁ A CORREÇÃO -->
+        data-empresa="${opcao.empresa}"
         ${index === 0 ? "checked" : ""}
       >
 
       <div class="frete-header">
-        <span>${opcao.nome}</span>
+        <span>${opcao.nome} ${badge}</span>
         <span>${formatar(opcao.valor)}</span>
       </div>
 
@@ -154,6 +154,7 @@ function mostrarFrete(opcoes) {
       );
 
       div.classList.add("selected");
+      div.querySelector("input").checked = true;
 
       window.frete = opcao.valor;
       window.prazo = opcao.prazo;
