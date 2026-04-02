@@ -117,6 +117,14 @@ function mostrarFrete(opcoes) {
   let maisBarato = opcoes.reduce((a, b) => a.valor < b.valor ? a : b);
   let maisRapido = opcoes.reduce((a, b) => a.prazo < b.prazo ? a : b);
 
+  // 🔥 calcular score (quanto menor, melhor)
+  const recomendada = opcoes.reduce((melhor, atual) => {
+    const scoreAtual = atual.valor * atual.prazo;
+    const scoreMelhor = melhor.valor * melhor.prazo;
+
+    return scoreAtual < scoreMelhor ? atual : melhor;
+  });
+
   opcoes.forEach((opcao, index) => {
     const div = document.createElement("label");
     div.classList.add("frete-card");
@@ -125,6 +133,8 @@ function mostrarFrete(opcoes) {
     let badge = "";
     if (opcao.id === maisBarato.id) badge += `<span class="frete-badge">Mais barato</span>`;
     if (opcao.id === maisRapido.id) badge += `<span class="frete-badge">Mais rápido</span>`;
+    if (opcao.id === recomendada.id) badge += `<span class="frete-badge destaque">Recomendado</span>`;
+
 
     div.innerHTML = `
       <input 
@@ -163,8 +173,8 @@ function mostrarFrete(opcoes) {
       atualizarResumo();
     });
 
-    // 🔥 selecionar primeiro automaticamente
-    if (index === 0) {
+    // 🔥 selecionar automaticamente recomendada
+    if (opcao.id === recomendada.id) {
       div.classList.add("selected");
       window.frete = opcao.valor;
       window.prazo = opcao.prazo;
