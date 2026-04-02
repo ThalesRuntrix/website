@@ -144,7 +144,7 @@ function mostrarFrete(opcoes) {
         data-prazo="${opcao.prazo}" 
         data-nome="${opcao.nome}"
         data-empresa="${opcao.empresa}"
-        ${index === 0 ? "checked" : ""}
+        ${opcao.id === recomendada.id ? "checked" : ""}
       >
 
       <div class="frete-header">
@@ -185,6 +185,10 @@ function mostrarFrete(opcoes) {
   });
 
   box.style.display = "block";
+
+  setTimeout(() => {
+    recolherOpcoesFrete();
+  }, 50);
 }
 
 // Buscar endereço pelo campo de cep
@@ -265,6 +269,7 @@ function toggleFrete() {
     freteBox.style.display = "none";    
     if (freteContainer) {
      freteContainer.replaceChildren();
+     freteContainer.innerHTML = "";
     }
 
     window.frete = 0;
@@ -316,8 +321,14 @@ function recolherOpcoesFrete() {
   `;
 
   document.getElementById("trocar-frete").addEventListener("click", () => {
-    tentarCalcularFrete(); // recarrega opções
-  });
+  const cep = document.getElementById("cep").value.replace(/\D/g, "");
+  
+  if (cep.length === 8) {
+    calcularFrete(cep);
+  } else {
+    alert("Digite um CEP válido para recalcular o frete");
+  }
+});
 }
 
 // 🔥 atualizar resumo
