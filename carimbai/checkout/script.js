@@ -166,6 +166,34 @@ function mostrarFrete(opcoes) {
   box.style.display = "block";
 }
 
+// Buscar endereço pelo campo de cep
+async function buscarEnderecoPorCEP(cep) {
+  try {
+    const res = await fetch(`${API_URL}/cep`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ cep })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error();
+
+    document.getElementById("rua").value = data.rua || "";
+    document.getElementById("bairro").value = data.bairro || "";
+    document.getElementById("cidade").value = data.cidade || "";
+    document.getElementById("estado").value = data.estado || "";
+
+    document.getElementById("cidade").readOnly = true;
+    document.getElementById("estado").readOnly = true;
+
+  } catch (err) {
+    console.warn("CEP não encontrado ou erro inesperado.");
+  }
+}
+
 // controla form (UI + required)
 function toggleEndereco() {
   const entrega = document.getElementById("entrega").value;
@@ -294,6 +322,7 @@ document.getElementById("cep").addEventListener("input", function () {
   const cep = this.value.replace(/\D/g, "");
 
   if (cep.length === 8) {
+    buscarEnderecoPorCEP(cep);
     tentarCalcularFrete();
   }
 });
