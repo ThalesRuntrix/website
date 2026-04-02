@@ -307,7 +307,7 @@ function toggleFrete() {
 }
 
 // recolher opões de transportadora após seleção
-function recolherOpcoesFrete() {
+/*function recolherOpcoesFrete() {
   const selecionado = document.querySelector('input[name="frete"]:checked');
   const container = document.getElementById("frete-opcoes");
 
@@ -356,7 +356,7 @@ function recolherOpcoesFrete() {
       alert("Digite um CEP válido para recalcular o frete");
     }
   });
-}
+} */
 
 // 🔥 atualizar resumo
 function atualizarResumo() {
@@ -404,7 +404,6 @@ document.getElementById("entrega").addEventListener("change", function () {
 document.addEventListener("change", function (e) {
   if (e.target.name === "frete") {
     selecionarFrete();
-    recolherOpcoesFrete();
   }
 });
 
