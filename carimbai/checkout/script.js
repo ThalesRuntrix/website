@@ -186,6 +186,8 @@ async function buscarEnderecoPorCEP(cep) {
     document.getElementById("cidade").value = data.cidade || "";
     document.getElementById("estado").value = data.estado || "";
 
+    document.getElementById("rua").readOnly = true;
+    document.getElementById("bairro").readOnly = true;
     document.getElementById("cidade").readOnly = true;
     document.getElementById("estado").readOnly = true;
 
