@@ -1,5 +1,6 @@
 import { api } from "../api/api.js";
 import { state } from "../state/state.js";
+import { formatar } from "../utils/format.js";
 import { formUI } from "../ui/formUI.js";
 import { renderFrete } from "../ui/freteUI.js";
 
@@ -268,7 +269,7 @@ export const freteService =  {
   validarCPF(cpf) {
     return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
   }  
-    
+
 }
 
 
