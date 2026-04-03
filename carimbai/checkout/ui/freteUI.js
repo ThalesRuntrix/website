@@ -1,13 +1,13 @@
 import { state } from "../state/state.js";
 import { formatar } from "../utils/format.js";
-import { escolherRecomendado } from "../services/freteService.js";
+import { freteService } from "../services/freteService.js";
 import { atualizarResumo } from "./ui.js";
 
 export function renderFrete(opcoes) {
   const container = document.getElementById("frete-opcoes");
   container.innerHTML = "";
 
-  const recomendada = escolherRecomendado(opcoes);
+  const recomendada = freteService.escolherRecomendado(opcoes);
 
   opcoes.forEach(opcao => {
     const div = document.createElement("div");
