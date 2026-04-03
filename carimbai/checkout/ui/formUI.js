@@ -82,10 +82,10 @@ export const formUI =  {
     const total = preco + frete - desconto;
 
     // 🔥 render
-    document.getElementById("resumo-produto").textContent = formatar.foma(preco);
-    document.getElementById("resumo-frete").textContent = format(frete);
-    document.getElementById("resumo-desconto").textContent = `- ${format(desconto)}`;
-    document.getElementById("resumo-total").textContent = format(total);
+    document.getElementById("resumo-produto").textContent = formatar(preco);
+    document.getElementById("resumo-frete").textContent = formatar(frete);
+    document.getElementById("resumo-desconto").textContent = `- ${formatar(desconto)}`;
+    document.getElementById("resumo-total").textContent = formatar(total);
 
     // 🔥 salvar global
     window.totalPedido = total;
