@@ -1,64 +1,82 @@
-import { getFrete } from "../services/freteService.js";
-import { renderFrete } from "../ui/freteUI.js";
+import { formUI } from "../ui/formUI.js";
 
 export function initEvents() {
 
-  document.getElementById("entrega").addEventListener("change", function () {
-    const entrega = this.value;
+// entrega
+document.getElementById("entrega").addEventListener("change", function () {
+  formUI.toggleEndereco();
+  formUI.toggleFrete();
+  formUI.atualizarResumo();
+});
 
-    const enderecoBox = document.getElementById("endereco-box");
-    const freteBox = document.getElementById("frete-info");
+// seleciona opção de frete
+document.addEventListener("change", function (e) {
+  if (e.target.name === "frete") {
+    selecionarFrete();
+  }
+});
 
-    if (entrega === "frete") {
-      enderecoBox.style.display = "block";
-      freteBox.style.display = "block";
+// atualiza pagamento (resumo)
+document.getElementById("pagamento").addEventListener("change", atualizarResumo);
 
-    } else {
-      enderecoBox.style.display = "none";
-      freteBox.style.display = "none";
+// busca cep e recalcula frete
+document.getElementById("cep").addEventListener("input", function () {
+  const cep = this.value.replace(/\D/g, "");
 
-      // limpa frete
-      const container = document.getElementById("frete-opcoes");
-      if (container) container.innerHTML = "";
+  if (cep.length === 8) {
+    buscarEnderecoPorCEP(cep);
+    tentarCalcularFrete();
+  }
+});
 
-      // reset state
-      state.frete = 0;
-      state.prazo = 0;
-      state.freteNome = "";
-    }
-  });
+//validação de cep
+document.getElementById("cep").addEventListener("blur", function () {
+  const input = this;
 
-  document.getElementById("entrega").addEventListener("change", async function () {
-    const entrega = this.value;
+  if (validarCEP(input.value)) {
+    input.classList.remove("input-erro");
+    input.classList.add("input-ok");
+  } else {
+    input.classList.add("input-erro");
+    input.classList.remove("input-ok");
+  }
+});
 
-    if (entrega === "frete") {
-      const cep = document.getElementById("cep").value.replace(/\D/g, "");
+// máscara de cep
+document.getElementById("cep").addEventListener("input", function (e) {
+  let v = e.target.value.replace(/\D/g, "");
 
-      if (cep.length === 8) {
-        const opcoes = await getFrete(cep);
-        renderFrete(opcoes);
-      }
-    } else {
-      document.getElementById("frete-opcoes").innerHTML = "";
-    }
-  });
+  if (v.length > 5) {
+    v = v.replace(/^(\d{5})(\d{1,3})$/, "$1-$2");
+  }
 
-  document.getElementById("cep").addEventListener("input", async function () {
-    const cep = this.value.replace(/\D/g, "");
+  e.target.value = v;
+});
 
-    if (cep.length === 8) {
-      const opcoes = await getFrete(cep);
-      renderFrete(opcoes);
-    }
-  });
+// validação de cpf
+document.getElementById("cpf").addEventListener("blur", function () {
+  const input = this;
 
-  document.addEventListener("reabrirFrete", async () => {
-    const cep = document.getElementById("cep").value.replace(/\D/g, "");
+  if (validarCPF(input.value)) {
+    input.classList.remove("input-erro");
+    input.classList.add("input-ok");
+  } else {
+    input.classList.add("input-erro");
+    input.classList.remove("input-ok");
+  }
+});
 
-    if (cep.length === 8) {
-      const opcoes = await getFrete(cep);
-      renderFrete(opcoes);
-    }
-  });
+// máscara de cpf
+document.getElementById("cpf").addEventListener("input", function (e) {
+  let v = e.target.value.replace(/\D/g, "");
+
+  v = v
+    .replace(/^(\d{3})(\d)/, "$1.$2")
+    .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/\.(\d{3})(\d)/, ".$1-$2");
+
+  e.target.value = v;
+});
+  
 
 }

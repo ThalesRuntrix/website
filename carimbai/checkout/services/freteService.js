@@ -2,6 +2,7 @@ import { api } from "../api/api.js";
 
 export async function getFrete(cep) {
   try {
+    
     const opcoes = await api.calcularFrete(cep);
     // aqui você pode:
     // filtrar
