@@ -1,16 +1,16 @@
 import { state } from "../state/state.js";
 import { freteService } from "../services/freteService.js";
 import { cepService } from "../services/cepService.js";
-import { toggleEndereco, toggleFrete, atualizarResumo } from "../ui/formUI.js"
+import { formUI } from "../ui/formUI.js"
 
 
 export function initEvents() {
 
   // entrega
   document.getElementById("entrega").addEventListener("change", function () {
-    toggleEndereco();
-    toggleFrete();
-    atualizarResumo();
+    formUI.toggleEndereco();
+    formUI.toggleFrete();
+    formUI.atualizarResumo();
   });
 
   // seleciona opção de frete

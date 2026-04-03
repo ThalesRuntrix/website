@@ -59,7 +59,7 @@ export const formUI =  {
       state.prazo = 0;
       state.freteNome = "";
       
-      this.atualizarResumo();
+      formUI.atualizarResumo();
     }
   },
 
