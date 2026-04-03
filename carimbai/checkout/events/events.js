@@ -35,7 +35,7 @@ document.getElementById("cep").addEventListener("input", function () {
 document.getElementById("cep").addEventListener("blur", function () {
   const input = this;
 
-  if (validarCEP(input.value)) {
+  if (formUI.validarCEP(input.value)) {
     input.classList.remove("input-erro");
     input.classList.add("input-ok");
   } else {
@@ -59,7 +59,7 @@ document.getElementById("cep").addEventListener("input", function (e) {
 document.getElementById("cpf").addEventListener("blur", function () {
   const input = this;
 
-  if (validarCPF(input.value)) {
+  if (formUI.validarCPF(input.value)) {
     input.classList.remove("input-erro");
     input.classList.add("input-ok");
   } else {

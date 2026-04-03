@@ -89,5 +89,13 @@ export const formUI =  {
 
     // 🔥 salvar global
     window.totalPedido = total;
+  },
+
+  validarCEP(cep) {
+    return /^\d{5}-?\d{3}$/.test(cep);
+  },
+  
+  validarCPF(cpf) {
+    return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
   }
 }
