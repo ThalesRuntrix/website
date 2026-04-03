@@ -5,8 +5,7 @@ import { renderFrete } from "../ui/freteUI.js";
 
 export const freteService =  {
 
-  tentarCalcularFrete() {
-    const cep = document.getElementById("cep").value.replace(/\D/g, "");
+  tentarCalcularFrete(cep) {    
     const entrega = document.getElementById("entrega").value;
 
     if (cep.length === 8 && entrega === "frete") {

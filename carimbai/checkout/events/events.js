@@ -1,6 +1,7 @@
 import { formUI } from "../ui/formUI.js";
-import { freteService, cepService } from "../services/freteService.js";
-import { state } from "../state/state.js";
+import { freteService } from "../services/freteService.js";
+import { cepService } from "../services/cepService.js";
+
 
 export function initEvents() {
 
@@ -27,7 +28,7 @@ document.getElementById("cep").addEventListener("input", function () {
 
   if (cep.length === 8) {
     cepService.obterEndereco(cep);
-    freteService.tentarCalcularFrete();
+    freteService.tentarCalcularFrete(cep);
   }
 });
 

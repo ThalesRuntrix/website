@@ -1,25 +1,27 @@
 import { api } from "../api/api.js";
 
-export async function obterEndereco(cep) {
-  try {
-    const data = await api.buscarCEP(cep);
+export const cepService =  {
+  async obterEndereco(cep) {
+    try {
+      const data = await api.buscarCEP(cep);
 
-    return {
-      rua: data.rua || "",
-      bairro: data.bairro || "",
-      cidade: data.cidade || "",
-      estado: data.estado || ""
-    };
+      return {
+        rua: data.rua || "",
+        bairro: data.bairro || "",
+        cidade: data.cidade || "",
+        estado: data.estado || ""
+      };
 
-  } catch (err) {
-    console.warn("Erro ao buscar CEP:", err);
+    } catch (err) {
+      console.warn("Erro ao buscar CEP:", err);
 
-    return {
-      rua: "",
-      bairro: "",
-      cidade: "",
-      estado: ""
-    };
+      return {
+        rua: "",
+        bairro: "",
+        cidade: "",
+        estado: ""
+      };
+    }
   }
-}
 
+};
