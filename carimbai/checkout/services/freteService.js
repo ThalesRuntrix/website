@@ -1,8 +1,8 @@
-import { calcularFrete } from "../api/api.js"
+import { api } from "../api/api.js";
 
 export async function getFrete(cep) {
   try {
-    const opcoes = await calcularFrete(cep);
+    const opcoes = await api.calcularFrete(cep);
     // aqui você pode:
     // filtrar
     // ordenar

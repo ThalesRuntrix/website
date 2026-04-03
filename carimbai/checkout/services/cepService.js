@@ -1,8 +1,8 @@
-import { buscarCEP } from "../api/api.js"
+import { api } from "../api/api.js";
 
 export async function obterEndereco(cep) {
   try {
-    const data = await buscarCEP(cep);
+    const data = await api.buscarCEP(cep);
 
     return {
       rua: data.rua || "",
