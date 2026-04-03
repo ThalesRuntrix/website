@@ -21,7 +21,7 @@ export function initEvents() {
   });
 
   // atualiza pagamento (resumo)
-  document.getElementById("pagamento").addEventListener("change", atualizarResumo());
+  document.getElementById("pagamento").addEventListener("change", formUI.atualizarResumo());
 
   // busca cep e recalcula frete
   document.getElementById("cep").addEventListener("input", function () {
