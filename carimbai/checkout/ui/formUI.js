@@ -57,7 +57,7 @@ export const formUI =  {
       window.prazo = 0;
       window.freteNome = "";
       
-      atualizarResumo();
+      this.atualizarResumo();
     }
   },
 
