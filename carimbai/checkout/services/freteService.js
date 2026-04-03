@@ -230,7 +230,7 @@ export const freteService =  {
     document.getElementById("trocar-frete").addEventListener("click", () => {
       const cep = document.getElementById("cep").value.replace(/\D/g, "");
       if (cep.length === 8) {
-        calcularFrete(cep);
+        freteService.calcularFrete(cep);
       }
     });
   },
