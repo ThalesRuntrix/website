@@ -1,4 +1,4 @@
-import { getProdutobyId } from "./services/produto.js";
+import { getProdutoById } from "./services/produto.js";
 import { state } from "./state/state.js";
 import { atualizarResumo } from "./ui/ui.js";
 import { initEvents } from "./events/events.js";
