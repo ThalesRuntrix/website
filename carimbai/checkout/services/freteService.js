@@ -17,7 +17,7 @@ export const freteService =  {
     const entrega = document.getElementById("entrega").value;
 
     if (cep.length === 8 && entrega === "frete") {
-      calcularFrete(cep);
+      this.calcularFrete(cep);
     }
   },
 
