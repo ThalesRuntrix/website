@@ -58,6 +58,14 @@ export const freteService =  {
     formUI.atualizarResumo();
   },
 
+  escolherRecomendado(opcoes) {
+    return opcoes.reduce((melhor, atual) => {
+      return (atual.valor * atual.prazo) < (melhor.valor * melhor.prazo)
+        ? atual
+        : melhor;
+    });
+  },
+
   async getFrete(cep) {
     try {
       
@@ -89,16 +97,7 @@ export const freteService =  {
         }
       ]);
     }
-  },
-
-  escolherRecomendado(opcoes) {
-    return opcoes.reduce((melhor, atual) => {
-      return (atual.valor * atual.prazo) < (melhor.valor * melhor.prazo)
-        ? atual
-        : melhor;
-    });
   }
-
 
  };
 
