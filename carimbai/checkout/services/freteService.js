@@ -50,7 +50,7 @@ export const freteService =  {
     renderFrete(fallback);    
     }
 
-    atualizarResumo();
+    formUI.atualizarResumo();
   },
 
   selecionarFrete() {
