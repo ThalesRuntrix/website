@@ -1,5 +1,6 @@
 import { api } from "../api/api.js";
 import { state } from "../state/state.js";
+import { formUI } from "../ui/formUI.js";
 
 export const freteService =  {
 
@@ -12,7 +13,7 @@ export const freteService =  {
     state.prazo = Number(selecionado.dataset.prazo);
     state.freteNome = selecionado.dataset.nome;
 
-    atualizarResumo();
+    formUI.atualizarResumo();
   },
 
   async getFrete(cep) {
@@ -57,7 +58,7 @@ export const freteService =  {
   }
 
 
- }
+ };
 
 function tratarOpcoesFrete(opcoes) {
 
