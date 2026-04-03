@@ -9,11 +9,8 @@ async function init() {
     const params = new URLSearchParams(window.location.search);
     return params.get(name);
   }
-
   const id = getParam("id");
-  console.log("ID: ", id);
   
-
   const produto = await getProdutoById(id);
 
   state.produto = produto;
