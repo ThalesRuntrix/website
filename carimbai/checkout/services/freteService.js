@@ -22,7 +22,7 @@ export const freteService =  {
       // 🔥 salva preço base
       state.precoBase = Number(produto.preco);
 
-      atualizarResumo();
+      freteService.atualizarResumo();
 
     } catch (error) {
       console.error("Erro ao buscar produto:", error);
@@ -43,7 +43,7 @@ export const freteService =  {
     const entrega = document.getElementById("entrega").value;
 
     if (cep.length === 8 && entrega === "frete") {
-      this.calcularFrete(cep);
+      freteService.calcularFrete(cep);
     }
   },
 
@@ -62,7 +62,7 @@ export const freteService =  {
 
       if (!res.ok || !Array.isArray(data)) throw new Error();
 
-      this.mostrarFrete(data);
+      freteService.mostrarFrete(data);
 
     } catch (err) {
       console.warn("Frete real falhou, usando fallback");
@@ -85,10 +85,10 @@ export const freteService =  {
         }
       ];
 
-    this.mostrarFrete(fallback);    
+    freteService.mostrarFrete(fallback);    
     }
 
-    this.atualizarResumo();
+   freteService.atualizarResumo();
   },
 
   // selecionar frete
@@ -101,7 +101,7 @@ export const freteService =  {
     state.prazo = Number(selecionado.dataset.prazo);
     state.freteNome = selecionado.dataset.nome;
 
-    this.atualizarResumo();
+    freteService.atualizarResumo();
   },
 
   atualizarResumo() {
@@ -172,8 +172,8 @@ export const freteService =  {
       `;
 
       div.addEventListener("click", () => {
-        this.selecionarFrete();
-        this.mostrarFreteSelecionado(opcao); // 🔥 AGORA SIM
+        freteService.selecionarFrete();
+        freteService.mostrarFreteSelecionado(opcao); // 🔥 AGORA SIM
       });
 
       container.appendChild(div);
@@ -184,7 +184,7 @@ export const freteService =  {
     state.prazo = recomendada.prazo;
     state.freteNome = recomendada.nome;
 
-    this.atualizarResumo();
+    freteService.atualizarResumo();
     box.style.display = "block";
   },
 
@@ -225,7 +225,7 @@ export const freteService =  {
     state.prazo = opcao.prazo;
     state.freteNome = opcao.nome;
 
-    atualizarResumo();
+    freteService.atualizarResumo();
 
     document.getElementById("trocar-frete").addEventListener("click", () => {
       const cep = document.getElementById("cep").value.replace(/\D/g, "");
