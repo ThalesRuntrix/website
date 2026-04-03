@@ -1,3 +1,4 @@
+import formatar from "../utils/format.js"
 
 // controla form (UI + required)
 export const formUI =  {
