@@ -12,6 +12,15 @@ export const freteService =  {
     }
   },
 
+  tentarCalcularFrete() {    
+    const cep = document.getElementById("cep").value.replace(/\D/g, "");
+    const entrega = document.getElementById("entrega").value;
+
+    if (cep.length === 8 && entrega === "frete") {
+      calcularFrete(cep);
+    }
+  },
+
   // calcular frete
   async calcularFrete(cep) {
     try {
