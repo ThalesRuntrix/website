@@ -4,7 +4,14 @@ import { atualizarResumo } from "./ui/ui.js";
 import { initEvents } from "./events/events.js";
 
 async function init() {
-  const id = new URLSearchParams(window.location.search).get("id");
+
+  function getParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  const id = getParam("id");
+  
 
   const produto = await getProdutobyId(id);
 
