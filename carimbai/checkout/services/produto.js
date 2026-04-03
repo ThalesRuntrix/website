@@ -1,9 +1,8 @@
 import { api } from "../api/api.js";
 
-export async function getProdutobyId(id) {
+export async function getProdutoById(id) {
   try {
-    const produto = await api.getProduto(id);
-    return produto;
+    return await api.getProduto(id);
 
   } catch (error) {
     console.error("Erro ao buscar produto:", error);

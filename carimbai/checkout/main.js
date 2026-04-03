@@ -11,10 +11,10 @@ async function init() {
   }
 
   const id = getParam("id");
-  console.log("ID: ". id);
+  console.log("ID: ", id);
   
 
-  const produto = await getProdutobyId(id);
+  const produto = await getProdutoById(id);
 
   state.produto = produto;
   state.precoBase = Number(produto.preco);
