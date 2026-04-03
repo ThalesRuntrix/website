@@ -65,7 +65,7 @@ export const freteService =  {
       freteService.mostrarFrete(data);
 
     } catch (err) {
-      console.warn("Frete real falhou, usando fallback");
+      console.error("Erro no serviço de cálculo de frete: ", err);
 
       // 🔥 FALLBACK
       const fallback = [

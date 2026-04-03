@@ -28,7 +28,7 @@ export const cepService =  {
       document.getElementById("estado").readOnly = true;
 
     } catch (err) {
-      console.warn("CEP não encontrado ou erro inesperado.");
+      console.error("Erro no serviço de busca por CEP: ", err);
     }
   },
 
@@ -37,4 +37,4 @@ export const cepService =  {
     return /^\d{5}-?\d{3}$/.test(cep);
   }
 
-};
+}
