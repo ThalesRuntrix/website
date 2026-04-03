@@ -268,23 +268,7 @@ export const freteService =  {
   validarCPF(cpf) {
     return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
   }  
-  
-
-  // 🔥 ordenar por preço
-  const ordenadas = [...opcoes].sort((a, b) => a.valor - b.valor);
-
-  const maisBarato = ordenadas[0];
-  const segundoMaisBarato = ordenadas[1];
-  const maisRapido = opcoes.reduce((a, b) => a.prazo < b.prazo ? a : b);
-
-  // evitar duplicados
-  const unicos = [maisBarato, segundoMaisBarato, maisRapido]
-    .filter(Boolean)
-    .filter((item, index, arr) =>
-      index === arr.findIndex(i => i.id === item.id)
-    );
-
-  return unicos;
+    
 }
 
 
