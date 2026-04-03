@@ -83,6 +83,6 @@ export const formUI =  {
     document.getElementById("resumo-desconto").textContent = `- ${formatar(desconto)}`;
     document.getElementById("resumo-total").textContent = formatar(totalResumo);
        
-  }
+  },
  
 }
