@@ -2,6 +2,7 @@ import { state } from "../state/state.js";
 import { freteService } from "../services/freteService.js";
 import { cepService } from "../services/cepService.js";
 import { formUI } from "../ui/formUI.js"
+import { formatar } from "../utils/format.js";
 
 
 const API_URL = "https://carimbai-api.vercel.app/api";
