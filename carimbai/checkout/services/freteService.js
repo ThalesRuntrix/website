@@ -1,37 +1,63 @@
 import { api } from "../api/api.js";
+import { state } from "../state/state.js";
 
-export async function getFrete(cep) {
-  try {
-    
-    const opcoes = await api.calcularFrete(cep);
-    // aqui você pode:
-    // filtrar
-    // ordenar
-    // limitar
+export const freteService =  {
 
-    return tratarOpcoesFrete(opcoes);
+  selecionarFrete() {
+    const selecionado = document.querySelector('input[name="frete"]:checked');
 
-  } catch (err) {
-    console.warn("Erro ao buscar frete, usando fallback");
+    if (!selecionado) return;
 
-    return tratarOpcoesFrete([
-      {
-        id: 1,
-        nome: "Entrega Econômica",
-        empresa: "Carimbai",
-        valor: 15,
-        prazo: 5
-      },
-      {
-        id: 2,
-        nome: "Entrega Rápida",
-        empresa: "Carimbai",
-        valor: 25,
-        prazo: 3
-      }
-    ]);
+    state.frete = Number(selecionado.value);
+    state.prazo = Number(selecionado.dataset.prazo);
+    state.freteNome = selecionado.dataset.nome;
+
+    atualizarResumo();
+  },
+
+  async getFrete(cep) {
+    try {
+      
+      const opcoes = await api.calcularFrete(cep);
+      // aqui você pode:
+      // filtrar
+      // ordenar
+      // limitar
+
+      return tratarOpcoesFrete(opcoes);
+
+    } catch (err) {
+      console.warn("Erro ao buscar frete, usando fallback");
+
+      return tratarOpcoesFrete([
+        {
+          id: 1,
+          nome: "Entrega Econômica",
+          empresa: "Carimbai",
+          valor: 15,
+          prazo: 5
+        },
+        {
+          id: 2,
+          nome: "Entrega Rápida",
+          empresa: "Carimbai",
+          valor: 25,
+          prazo: 3
+        }
+      ]);
+    }
+  },
+
+  escolherRecomendado(opcoes) {
+    return opcoes.reduce((melhor, atual) => {
+      return (atual.valor * atual.prazo) < (melhor.valor * melhor.prazo)
+        ? atual
+        : melhor;
+    });
   }
-}
+
+
+ }
 
 function tratarOpcoesFrete(opcoes) {
 
@@ -52,10 +78,4 @@ function tratarOpcoesFrete(opcoes) {
   return unicos;
 }
 
-export function escolherRecomendado(opcoes) {
-  return opcoes.reduce((melhor, atual) => {
-    return (atual.valor * atual.prazo) < (melhor.valor * melhor.prazo)
-      ? atual
-      : melhor;
-  });
-}
+

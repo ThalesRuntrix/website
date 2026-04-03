@@ -1,4 +1,6 @@
 import { formUI } from "../ui/formUI.js";
+import { freteService } from "../services/freteService.js";
+import { state } from "../state/state.js";
 
 export function initEvents() {
 
@@ -12,12 +14,12 @@ document.getElementById("entrega").addEventListener("change", function () {
 // seleciona opção de frete
 document.addEventListener("change", function (e) {
   if (e.target.name === "frete") {
-    selecionarFrete();
+    freteService.selecionarFrete();
   }
 });
 
 // atualiza pagamento (resumo)
-document.getElementById("pagamento").addEventListener("change", atualizarResumo);
+document.getElementById("pagamento").addEventListener("change", formUI.atualizarResumo());
 
 // busca cep e recalcula frete
 document.getElementById("cep").addEventListener("input", function () {
