@@ -4,6 +4,8 @@ import { cepService } from "../services/cepService.js";
 import { formUI } from "../ui/formUI.js"
 
 
+const API_URL = "https://carimbai-api.vercel.app/api";
+
 export function initEvents() {
 
   // entrega
