@@ -1,6 +1,6 @@
 import { getProdutoById } from "./services/produto.js";
 import { state } from "./state/state.js";
-import { atualizarResumo } from "./ui/formUI.js";
+import { formUI } from "./ui/formUI.js";
 import { initEvents } from "./events/events.js";
 
 async function init() {
@@ -18,7 +18,7 @@ async function init() {
 
   document.getElementById("produto-nome").textContent = produto.nome;
 
-  atualizarResumo();
+  formUI.atualizarResumo();
   initEvents();
 }
 
