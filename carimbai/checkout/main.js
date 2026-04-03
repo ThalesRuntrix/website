@@ -11,6 +11,7 @@ async function init() {
   }
 
   const id = getParam("id");
+  console.log("ID: ". id);
   
 
   const produto = await getProdutobyId(id);
