@@ -1,4 +1,5 @@
 import { formatar } from "../utils/format.js"
+import { freteService } from "../services/freteService.js";
 
 // controla form (UI + required)
 export const formUI =  {
@@ -43,7 +44,7 @@ export const formUI =  {
     if (entrega === "frete") {
       freteBox.style.display = "block";
       
-      tentarCalcularFrete();
+      freteService.tentarCalcularFrete();
 
     } else {
       freteBox.style.display = "none";    
