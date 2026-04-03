@@ -1,4 +1,5 @@
 import { api } from "../api/api.js";
+const API_URL = "https://carimbai-api.vercel.app/api";
 
 export const cepService =  {
 

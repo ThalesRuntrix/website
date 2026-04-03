@@ -1,8 +1,9 @@
 import { api } from "../api/api.js";
 import { state } from "../state/state.js";
 import { formatar } from "../utils/format.js";
-import { formUI } from "../ui/formUI.js";
-import { renderFrete } from "../ui/freteUI.js";
+
+
+const API_URL = "https://carimbai-api.vercel.app/api";
 
 export const freteService =  {
   
