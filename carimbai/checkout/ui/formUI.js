@@ -1,9 +1,10 @@
+import { state } from "../state/state.js";
 import { formatar } from "../utils/format.js"
 import { freteService } from "../services/freteService.js";
 
-// controla form (UI + required)
 export const formUI =  {
-  
+
+  // controla form (UI + required)
   toggleEndereco() {
     const entrega = document.getElementById("entrega").value;
     const box = document.getElementById("endereco-box");
@@ -35,6 +36,7 @@ export const formUI =  {
     }
   },
 
+  // controla lógica de frete (estado + opções + cálculo)
   toggleFrete() {
     const entrega = document.getElementById("entrega").value;
 
@@ -53,50 +55,34 @@ export const formUI =  {
       freteContainer.innerHTML = "";
       }
 
-      window.frete = 0;
-      window.prazo = 0;
-      window.freteNome = "";
+      state.frete = 0;
+      state.prazo = 0;
+      state.freteNome = "";
       
       this.atualizarResumo();
     }
   },
 
+  // atualizar resumo
   atualizarResumo() {
-    const preco = window.precoBase || 0;
+
+    const preco = state.precoBase; 
 
     const entrega = document.getElementById("entrega").value;
     const pagamento = document.getElementById("pagamento").value;
 
-    let frete = 0;
-    let desconto = 0;
+    let frete = entrega === "frete" ? state.frete : 0;
+    let desconto = pagamento === "pix" ? preco * 0.05 : 0;
+    
+    const totalResumo = preco + frete - desconto;
 
-    // 🔥 frete
-    if (entrega === "frete") {
-      frete = window.frete || 0;
-    }
+    state.total = totalResumo;
 
-    // 🔥 desconto PIX
-    if (pagamento === "pix") {
-      desconto = preco * 0.05;
-    }
-
-    const total = preco + frete - desconto;
-
-    // 🔥 render
     document.getElementById("resumo-produto").textContent = formatar(preco);
     document.getElementById("resumo-frete").textContent = formatar(frete);
     document.getElementById("resumo-desconto").textContent = `- ${formatar(desconto)}`;
-    document.getElementById("resumo-total").textContent = formatar(total);
-
-    // 🔥 salvar global
-    window.totalPedido = total;
-  },
-
-  validarCEP(cep) {
-    return /^\d{5}-?\d{3}$/.test(cep);
-  },
-  
-  validarCPF(cpf) {
-    return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
+    document.getElementById("resumo-total").textContent = formatar(totalResumo);
+       
   }
+ 
 }

@@ -1,6 +1,6 @@
 import { getProdutoById } from "./services/produto.js";
 import { state } from "./state/state.js";
-import { atualizarResumo } from "./ui/ui.js";
+import { atualizarResumo } from "./ui/formUI.js";
 import { initEvents } from "./events/events.js";
 
 async function init() {

@@ -9,8 +9,9 @@
   return params.get(name);
 }*/
 
+/*
 // buscar produto
-/*async function getProdutoById() {
+async function getProdutoById() {
   const produtoId = getParam("id");
 
   try {
@@ -30,15 +31,15 @@
   } catch (error) {
     console.error("Erro ao buscar produto:", error);
   }
-}*/
+}
 
 // formatar moeda
-/*function formatar(valor) {
+function formatar(valor) {
   return (valor || 0).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL"
   });
-}*/
+}
 
 // tentar calcular frete
 function tentarCalcularFrete() {
@@ -347,10 +348,12 @@ function atualizarResumo() {
   // 🔥 salvar global
   window.totalPedido = total;
 }
+*/
 
 
 // 🔥 EVENTOS
 
+/*
 // entrega
 document.getElementById("entrega").addEventListener("change", function () {
   toggleEndereco();
@@ -564,3 +567,4 @@ ${freteTexto}
     alert("Erro ao enviar pedido");
   }
 });
+*/

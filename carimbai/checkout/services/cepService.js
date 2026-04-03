@@ -1,27 +1,40 @@
 import { api } from "../api/api.js";
 
 export const cepService =  {
+
+  // Buscar endereço pelo campo de cep
   async obterEndereco(cep) {
     try {
-      const data = await api.buscarCEP(cep);
+      const res = await fetch(`${API_URL}/cep`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ cep })
+      });
 
-      return {
-        rua: data.rua || "",
-        bairro: data.bairro || "",
-        cidade: data.cidade || "",
-        estado: data.estado || ""
-      };
+      const data = await res.json();
+
+      if (!res.ok) throw new Error();
+
+      document.getElementById("rua").value = data.rua || "";
+      document.getElementById("bairro").value = data.bairro || "";
+      document.getElementById("cidade").value = data.cidade || "";
+      document.getElementById("estado").value = data.estado || "";
+
+      document.getElementById("rua").readOnly = true;
+      document.getElementById("bairro").readOnly = true;
+      document.getElementById("cidade").readOnly = true;
+      document.getElementById("estado").readOnly = true;
 
     } catch (err) {
-      console.warn("Erro ao buscar CEP:", err);
-
-      return {
-        rua: "",
-        bairro: "",
-        cidade: "",
-        estado: ""
-      };
+      console.warn("CEP não encontrado ou erro inesperado.");
     }
+  },
+
+  // validação de cep
+  validarCEP(cep) {
+    return /^\d{5}-?\d{3}$/.test(cep);
   }
 
 };

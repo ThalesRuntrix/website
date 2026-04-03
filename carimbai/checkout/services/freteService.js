@@ -4,15 +4,40 @@ import { formUI } from "../ui/formUI.js";
 import { renderFrete } from "../ui/freteUI.js";
 
 export const freteService =  {
+  
+  // buscar produto
+  async getProdutoById() {
+    const produtoId = getParam("id");
 
-  tentarCalcularFrete(cep) {    
-    const entrega = document.getElementById("entrega").value;
-    if (entrega === "frete") {
-      calcularFrete(cep);
+    try {
+      const res = await fetch(`${API_URL}/produto/${produtoId}`);
+      const produto = await res.json();
+
+      produtoGlobal = produto;
+
+      // 🔥 render nome
+      document.getElementById("produto-nome").textContent = produto.nome;
+
+      // 🔥 salva preço base
+      state.precoBase = Number(produto.preco);
+
+      atualizarResumo();
+
+    } catch (error) {
+      console.error("Erro ao buscar produto:", error);
     }
   },
 
-  tentarCalcularFrete() {    
+  // formatar moeda
+  formatar(valor) {
+    return (valor || 0).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+  },
+
+  // tentar calcular frete
+  tentarCalcularFrete() {
     const cep = document.getElementById("cep").value.replace(/\D/g, "");
     const entrega = document.getElementById("entrega").value;
 
@@ -24,11 +49,23 @@ export const freteService =  {
   // calcular frete
   async calcularFrete(cep) {
     try {
-      const data = api.calcularFrete(cep);
-      renderFrete(data);
+      const res = await fetch(`${API_URL}/frete`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ cep })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !Array.isArray(data)) throw new Error();
+
+      this.mostrarFrete(data);
 
     } catch (err) {
       console.warn("Frete real falhou, usando fallback");
+
       // 🔥 FALLBACK
       const fallback = [
         {
@@ -47,12 +84,13 @@ export const freteService =  {
         }
       ];
 
-    renderFrete(fallback);    
+    this.mostrarFrete(fallback);    
     }
 
-    formUI.atualizarResumo();
+    this.atualizarResumo();
   },
 
+  // selecionar frete
   selecionarFrete() {
     const selecionado = document.querySelector('input[name="frete"]:checked');
 
@@ -62,53 +100,175 @@ export const freteService =  {
     state.prazo = Number(selecionado.dataset.prazo);
     state.freteNome = selecionado.dataset.nome;
 
-    formUI.atualizarResumo();
+    this.atualizarResumo();
   },
 
-  escolherRecomendado(opcoes) {
-    return opcoes.reduce((melhor, atual) => {
+  atualizarResumo() {
+  
+    const preco = state.precoBase; 
+
+    const entrega = document.getElementById("entrega").value;
+    const pagamento = document.getElementById("pagamento").value;
+
+    let frete = entrega === "frete" ? state.frete : 0;
+    let desconto = pagamento === "pix" ? preco * 0.05 : 0;
+    
+    const totalResumo = preco + frete - desconto;
+
+    state.total = totalResumo;
+
+    document.getElementById("resumo-produto").textContent = formatar(preco);
+    document.getElementById("resumo-frete").textContent = formatar(frete);
+    document.getElementById("resumo-desconto").textContent = `- ${formatar(desconto)}`;
+    document.getElementById("resumo-total").textContent = formatar(totalResumo);
+        
+  },
+
+  // mostrar opões de frete
+  mostrarFrete(opcoes) {
+    const container = document.getElementById("frete-opcoes");
+    const box = document.getElementById("frete-info");
+
+    container.innerHTML = "";
+
+    const maisBarato = opcoes.reduce((a, b) => a.valor < b.valor ? a : b);
+    const maisRapido = opcoes.reduce((a, b) => a.prazo < b.prazo ? a : b);
+
+    const recomendada = opcoes.reduce((melhor, atual) => {
       return (atual.valor * atual.prazo) < (melhor.valor * melhor.prazo)
         ? atual
         : melhor;
     });
+
+    opcoes.forEach((opcao) => {
+      const div = document.createElement("label");
+      div.classList.add("frete-card");
+
+      let badge = "";
+      if (opcao.id === maisBarato.id) badge += `<span class="frete-badge">Mais barato</span>`;
+      if (opcao.id === maisRapido.id) badge += `<span class="frete-badge">Mais rápido</span>`;
+      if (opcao.id === recomendada.id) badge += `<span class="frete-badge destaque">Recomendado</span>`;
+
+      div.innerHTML = `
+        <input 
+          type="radio" 
+          name="frete" 
+          value="${opcao.valor}" 
+          data-prazo="${opcao.prazo}" 
+          data-nome="${opcao.nome}"
+          data-empresa="${opcao.empresa}"
+          ${opcao.id === recomendada.id ? "checked" : ""}
+        >
+
+        <div class="frete-header">
+          <span>${opcao.nome} ${badge}</span>
+          <span>${formatar(opcao.valor)}</span>
+        </div>
+
+        <div class="frete-empresa">
+          ${opcao.empresa} • ${opcao.prazo} dias
+        </div>
+      `;
+
+      div.addEventListener("click", () => {
+        this.selecionarFrete();
+        this.mostrarFreteSelecionado(opcao); // 🔥 AGORA SIM
+      });
+
+      container.appendChild(div);
+    });
+
+    // 🔥 salva recomendada como default
+    state.frete = recomendada.valor;
+    state.prazo = recomendada.prazo;
+    state.freteNome = recomendada.nome;
+
+    this.atualizarResumo();
+    box.style.display = "block";
   },
 
-  async getFrete(cep) {
-    try {
-      
-      const opcoes = await api.calcularFrete(cep);
-      // aqui você pode:
-      // filtrar
-      // ordenar
-      // limitar
+  // mostrar frete selecionado
+  mostrarFreteSelecionado(opcao) {
+    const container = document.getElementById("frete-opcoes");
 
-      return tratarOpcoesFrete(opcoes);
+    container.innerHTML = `
+      <div class="frete-selecionado">
+        
+        <div class="frete-selecionado-header">
+          🚚 Frete selecionado
+        </div>
+
+        <div class="frete-selecionado-content">
+          
+          <div class="frete-selecionado-info">
+            <span class="frete-selecionado-nome">${opcao.nome}</span>
+            <span class="frete-selecionado-empresa">${opcao.empresa}</span>
+          </div>
+
+          <div style="text-align:right;">
+            <div class="frete-selecionado-preco">${formatar(opcao.valor)}</div>
+            <div class="frete-selecionado-prazo">${opcao.prazo} dias</div>
+          </div>
+
+        </div>
+
+        <button type="button" class="btn-trocar-frete" id="trocar-frete">
+          Alterar opção
+        </button>
+
+      </div>
+    `;
+
+    // 🔥 atualiza global
+    state.frete = opcao.valor;
+    state.prazo = opcao.prazo;
+    state.freteNome = opcao.nome;
+
+    atualizarResumo();
+
+    document.getElementById("trocar-frete").addEventListener("click", () => {
+      const cep = document.getElementById("cep").value.replace(/\D/g, "");
+      if (cep.length === 8) {
+        calcularFrete(cep);
+      }
+    });
+  },
+
+  // Buscar endereço pelo campo de cep
+  async buscarEnderecoPorCEP(cep) {
+    try {
+      const res = await fetch(`${API_URL}/cep`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ cep })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error();
+
+      document.getElementById("rua").value = data.rua || "";
+      document.getElementById("bairro").value = data.bairro || "";
+      document.getElementById("cidade").value = data.cidade || "";
+      document.getElementById("estado").value = data.estado || "";
+
+      document.getElementById("rua").readOnly = true;
+      document.getElementById("bairro").readOnly = true;
+      document.getElementById("cidade").readOnly = true;
+      document.getElementById("estado").readOnly = true;
 
     } catch (err) {
-      console.warn("Erro ao buscar frete, usando fallback");
-
-      return tratarOpcoesFrete([
-        {
-          id: 1,
-          nome: "Entrega Econômica",
-          empresa: "Carimbai",
-          valor: 15,
-          prazo: 5
-        },
-        {
-          id: 2,
-          nome: "Entrega Rápida",
-          empresa: "Carimbai",
-          valor: 25,
-          prazo: 3
-        }
-      ]);
+      console.warn("CEP não encontrado ou erro inesperado.");
     }
-  }
+  },
 
- };
-
-function tratarOpcoesFrete(opcoes) {
+  // validação de cpf
+  validarCPF(cpf) {
+    return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
+  }  
+  
 
   // 🔥 ordenar por preço
   const ordenadas = [...opcoes].sort((a, b) => a.valor - b.valor);
