@@ -1,4 +1,4 @@
-import { format } from "../utils/format.js"
+import { formatar } from "../utils/format.js"
 
 // controla form (UI + required)
 export const formUI =  {
@@ -82,7 +82,7 @@ export const formUI =  {
     const total = preco + frete - desconto;
 
     // 🔥 render
-    document.getElementById("resumo-produto").textContent = format(preco);
+    document.getElementById("resumo-produto").textContent = formatar.foma(preco);
     document.getElementById("resumo-frete").textContent = format(frete);
     document.getElementById("resumo-desconto").textContent = `- ${format(desconto)}`;
     document.getElementById("resumo-total").textContent = format(total);
