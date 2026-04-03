@@ -1,16 +1,16 @@
-const API_URL = "https://carimbai-api.vercel.app/api";
+//const API_URL = "https://carimbai-api.vercel.app/api";
 
-let produtoGlobal = null;
-window.modoTrocaFrete = false;
+//let produtoGlobal = null;
+//window.modoTrocaFrete = false;
 
-// 🔥 pegar parâmetro da URL
-function getParam(name) {
+// pegar parâmetro da URL
+/*function getParam(name) {
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
-}
+}*/
 
-// 🔥 buscar produto
-async function getProdutoById() {
+// buscar produto
+/*async function getProdutoById() {
   const produtoId = getParam("id");
 
   try {
@@ -30,17 +30,17 @@ async function getProdutoById() {
   } catch (error) {
     console.error("Erro ao buscar produto:", error);
   }
-}
+}*/
 
-// 🔥 formatar moeda
-function formatar(valor) {
+// formatar moeda
+/*function formatar(valor) {
   return (valor || 0).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL"
   });
-}
+}*/
 
-// 🔥 tentar calcular frete
+// tentar calcular frete
 function tentarCalcularFrete() {
   const cep = document.getElementById("cep").value.replace(/\D/g, "");
   const entrega = document.getElementById("entrega").value;
@@ -50,7 +50,7 @@ function tentarCalcularFrete() {
   }
 }
 
-// 🔥 calcular frete
+// calcular frete
 async function calcularFrete(cep) {
   try {
     const res = await fetch(`${API_URL}/frete`, {
@@ -94,7 +94,7 @@ async function calcularFrete(cep) {
   atualizarResumo();
 }
 
-// 🔥 selecionar frete
+// selecionar frete
 function selecionarFrete() {
   const selecionado = document.querySelector('input[name="frete"]:checked');
 
@@ -107,7 +107,7 @@ function selecionarFrete() {
   atualizarResumo();
 }
 
-// 🔥 mostrar opões de frete
+// mostrar opões de frete
 function mostrarFrete(opcoes) {
   const container = document.getElementById("frete-opcoes");
   const box = document.getElementById("frete-info");
@@ -170,6 +170,7 @@ function mostrarFrete(opcoes) {
   box.style.display = "block";
 }
 
+// mostrar frete selecionado
 function mostrarFreteSelecionado(opcao) {
   const container = document.getElementById("frete-opcoes");
 
@@ -216,7 +217,6 @@ function mostrarFreteSelecionado(opcao) {
   });
 }
 
-
 // Buscar endereço pelo campo de cep
 async function buscarEnderecoPorCEP(cep) {
   try {
@@ -252,34 +252,10 @@ function validarCEP(cep) {
   return /^\d{5}-?\d{3}$/.test(cep);
 }
 
-document.getElementById("cep").addEventListener("blur", function () {
-  const input = this;
-
-  if (validarCEP(input.value)) {
-    input.classList.remove("input-erro");
-    input.classList.add("input-ok");
-  } else {
-    input.classList.add("input-erro");
-    input.classList.remove("input-ok");
-  }
-});
-
 // validação de cpf
 function validarCPF(cpf) {
   return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
 }
-
-document.getElementById("cpf").addEventListener("blur", function () {
-  const input = this;
-
-  if (validarCPF(input.value)) {
-    input.classList.remove("input-erro");
-    input.classList.add("input-ok");
-  } else {
-    input.classList.add("input-erro");
-    input.classList.remove("input-ok");
-  }
-});
 
 // controla form (UI + required)
 function toggleEndereco() {
@@ -340,7 +316,7 @@ function toggleFrete() {
   }
 }
 
-// 🔥 atualizar resumo
+// atualizar resumo
 function atualizarResumo() {
   const preco = window.precoBase || 0;
 
@@ -382,14 +358,17 @@ document.getElementById("entrega").addEventListener("change", function () {
   atualizarResumo();
 });
 
-// selecionar opção de frete
+// seleciona opção de frete
 document.addEventListener("change", function (e) {
   if (e.target.name === "frete") {
     selecionarFrete();
   }
 });
 
-// CEP
+// atualiza pagamento (resumo)
+document.getElementById("pagamento").addEventListener("change", atualizarResumo);
+
+// busca cep e recalcula frete
 document.getElementById("cep").addEventListener("input", function () {
   const cep = this.value.replace(/\D/g, "");
 
@@ -399,8 +378,18 @@ document.getElementById("cep").addEventListener("input", function () {
   }
 });
 
-// pagamento
-document.getElementById("pagamento").addEventListener("change", atualizarResumo);
+//validação de cep
+document.getElementById("cep").addEventListener("blur", function () {
+  const input = this;
+
+  if (validarCEP(input.value)) {
+    input.classList.remove("input-erro");
+    input.classList.add("input-ok");
+  } else {
+    input.classList.add("input-erro");
+    input.classList.remove("input-ok");
+  }
+});
 
 // máscara de cep
 document.getElementById("cep").addEventListener("input", function (e) {
@@ -411,6 +400,19 @@ document.getElementById("cep").addEventListener("input", function (e) {
   }
 
   e.target.value = v;
+});
+
+// validação de cpf
+document.getElementById("cpf").addEventListener("blur", function () {
+  const input = this;
+
+  if (validarCPF(input.value)) {
+    input.classList.remove("input-erro");
+    input.classList.add("input-ok");
+  } else {
+    input.classList.add("input-erro");
+    input.classList.remove("input-ok");
+  }
 });
 
 // máscara de cpf
