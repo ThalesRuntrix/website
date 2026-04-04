@@ -1,6 +1,7 @@
 const API_URL = "https://carimbai-api.vercel.app/api";
 
 export const api = {
+  
   async getProduto(id) {
     const res = await fetch(`${API_URL}/produto/${id}`);
     return res.json();

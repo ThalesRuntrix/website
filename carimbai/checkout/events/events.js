@@ -1,9 +1,7 @@
-import { state } from "../state/state.js";
 import { freteService } from "../services/freteService.js";
 import { cepService } from "../services/cepService.js";
 import { pedidoService } from "../services/pedidoService.js";
 import { formUI } from "../ui/formUI.js"
-import { formatar } from "../utils/format.js";
 import { formService } from "../services/formService.js";
 import { mensagemService } from "../services/mensagemService.js";
 

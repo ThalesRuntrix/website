@@ -5,9 +5,6 @@ export const mensagemService = {
 
     setMessageData(dados, pedido) {
 
-        console.warn("DADOS: ", dados);
-        console.warn("PEDIDO: ", pedido);
-
         const pedidoId = pedido.pedido_codigo;
 
         const enderecoTexto = dados.entrega === "frete"

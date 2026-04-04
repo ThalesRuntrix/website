@@ -1,9 +1,7 @@
 import { api } from "../api/api.js";
 import { state } from "../state/state.js";
-import { formatar } from "../utils/format.js";
+import { formatar, getParam } from "../utils/format.js";
 
-
-const API_URL = "https://carimbai-api.vercel.app/api";
 
 export const freteService =  {
   
@@ -12,7 +10,8 @@ export const freteService =  {
     const produtoId = getParam("id");
 
     try {
-      const res = await fetch(`${API_URL}/produto/${produtoId}`);
+
+      const res = api.getProduto(produtoId);
       const produto = await res.json();
 
       produtoGlobal = produto;
@@ -36,17 +35,6 @@ export const freteService =  {
       state.prazo = 0;
       state.freteNome = "";
     }
-  },
-
-  
-
-
-  // formatar moeda
-  formatar(valor) {
-    return (valor || 0).toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL"
-    });
   },
 
   // tentar calcular frete
