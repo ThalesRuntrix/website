@@ -39,7 +39,7 @@ export const freteService =  {
   // tentar calcular frete
   tentarCalcularFrete() {
     const cep = document.getElementById("cep").value.replace(/\D/g, "");
-    const entrega = document.getElementById("entrega").value;
+    const entrega = document.getElementById("entrega").value;    
 
     if (cep.length === 8 && entrega === "frete") {
       freteService.calcularFrete(cep);
@@ -50,7 +50,8 @@ export const freteService =  {
   async calcularFrete(cep) {
     try {
 
-      const data = api.calcularFrete(cep);    
+      const data = api.calcularFrete(cep);   
+      console.warn("FRETE DATA: "+ data); 
 
       if (!Array.isArray(data)) throw new Error();
 
