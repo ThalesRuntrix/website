@@ -160,7 +160,8 @@ export function initEvents() {
     try {
 
       // salvar pedido
-      const result = await pedidoService.salvarPedido(dados);      
+      const result = await pedidoService.salvarPedido(dados);
+      console.warn("RESULT: ", result);      
 
       const pedidoId = result.pedido_codigo;
 
