@@ -5,6 +5,7 @@ import { pedidoService } from "../services/pedidoService.js";
 import { formUI } from "../ui/formUI.js"
 import { formatar } from "../utils/format.js";
 import { formService } from "../services/formService.js";
+import { mensagemService } from "../services/mensagemService.js";
 
 export function initEvents() {
 
@@ -96,60 +97,29 @@ export function initEvents() {
 
     freteService.setDeliveryData(dados.entrega);
 
+    let result = {};
+
     try {
 
       // salvar pedido
-      const result = await pedidoService.salvarPedido(dados);
-      
-      const pedidoId = result.pedido_codigo;
-
-      const enderecoTexto = dados.entrega === "frete"
-        ? `
-  📍 *Endereço de Entrega:*
-  ${dados.rua}, ${dados.numero}
-  ${dados.complemento ? "Comp: " + dados.complemento : ""}
-  ${dados.bairro}
-  ${dados.cidade} - ${dados.estado}
-  CEP: ${dados.cep}
-  `
-  : "";
-
-      const freteTexto = dados.entrega === "frete"
-        ? `🚚 *Transportadora:*
-  ${state.freteNome} - ${formatar(state.frete)} (${state.prazo} dias)`
-    : "";
-
-      // 🔥 mensagem WhatsApp
-      const mensagem = `🛒 *PEDIDO N°: ${pedidoId}*
-
-  👤 *Comprador:*
-  ${dados.nome}
-
-  📦 *Produto:*
-  ${dados.produto_nome}
-
-  💰 *Valor Total:*
-  ${formatar(state.total)}
-
-  💳 *Forma de Pagamento:*
-  ${dados.pagamento}
-
-  🚚 *Forma de Entrega:*
-  ${dados.entrega}
-
-  ${enderecoTexto}
-
-  ${freteTexto}
-  `;
-
-      const url = `https://wa.me/5511943722620?text=${encodeURIComponent(mensagem)}`;
-
-      window.open(url, "_blank");
+      result = await pedidoService.salvarPedido(dados);   
 
     } catch (error) {
       console.error("Erro:", error);
-      alert("Erro ao enviar pedido");
+      alert("Erro ao salvar pedido");
     }
+
+    try {
+      //Enviar mensagem  de pedido para WP
+      mensagemService.setMessageData(result);
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro ao enviar pedido");      
+    }
+
+
+
+
   });  
 
 }
