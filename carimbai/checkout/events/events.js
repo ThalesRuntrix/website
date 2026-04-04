@@ -4,6 +4,7 @@ import { pedidoService } from "../services/pedidoService.js";
 import { formUI } from "../ui/formUI.js"
 import { formService } from "../services/formService.js";
 import { mensagemService } from "../services/mensagemService.js";
+import { validarCPF } from "../utils/format.js";
 
 export function initEvents() {
 
@@ -62,7 +63,7 @@ export function initEvents() {
   document.getElementById("cpf").addEventListener("blur", function () {
     const input = this;
 
-    if (freteService.validarCPF(input.value)) {
+    if (validarCPF(input.value)) {
       input.classList.remove("input-erro");
       input.classList.add("input-ok");
     } else {

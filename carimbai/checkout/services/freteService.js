@@ -2,7 +2,6 @@ import { api } from "../api/api.js";
 import { state } from "../state/state.js";
 import { formatar, getParam } from "../utils/format.js";
 
-
 export const freteService =  {
   
   // buscar produto
@@ -50,13 +49,8 @@ export const freteService =  {
   // calcular frete
   async calcularFrete(cep) {
     try {
-      const res = await fetch(`${API_URL}/frete`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ cep })
-      });
+
+      const res = await api.calcularFrete(cep);
 
       const data = await res.json();
 
@@ -233,43 +227,6 @@ export const freteService =  {
         freteService.calcularFrete(cep);
       }
     });
-  },
-
-  // Buscar endereço pelo campo de cep
-  async buscarEnderecoPorCEP(cep) {
-    try {
-      const res = await fetch(`${API_URL}/cep`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ cep })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) throw new Error();
-
-      document.getElementById("rua").value = data.rua || "";
-      document.getElementById("bairro").value = data.bairro || "";
-      document.getElementById("cidade").value = data.cidade || "";
-      document.getElementById("estado").value = data.estado || "";
-
-      document.getElementById("rua").readOnly = true;
-      document.getElementById("bairro").readOnly = true;
-      document.getElementById("cidade").readOnly = true;
-      document.getElementById("estado").readOnly = true;
-
-    } catch (err) {
-      console.warn("CEP não encontrado ou erro inesperado.");
-    }
-  },
-
-  // validação de cpf
-  validarCPF(cpf) {
-    return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
-  }  
+  }   
 
 }
-
-
