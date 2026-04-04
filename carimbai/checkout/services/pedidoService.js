@@ -5,7 +5,7 @@ export const pedidoService = {
     async salvarPedido(dados){
         try {
             return await api.postPedido(dados);
-        } catch(err){
+        } catch(error){
             console.error("Erro ao salvar pedido:", error);
         }
     }
