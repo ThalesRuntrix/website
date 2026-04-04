@@ -1,9 +1,15 @@
+import { state } from "../state/state";
+import { formatar } from "../utils/format.js";
+
 export const mensagemService = {
 
-    setMessageData(result) {
-        console.warn("RESULT: ", result);
+    setMessageData(dados, pedido) {
 
-/*
+        console.warn("DADOS: ", dados);
+        console.warn("PEDIDO: ", pedido);
+
+        const pedidoId = pedido.pedido_codigo;
+
         const enderecoTexto = dados.entrega === "frete"
         ? `
   📍 *Endereço de Entrega:*
@@ -47,7 +53,7 @@ export const mensagemService = {
 
       window.open(url, "_blank");
     
-*/
+
 
     }     
 

@@ -97,12 +97,12 @@ export function initEvents() {
 
     freteService.setDeliveryData(dados.entrega);
 
-    let result = {};
+    let pedido = {};
 
     try {
 
       // salvar pedido
-      result = await pedidoService.salvarPedido(dados);   
+      pedido = await pedidoService.salvarPedido(dados);   
 
     } catch (error) {
       console.error("Erro:", error);
@@ -111,12 +111,11 @@ export function initEvents() {
 
     try {
       //Enviar mensagem  de pedido para WP
-      mensagemService.setMessageData(result);
+      mensagemService.setMessageData(dados, pedido);
     } catch (error) {
       console.error("Erro:", error);
       alert("Erro ao enviar pedido");      
     }
-
 
 
 
