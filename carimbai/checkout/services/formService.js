@@ -50,6 +50,7 @@ export const formService = {
         }
 
         if (!validarCPF(cpf)) {
+            alert("CPF: ", cpf);
             alert("CPF inválido");
             return;
         }
