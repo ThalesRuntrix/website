@@ -42,7 +42,7 @@ export const formService = {
         };
     },
 
-    validateField(cpf, entrega) {
+    validateFields(cpf, entrega) {
 
         if (!state.produto) {
             alert("Produto ainda está carregando.");
