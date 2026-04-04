@@ -58,6 +58,7 @@ export const formService = {
             alert("⚠️ Selecione uma opção de frete antes de continuar");
             return;
         }
+        return;
 
     }
 
