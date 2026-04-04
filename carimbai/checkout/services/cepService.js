@@ -7,8 +7,7 @@ export const cepService =  {
   async obterEndereco(cep) {
     try {
 
-      const data = api.buscarCEP(cep);  
-      console.warn("BUSCA CEP DATA: "+ data);   
+      const data = await api.buscarCEP(cep);         
 
       cepService.setAddressFields(data);
       cepService.blockAddressFieldsEdition();      

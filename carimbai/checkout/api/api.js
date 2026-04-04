@@ -30,7 +30,11 @@ export const api = {
       body: JSON.stringify({ cep })
     });
 
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error("Erro ao buscar CEP");
+    }
+    return data;
   },
 
   async postPedido(dados) {
