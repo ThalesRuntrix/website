@@ -30,5 +30,20 @@ export const api = {
     });
 
     return res.json();
+  },
+
+  async postPedido(dados) {
+    const res = await fetch(`${API_URL}/pedidos`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+      });
+
+      if (!res.ok) throw new Error();
+
+      return res = await res.json();
+      
   }
 };

@@ -1,11 +1,9 @@
 import { state } from "../state/state.js";
 import { freteService } from "../services/freteService.js";
 import { cepService } from "../services/cepService.js";
+import { pedidoService } from "../services/pedidoService.js";
 import { formUI } from "../ui/formUI.js"
 import { formatar, getParam } from "../utils/format.js";
-
-
-const API_URL = "https://carimbai-api.vercel.app/api";
 
 export function initEvents() {
 
@@ -160,18 +158,9 @@ export function initEvents() {
     }
 
     try {
-      // 🔥 salvar pedido no backend
-      const res = await fetch(`${API_URL}/pedidos`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-      });
 
-      const result = await res.json();
-
-      if (!res.ok) throw new Error();
+      // salvar pedido
+      const result = await pedidoService.salvarPedido(dados);      
 
       const pedidoId = result.pedido_codigo;
 
