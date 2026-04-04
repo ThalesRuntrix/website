@@ -83,12 +83,8 @@ export function initEvents() {
     e.target.value = v;
   });
 
-  /*function getParam(name) {
-    const params = new URLSearchParams(window.location.search);
-    return params.get(name);
-  }*/
-
-  // 🔥 SUBMIT
+ 
+  // 🔥 SUBMIT -> Enviar Pedido | Enviar Mensagem WP
   document.getElementById("pedido-form")
   .addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -97,48 +93,8 @@ export function initEvents() {
       alert("Produto ainda está carregando.");
       return;
     }
-
-    const entrega = document.getElementById("entrega").value;
-    const isFrete = entrega === "frete";
     
-    const endereco = isFrete
-      ? {
-          rua: document.getElementById("rua").value,
-          numero: document.getElementById("numero").value,
-          complemento: document.getElementById("complemento").value,
-          bairro: document.getElementById("bairro").value,
-          cidade: document.getElementById("cidade").value,
-          estado: document.getElementById("estado").value,
-          cep: document.getElementById("cep").value
-        }
-      : {
-          rua: null,
-          numero: null,
-          complemento: null,
-          bairro: null,
-          cidade: null,
-          estado: null,
-          cep: null
-        };
-
-    const dados = {
-      produto_id: getParam("id"),
-      produto_nome: state.produto.nome,
-      total: state.totalPedido,
-
-      nome: document.getElementById("nome").value,
-      email: document.getElementById("email").value,
-      cpf: document.getElementById("cpf").value,
-
-      ...endereco,    
-
-      entrega: entrega,
-      frete_valor: state.frete ?? 0,
-      frete_prazo: state.prazo ?? 0,
-      frete_nome: state.freteNome ?? "",
-      pagamento: document.getElementById("pagamento").value
-    };
-
+    const dados = pedidoService.populatePedidoData();    
     
 
     if (!freteService.validarCPF(dados.cpf)) {
@@ -161,11 +117,11 @@ export function initEvents() {
 
       // salvar pedido
       const result = await pedidoService.salvarPedido(dados);
-      console.warn("RESULT: ", result);      
+      console.warn("SALVAR PEDIDO: " , result)
 
       const pedidoId = result.pedido_codigo;
 
-      const enderecoTexto = isFrete
+      const enderecoTexto = dados.entrega === "frete"
         ? `
   📍 *Endereço de Entrega:*
   ${dados.rua}, ${dados.numero}
@@ -176,7 +132,7 @@ export function initEvents() {
   `
   : "";
 
-      const freteTexto = isFrete
+      const freteTexto = dados.entrega === "frete"
         ? `🚚 *Transportadora:*
   ${state.freteNome} - ${formatar(state.frete)} (${state.prazo} dias)`
     : "";
