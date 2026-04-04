@@ -50,11 +50,9 @@ export const freteService =  {
   async calcularFrete(cep) {
     try {
 
-      const res = api.calcularFrete(cep);
+      const data = api.calcularFrete(cep);    
 
-      const data = await res.json();
-
-      if (!res.ok || !Array.isArray(data)) throw new Error();
+      if (!Array.isArray(data)) throw new Error();
 
       freteService.mostrarFrete(data);
 
