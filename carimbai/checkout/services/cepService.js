@@ -1,14 +1,16 @@
 import { api } from "../api/api.js";
 
+
 export const cepService =  {
 
   // Buscar endereço pelo campo de cep
   async obterEndereco(cep) {
     try {
 
-      const data = await api.buscarCEP(cep);      
+      const res = api.buscarCEP(cep);
+      const data = await res.json();
 
-      if (!data.ok) throw new Error();
+      if (!res.ok) throw new Error();
 
       cepService.setAddressFields(data);
       cepService.blockAddressFieldsEdition();      
