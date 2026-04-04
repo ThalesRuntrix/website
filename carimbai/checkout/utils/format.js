@@ -10,6 +10,6 @@ export function getParam(name){
   return params.get(name);
 }
 
-export function validarCPF(){  
+export function validarCPF(cpf){  
     return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);  
 }
