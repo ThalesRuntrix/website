@@ -3,7 +3,8 @@ import { freteService } from "../services/freteService.js";
 import { cepService } from "../services/cepService.js";
 import { pedidoService } from "../services/pedidoService.js";
 import { formUI } from "../ui/formUI.js"
-import { formatar, getParam } from "../utils/format.js";
+import { formatar } from "../utils/format.js";
+import { formService } from "../services/formService.js";
 
 export function initEvents() {
 
@@ -88,37 +89,18 @@ export function initEvents() {
   document.getElementById("pedido-form")
   .addEventListener("submit", async function (e) {
     e.preventDefault();
-
-    if (!state.produto) {
-      alert("Produto ainda está carregando.");
-      return;
-    }
     
-    const dados = pedidoService.populatePedidoData();    
+    const dados = formService.getFormData();    
     
+    formService.validateFields(dados.cpf, dados.entrega);
 
-    if (!freteService.validarCPF(dados.cpf)) {
-      alert("CPF inválido");
-      return;
-    }
-    
-    if (dados.entrega === "frete" && !state.frete) {
-      alert("⚠️ Selecione uma opção de frete antes de continuar");
-      return;
-    }
-
-    if (dados.entrega !== "frete") {
-      state.frete = 0;
-      state.prazo = 0;
-      state.freteNome = "";
-    }
+    freteService.setDeliveryData(dados.entrega);
 
     try {
 
       // salvar pedido
       const result = await pedidoService.salvarPedido(dados);
-      console.warn("SALVAR PEDIDO: " , result)
-
+      
       const pedidoId = result.pedido_codigo;
 
       const enderecoTexto = dados.entrega === "frete"

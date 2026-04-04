@@ -1,5 +1,6 @@
 import { state } from "../state/state.js";
 import { getParam } from "../utils/format.js";
+import { validarCPF } from "../utils/format.js";
 
 export const formService = {
 
@@ -39,6 +40,25 @@ export const formService = {
             frete_nome: state.freteNome ?? "",
             pagamento: document.getElementById("pagamento").value
         };
+    },
+
+    validateField(cpf, entrega) {
+
+        if (!state.produto) {
+            alert("Produto ainda está carregando.");
+            return;
+        }
+
+        if (!validarCPF(cpf)) {
+            alert("CPF inválido");
+            return;
+        }
+
+        if (entrega === "frete" && !state.frete) {
+            alert("⚠️ Selecione uma opção de frete antes de continuar");
+            return;
+        }
+
     }
 
 }

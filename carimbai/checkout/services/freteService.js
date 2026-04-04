@@ -30,6 +30,17 @@ export const freteService =  {
     }
   },
 
+  setDeliveryData(entrega) {
+    if (entrega !== "frete") {
+      state.frete = 0;
+      state.prazo = 0;
+      state.freteNome = "";
+    }
+  },
+
+  
+
+
   // formatar moeda
   formatar(valor) {
     return (valor || 0).toLocaleString("pt-BR", {

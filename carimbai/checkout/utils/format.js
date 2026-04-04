@@ -9,3 +9,7 @@ export function getParam(name){
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
 }
+
+export function validarCPF(){  
+    return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);  
+}
