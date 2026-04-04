@@ -41,9 +41,13 @@ export const api = {
         body: JSON.stringify(dados)
       });
 
-      if (!res.ok) throw new Error();
+    const data = await res.json();
 
-      return res = await res.json();
+    if (!res.ok) {
+      throw new Error("Erro ao salvar pedido.");
+    }
+
+    return data;
       
   }
 };
