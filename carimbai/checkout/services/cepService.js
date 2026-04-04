@@ -8,7 +8,7 @@ export const cepService =  {
     try {
 
       const res = api.buscarCEP(cep);
-      const data = await res.json();
+      const data = res.json();
 
       if (!res.ok) throw new Error();
 
