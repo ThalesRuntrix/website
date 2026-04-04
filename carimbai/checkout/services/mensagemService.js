@@ -1,4 +1,4 @@
-import { state } from "../state/state";
+import { state } from "../state/state.js";
 import { formatar } from "../utils/format.js";
 
 export const mensagemService = {
