@@ -4,7 +4,7 @@ import { getParam } from "../utils/format.js";
 export const formService = {
 
     getFormAddress() {
-        
+        let address={};
         return address = {
             rua: document.getElementById("rua").value,
             numero: document.getElementById("numero").value,
@@ -20,7 +20,8 @@ export const formService = {
     getFormData() {
 
         const endereco = formService.getFormAddress();
-        const entrega = document.getElementById("entrega").value;  
+        const entrega = document.getElementById("entrega").value; 
+        let dados={}; 
         return dados = {
             produto_id: getParam("id"),
             produto_nome: state.produto.nome,

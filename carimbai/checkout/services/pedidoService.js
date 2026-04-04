@@ -14,9 +14,9 @@ export const pedidoService = {
     },    
 
     populatePedidoData() {
-                
+        let pedidoData = {};        
         return pedidoData = formService.getFormData(); 
-                
+
     }
 
     
