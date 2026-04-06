@@ -32,8 +32,23 @@ export const cepService =  {
   },
 
   // validação de cep
-  validarCEP(cep) {
+  validarFormato(cep) {
     return /^\d{5}-?\d{3}$/.test(cep);
+  },
+
+  async validarCEP(cep) {
+    try{
+      const data = await this.obterEndereco(cep);
+
+      if(!data || !data.cidade) return false;
+
+      return data;     
+
+    } catch(error) {
+      console.error("Erro ao validar CEP: ", error);
+      return false;
+
+    }
   }
 
 }

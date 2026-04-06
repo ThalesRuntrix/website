@@ -38,14 +38,23 @@ export function initEvents() {
   //validação de cep
   document.getElementById("cep").addEventListener("blur", function () {
     const input = this;
+    const cep = input.value.replace(/\D/g, "");
 
-    if (cepService.validarCEP(input.value)) {
+    if (!cepService.validarFormato(cep)) {
       input.classList.remove("input-erro");
       input.classList.add("input-ok");
-    } else {
-      input.classList.add("input-erro");
-      input.classList.remove("input-ok");
-    }
+      return;
+    } 
+
+    const endereco = cepService.validarCEP(cep);
+      if (endereco) {
+        input.classList.remove("input-erro");
+        input.classList.add("input-ok");
+      } else {
+        input.classList.remove("input-erro");
+        input.classList.add("input-ok");
+      }
+    
   });
 
   // máscara de cep
