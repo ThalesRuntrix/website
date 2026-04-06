@@ -10,7 +10,8 @@ export const cepService =  {
       if(address){        
         cepService.setAddressFields(address);
         cepService.blockAddressFieldsEdition(); 
-      }       
+        return address;
+      }             
 
     } catch (err) {
       console.error("Erro no serviço de busca por CEP: ", err);
