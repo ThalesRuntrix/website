@@ -95,6 +95,7 @@ export function initEvents() {
     e.preventDefault();
     
     const dados = formService.getFormData(); 
+    console.warn("DATA: ", dados);
     const isValid = formService.validateFields(dados);
 
     if (!isValid) {

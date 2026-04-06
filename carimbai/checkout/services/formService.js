@@ -44,8 +44,7 @@ export const formService = {
     },
 
     validateFields(dados) {
-        let isValid = true;
-        console.warn("DATA: ", dados);
+        let isValid = true;        
         cpf = String(dados.cpf).replace(/\D/g, "");        
 
         // CPF
