@@ -32,7 +32,7 @@ export const api = {
 
     const data = await res.json();
     if (!res.ok) {
-      throw new Error("Erro na API de busca por CEP:");
+      throw new Error("Erro na API de busca por CEP:");      
     }
     return data;
   },

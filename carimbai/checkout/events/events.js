@@ -25,39 +25,34 @@ export function initEvents() {
   // atualiza pagamento (resumo)
   document.getElementById("pagamento").addEventListener("change", () => {formUI.atualizarResumo()});
 
-  // busca cep e recalcula frete
-  document.getElementById("cep").addEventListener("input", function () {
+  // busca de cep e recalcula frete
+  /*document.getElementById("cep").addEventListener("input", async function () {
     const cep = this.value.replace(/\D/g, "");    
-    const address = cepService.obterEndereco(cep);
+    const address = await cepService.obterEndereco(cep);
     if(address){
       freteService.tentarCalcularFrete();
-    }
-    
-  });
+    }    
+  });*/
 
-  //validação de cep
-  document.getElementById("cep").addEventListener("blur", function () {
+  //validação e busca de cep. Calcula Frete
+  document.getElementById("cep").addEventListener("input", async function () {
     const input = this;
     const cep = input.value.replace(/\D/g, "");
+    const erroMsg = document.getElementById("cep-erro");    
     
-    if (cepService.validarFormato(cep)) {
+    const address = await cepService.validarCEP(cep);
+    if(address){
       input.classList.remove("input-erro");
       input.classList.add("input-ok");
+      erroMsg.style.display = "none";
+
+      freteService.tentarCalcularFrete();
     } else {
       input.classList.add("input-erro");
       input.classList.remove("input-ok");
-      return;
-    }
-
-    const endereco = cepService.validarCEP(cep);
-      if (endereco) {
-        input.classList.remove("input-erro");
-        input.classList.add("input-ok");
-      } else {
-        input.classList.remove("input-erro");
-        input.classList.add("input-ok");
-      }
-    
+      erroMsg.style.display = "none";      
+    }  
+  
   });
 
   // máscara de cep
