@@ -63,13 +63,16 @@ export function initEvents() {
   // validação de cpf
   document.getElementById("cpf").addEventListener("blur", function () {
     const input = this;
+    const erroMsg = document.getElementById("cpf-erro");
 
     if (validarCPF(input.value)) {
       input.classList.remove("input-erro");
       input.classList.add("input-ok");
+      erroMsg.style.display = "none";
     } else {
       input.classList.add("input-erro");
       input.classList.remove("input-ok");
+      erroMsg.style.display = "block";
     }
   });
 
@@ -93,8 +96,7 @@ export function initEvents() {
     
     const dados = formService.getFormData(); 
     const validDeliveryData = formService.validateFields(dados.cpf, dados.entrega);
-    console.warn("calidDeliveryData: ", validDeliveryData);
-
+    
     if(validDeliveryData){
       freteService.setDeliveryData(dados.entrega);
 

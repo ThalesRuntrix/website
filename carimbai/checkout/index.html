@@ -7,7 +7,6 @@
 
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/form.css">
-  <link rel="stylesheet" href="../css/form.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -26,6 +25,9 @@
         <input type="text" id="nome" placeholder="Nome completo" required>
         <input type="email" id="email" placeholder="Email" required>
         <input type="text" id="cpf" placeholder="CPF" required>
+        <span id="cpf-erro" class="input-msg-erro" style="display:none;">
+              CPF inválido
+            </span>
 
         <h3>🚚 Formas de Entrega</h3>
         <select id="entrega" required>
