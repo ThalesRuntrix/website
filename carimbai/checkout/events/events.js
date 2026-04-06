@@ -28,17 +28,14 @@ export function initEvents() {
   // busca cep e recalcula frete
   document.getElementById("cep").addEventListener("input", function () {
     const cep = this.value.replace(/\D/g, "");
-
-    if (cep.length === 8) {
-      cepService.obterEndereco(cep);
-      freteService.tentarCalcularFrete();
-    }
+    cepService.obterEndereco(cep);
+    freteService.tentarCalcularFrete();
+    
   });
 
   //validação de cep
   document.getElementById("cep").addEventListener("blur", function () {
-    const input = this;
-    const cep = input.value.replace(/\D/g, "");
+    const cep = this.value.replace(/\D/g, "");
 
     if (!cepService.validarFormato(cep)) {
       input.classList.remove("input-erro");

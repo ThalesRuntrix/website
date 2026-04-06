@@ -6,11 +6,15 @@ export const cepService =  {
   // Buscar endereço pelo campo de cep
   async obterEndereco(cep) {
     try {
-
-      const data = await api.buscarCEP(cep);         
-
-      cepService.setAddressFields(data);
-      cepService.blockAddressFieldsEdition();      
+      const isCepFormatValid = cepService.validarFormato(cep);
+      console.warn("IS CEP FORMAT VALID: ", isCepFormatValid);
+      if(isCepFormatValid){
+        const data = await api.buscarCEP(cep); 
+        cepService.setAddressFields(data);
+        cepService.blockAddressFieldsEdition(); 
+      } else {
+        console.error("FORMATO DE CEP INVÁLIDO");
+      }           
 
     } catch (err) {
       console.error("Erro no serviço de busca por CEP: ", err);
@@ -33,7 +37,7 @@ export const cepService =  {
 
   // validação de cep
   validarFormato(cep) {
-    return /^\d{5}-?\d{3}$/.test(cep);
+    return /^\d{8}$/.test(cep);
   },
 
   async validarCEP(cep) {
