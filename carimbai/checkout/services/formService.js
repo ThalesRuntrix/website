@@ -44,11 +44,13 @@ export const formService = {
     },
 
     validateFields(dados) {
+
         let isValid = true;        
-        cpf = String(dados.cpf).replace(/\D/g, "");        
+        const cpf = String(dados.cpf).replace(/\D/g, "");  
+        console.warn("CPF: ", cpf);      
 
         // CPF
-        if (!dados.cpf || typeof dados.cpf !== "string" || !validarCPF(dados.cpf)) {
+        if (!cpf || typeof cpf !== "string" || !validarCPF(cpf)) {
             formUI.setErro("cpf", "CPF inválido");
             isValid =  false;
         } else {
