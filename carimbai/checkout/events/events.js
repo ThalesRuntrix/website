@@ -35,8 +35,9 @@ export function initEvents() {
 
   //validação de cep
   document.getElementById("cep").addEventListener("blur", function () {
-    const cep = this.value.replace(/\D/g, "");
-
+    const input = this;
+    const cep = input.value.replace(/\D/g, "");
+    
     if (!cepService.validarFormato(cep)) {
       input.classList.remove("input-erro");
       input.classList.add("input-ok");
