@@ -25,15 +25,6 @@ export function initEvents() {
   // atualiza pagamento (resumo)
   document.getElementById("pagamento").addEventListener("change", () => {formUI.atualizarResumo()});
 
-  // busca de cep e recalcula frete
-  /*document.getElementById("cep").addEventListener("input", async function () {
-    const cep = this.value.replace(/\D/g, "");    
-    const address = await cepService.obterEndereco(cep);
-    if(address){
-      freteService.tentarCalcularFrete();
-    }    
-  });*/
-
   //validação e busca de cep. Calcula Frete
   document.getElementById("cep").addEventListener("input", async function () {
     const input = this;
@@ -50,7 +41,10 @@ export function initEvents() {
     } else {
       input.classList.add("input-erro");
       input.classList.remove("input-ok");
-      erroMsg.style.display = "block";      
+      erroMsg.style.display = "block";
+      
+      cepService.blockAddressFieldsEdition
+
     }  
   
   });
@@ -97,32 +91,33 @@ export function initEvents() {
   .addEventListener("submit", async function (e) {
     e.preventDefault();
     
-    const dados = formService.getFormData();    
-    
-    formService.validateFields(dados.cpf, dados.entrega);
+    const dados = formService.getFormData(); 
+    const validDeliveryData = formService.validateFields(dados.cpf, dados.entrega);
 
-    freteService.setDeliveryData(dados.entrega);
+    if(validDeliveryData){
+      freteService.setDeliveryData(dados.entrega);
 
-    let pedido = {};
+      let pedido = {};
 
-    try {
+      try {
+        // salvar pedido
+        pedido = await pedidoService.salvarPedido(dados);   
 
-      // salvar pedido
-      pedido = await pedidoService.salvarPedido(dados);   
+      } catch (error) {
+        console.error("Erro:", error);
+        alert("Erro ao salvar pedido");
+      }
 
-    } catch (error) {
-      console.error("Erro:", error);
-      alert("Erro ao salvar pedido");
+      try {
+        //Enviar mensagem  de pedido para WP
+        mensagemService.setMessageData(dados, pedido);
+      } catch (error) {
+        console.error("Erro:", error);
+        alert("Erro ao enviar pedido");      
+      }
+
     }
-
-    try {
-      //Enviar mensagem  de pedido para WP
-      mensagemService.setMessageData(dados, pedido);
-    } catch (error) {
-      console.error("Erro:", error);
-      alert("Erro ao enviar pedido");      
-    }
-
+    alert("⚠️ Faltou preencher alguma informação obrigatória no formulário. Por favor, verifique e tente novamente");
 
 
   });  

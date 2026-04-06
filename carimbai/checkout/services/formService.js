@@ -46,17 +46,17 @@ export const formService = {
 
         if (!state.produto) {
             alert("Produto ainda está carregando.");
-            return;
+            return false;
         }
 
         if (!validarCPF(cpf)) {
             alert("CPF inválido");
-            return;
+            return false;
         }
 
         if (entrega === "frete" && !state.frete) {
             alert("⚠️ Selecione uma opção de frete antes de continuar");
-            return;
+            return false;
         }
         return;
 
