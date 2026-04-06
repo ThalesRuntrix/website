@@ -93,6 +93,7 @@ export function initEvents() {
     
     const dados = formService.getFormData(); 
     const validDeliveryData = formService.validateFields(dados.cpf, dados.entrega);
+    console.warn("calidDeliveryData: ", validDeliveryData);
 
     if(validDeliveryData){
       freteService.setDeliveryData(dados.entrega);
