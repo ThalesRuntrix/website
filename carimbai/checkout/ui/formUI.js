@@ -84,5 +84,27 @@ export const formUI =  {
     document.getElementById("resumo-total").textContent = formatar(totalResumo);
        
   },
+
+  setErro(inputId, mensagem){
+    const input = document.getElementById(inputId);
+    const msg = document.getElementById(`${inputId}-erro`);
+
+    input.classList.add("input-erro");
+    input.classList.remove("input-ok");
+    msg.style.display = "block";
+
+    msg.textContent = mensagem;
+  },
+
+  limparErro(inputId){
+    const input = document.getElementById(inputId);
+    const msg = document.getElementById(`${inputId}-erro`);
+
+    input.classList.remove("input-erro");
+    input.classList.add("input-ok");
+    msg.style.display = "none";
+
+    msg.textContent = "";
+  }
  
 }

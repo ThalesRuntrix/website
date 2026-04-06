@@ -1,4 +1,5 @@
 import { state } from "../state/state.js";
+import { formUI } from "../ui/formUI.js";
 import { getParam } from "../utils/format.js";
 import { validarCPF } from "../utils/format.js";
 
@@ -42,23 +43,27 @@ export const formService = {
         };
     },
 
-    validateFields(cpf, entrega) {
+    validateFields(dados) {
+        let isValid = true;
 
-        if (!state.produto) {
-            alert("Produto ainda está carregando.");
-            return false;
+        // CPF
+        if (!validarCPF(dados.cpf)) {
+            formUI.setErro("cpf", "CPF inválido");
+            isValid = false;
+            
+        } else {
+            formUI.limparErro("cpf");
         }
 
-        if (!validarCPF(cpf)) {
-            alert("CPF inválido");
-            return false;
+        // FRETE
+        if (dados.entrega === "frete" && !state.frete) {
+            formUI.setErro("cep", "Selecione um frete válido");
+            isValid = false;
+        } else {
+            formUI.limparErro("cep");
         }
 
-        if (entrega === "frete" && !state.frete) {
-            alert("⚠️ Selecione uma opção de frete antes de continuar");
-            return false;
-        }
-        return true;
+        return isValid;
 
     }
 

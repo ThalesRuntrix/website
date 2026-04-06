@@ -95,35 +95,33 @@ export function initEvents() {
     e.preventDefault();
     
     const dados = formService.getFormData(); 
-    const validDeliveryData = formService.validateFields(dados.cpf, dados.entrega);
+    const isValid = formService.validateFields(dados);
+
+    if (!isValid) {
+      document.querySelector(".input-erro")?.focus();
+      return;
+    }    
     
-    if(validDeliveryData){
-      freteService.setDeliveryData(dados.entrega);
+    freteService.setDeliveryData(dados.entrega);
 
-      let pedido = {};
+    let pedido = {};
 
-      try {
-        // salvar pedido
-        pedido = await pedidoService.salvarPedido(dados);   
+    try {
+      // salvar pedido
+      pedido = await pedidoService.salvarPedido(dados);   
 
-      } catch (error) {
-        console.error("Erro:", error);
-        alert("Erro ao salvar pedido");
-      }
-
-      try {
-        //Enviar mensagem  de pedido para WP
-        mensagemService.setMessageData(dados, pedido);
-      } catch (error) {
-        console.error("Erro:", error);
-        alert("Erro ao enviar pedido");      
-      }
-
-    } else {
-      alert("⚠️ Faltou preencher alguma informação obrigatória no formulário. Por favor, verifique e tente novamente");
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro ao salvar pedido");
     }
-    
 
+    try {
+      //Enviar mensagem  de pedido para WP
+      mensagemService.setMessageData(dados, pedido);
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro ao enviar pedido");      
+    }
 
   });  
 

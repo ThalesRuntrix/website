@@ -69,12 +69,10 @@ input, select {
   width: 100%;
 }
 
-.input-erro {
-  border: 2px solid #ef4444 !important;
-}
-
-.input-ok {
-  border: 2px solid #22c55e !important;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .input-erro {
@@ -92,4 +90,5 @@ input, select {
   font-size: 13px;
   margin-top: -6px;
   margin-bottom: 6px;
+  min-height: 16px;
 }
