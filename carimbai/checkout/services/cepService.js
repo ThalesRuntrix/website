@@ -6,15 +6,12 @@ export const cepService =  {
   // Buscar endereço pelo campo de cep
   async obterEndereco(cep) {
     try {
-      const isCepFormatValid = cepService.validarFormato(cep);
-      console.warn("IS CEP FORMAT VALID: ", isCepFormatValid);
+      const isCepFormatValid = cepService.validarFormato(cep);      
       if(isCepFormatValid){
         const data = await api.buscarCEP(cep); 
         cepService.setAddressFields(data);
         cepService.blockAddressFieldsEdition(); 
-      } else {
-        console.error("FORMATO DE CEP INVÁLIDO");
-      }           
+      }          
 
     } catch (err) {
       console.error("Erro no serviço de busca por CEP: ", err);

@@ -41,8 +41,11 @@ export function initEvents() {
     if (!cepService.validarFormato(cep)) {
       input.classList.remove("input-erro");
       input.classList.add("input-ok");
+    } else {
+      input.classList.add("input-erro");
+      input.classList.remove("input-ok");
       return;
-    } 
+    }
 
     const endereco = cepService.validarCEP(cep);
       if (endereco) {
