@@ -11,10 +11,11 @@ export const cepService =  {
         cepService.setAddressFields(address);
         cepService.blockAddressFieldsEdition(); 
         return address;
-      }             
+      }                  
 
     } catch (err) {
       console.error("Erro no serviço de busca por CEP: ", err);
+      return false; 
     }
   },
 

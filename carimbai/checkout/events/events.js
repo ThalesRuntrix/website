@@ -27,11 +27,11 @@ export function initEvents() {
 
   // busca cep e recalcula frete
   document.getElementById("cep").addEventListener("input", function () {
-    const cep = this.value.replace(/\D/g, "");
+    const cep = this.value.replace(/\D/g, "");    
     const address = cepService.obterEndereco(cep);
-    console.warn("RETORNO: ", address);
-
-    freteService.tentarCalcularFrete();
+    if(address){
+      freteService.tentarCalcularFrete();
+    }
     
   });
 
