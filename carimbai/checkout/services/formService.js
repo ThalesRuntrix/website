@@ -45,12 +45,12 @@ export const formService = {
 
     validateFields(dados) {
         let isValid = true;
+        cpf = String(dados.cpf).replace(/\D/g, "");        
 
         // CPF
-        if (!validarCPF(dados.cpf)) {
+        if (!dados.cpf || typeof dados.cpf !== "string" || !validarCPF(dados.cpf)) {
             formUI.setErro("cpf", "CPF inválido");
-            isValid = false;
-            
+            isValid =  false;
         } else {
             formUI.limparErro("cpf");
         }
