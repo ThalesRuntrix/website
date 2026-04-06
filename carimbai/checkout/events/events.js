@@ -38,7 +38,7 @@ export function initEvents() {
     const input = this;
     const cep = input.value.replace(/\D/g, "");
     
-    if (!cepService.validarFormato(cep)) {
+    if (cepService.validarFormato(cep)) {
       input.classList.remove("input-erro");
       input.classList.add("input-ok");
     } else {
