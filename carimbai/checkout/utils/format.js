@@ -11,6 +11,7 @@ export function getParam(name){
 }
 
 export function validarCPF(cpf){
+  console.warn("VALIDAR CPF - CPF: ", cpf);
   if (!cpf) return false;  
 
   if (cpf.length !== 11) return false;

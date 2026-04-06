@@ -47,7 +47,6 @@ export const formService = {
 
         let isValid = true;        
         const cpf = String(dados.cpf).replace(/\D/g, "");  
-        console.warn("CPF: ", cpf);      
 
         // CPF
         if (!cpf || typeof cpf !== "string" || !validarCPF(cpf)) {

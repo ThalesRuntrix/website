@@ -98,10 +98,7 @@ export function initEvents() {
     
     const isValid = formService.validateFields(dados);
 
-    if (!isValid) {
-      document.querySelector(".input-erro")?.focus();
-      return;
-    }    
+    if (!isValid) return;
     
     freteService.setDeliveryData(dados.entrega);
 
