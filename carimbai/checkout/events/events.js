@@ -42,7 +42,7 @@ export function initEvents() {
       input.classList.add("input-erro");
       input.classList.remove("input-ok");
       erroMsg.style.display = "block";
-      
+
       cepService.blockAddressFieldsEdition
 
     }  
@@ -116,8 +116,10 @@ export function initEvents() {
         alert("Erro ao enviar pedido");      
       }
 
+    } else {
+      alert("⚠️ Faltou preencher alguma informação obrigatória no formulário. Por favor, verifique e tente novamente");
     }
-    alert("⚠️ Faltou preencher alguma informação obrigatória no formulário. Por favor, verifique e tente novamente");
+    
 
 
   });  
