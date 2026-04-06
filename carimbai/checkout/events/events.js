@@ -50,7 +50,7 @@ export function initEvents() {
     } else {
       input.classList.add("input-erro");
       input.classList.remove("input-ok");
-      erroMsg.style.display = "none";      
+      erroMsg.style.display = "block";      
     }  
   
   });
