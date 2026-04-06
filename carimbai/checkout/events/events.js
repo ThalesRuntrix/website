@@ -40,7 +40,7 @@ export function initEvents() {
     const cep = input.value.replace(/\D/g, "");
     const erroMsg = document.getElementById("cep-erro");    
     
-    const address = await cepService.validarCEP(cep);
+    const address = await cepService.obterEndereco(cep);
     if(address){
       input.classList.remove("input-erro");
       input.classList.add("input-ok");
