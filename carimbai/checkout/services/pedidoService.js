@@ -1,9 +1,9 @@
 import { api } from "../api/api.js";
-import { formService } from "./formService.js";
 
 export const pedidoService = {
 
     async salvarPedido(dados){
+        console.warn("DADOS: ", dados);
         try {
             return api.postPedido(dados);
         } catch(error){
