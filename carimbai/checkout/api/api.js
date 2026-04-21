@@ -54,5 +54,31 @@ export const api = {
 
     return data;
       
+  },
+
+  async pagarPix() {
+    const res = await fetch(`${API_URL}/payment/pix`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ produtoId: 1 })
+    });
+
+    const data = await res.json();
+
+    document.getElementById("qr").src =
+        "data:image/png;base64," + data.qr_code_base64;
+  },
+
+  async pagarCartao() {
+    const res = await fetch(`${API_URL}/payment/card`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ produtoId: 1 })
+    });
+
+    const data = await res.json();
+
+    window.location.href = data.init_point;
   }
+
 };

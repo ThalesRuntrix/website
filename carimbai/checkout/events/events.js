@@ -5,6 +5,7 @@ import { formUI } from "../ui/formUI.js"
 import { formService } from "../services/formService.js";
 import { mensagemService } from "../services/mensagemService.js";
 import { validarCPF } from "../utils/format.js";
+import { pagamentoService } from "../services/pagamentoService.js";
 
 export function initEvents() {
 
@@ -94,7 +95,7 @@ export function initEvents() {
   .addEventListener("submit", async function (e) {
     e.preventDefault();
     
-    const dados = formService.getFormData();
+    const dados = formService.getFormData();  
     
     const isValid = formService.validateFields(dados);
 
@@ -111,6 +112,17 @@ export function initEvents() {
     } catch (error) {
       console.error("Erro:", error);
       alert("Erro ao salvar pedido");
+    }
+
+    try {
+      // chamar api pagamento
+      if(dados.pagamento === "cartão") {
+        await pagamentoService.pagarCartao();
+      }
+      await pagamentoService.pagarPix(); 
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro na API de pagamento");
     }
 
     try {
