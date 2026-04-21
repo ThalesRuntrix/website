@@ -5,7 +5,7 @@ export const mensagemService = {
 
     setMessageData(dados, pedido) {
 
-        const pedidoId = pedido.pedido_codigo;
+        const pedidoCodigo = pedido.pedido_codigo;
 
         const enderecoTexto = dados.entrega === "frete"
         ? `
@@ -24,7 +24,7 @@ export const mensagemService = {
     : "";
 
       // 🔥 mensagem WhatsApp
-      const mensagem = `🛒 *PEDIDO N°: ${pedidoId}*
+      const mensagem = `🛒 *PEDIDO N°: ${pedidoCodigo}*
 
   👤 *Comprador:*
   ${dados.nome}

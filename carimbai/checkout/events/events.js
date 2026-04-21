@@ -130,7 +130,7 @@ export function initEvents() {
       mensagemService.setMessageData(dados, pedido);
     } catch (error) {
       console.error("Erro:", error);
-      alert("Erro ao enviar pedido");      
+      alert("Erro ao enviar mensagem com pedido");      
     }
 
   });  
