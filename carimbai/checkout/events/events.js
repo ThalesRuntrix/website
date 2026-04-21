@@ -118,8 +118,10 @@ export function initEvents() {
       // chamar api pagamento
       if(dados.pagamento === "pix") {
         await pagamentoService.pagarPix(); 
+      } else {
+        await pagamentoService.pagarCartao();
       }
-      await pagamentoService.pagarCartao();
+      
     } catch (error) {
       console.error("Erro:", error);
       alert("Erro na API de pagamento");
