@@ -56,11 +56,11 @@ export const api = {
       
   },
 
-  async pagarPix() {
+  async pagarPix(pedido) {
     const res = await fetch(`${API_URL}/payment/pix`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ produtoId: 1 })
+      body: JSON.stringify(pedido)
     });
 
     const data = await res.json();
@@ -69,11 +69,11 @@ export const api = {
         "data:image/png;base64," + data.qr_code_base64;
   },
 
-  async pagarCartao() {
+  async pagarCartao(pedido) {
     const res = await fetch(`${API_URL}/payment/card`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ produtoId: 1 })
+        body: JSON.stringify(pedido)
     });
 
     const data = await res.json();

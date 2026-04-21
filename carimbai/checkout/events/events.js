@@ -117,9 +117,9 @@ export function initEvents() {
     try {
       // chamar api pagamento
       if(dados.pagamento === "pix") {
-        await pagamentoService.pagarPix(); 
+        await pagamentoService.pagarPix(pedido); 
       } else {
-        await pagamentoService.pagarCartao();
+        await pagamentoService.pagarCartao(pedido);
       }
       
     } catch (error) {
