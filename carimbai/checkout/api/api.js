@@ -65,8 +65,11 @@ export const api = {
 
     const data = await res.json();
 
-    document.getElementById("qr").src =
-        "data:image/png;base64," + data.qr_code_base64;
+    const qr = document.getElementById("qr");
+    if (qr) {
+      qr.src = "data:image/png;base64," + data.qr_code_base64;
+      qr.style.display = "block";
+    }
   },
 
   async pagarCartao(pedido) {
