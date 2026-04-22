@@ -117,7 +117,7 @@ export function initEvents() {
     try {
       // chamar pagamento
       if(dados.pagamento === "pix") {
-          window.location.href="/carimbai/pagamento/pix.html?pedido_id=${pedido.pedido_id}";
+          window.location.href=`/carimbai/pagamento/pix.html?pedido_id=${pedido.pedido_id}`;
          
       } else {
         await pagamentoService.pagarCartao(pedido);
