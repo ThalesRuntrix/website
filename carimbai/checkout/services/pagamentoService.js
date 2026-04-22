@@ -2,10 +2,9 @@ import { api } from "../api/api.js";
 
 export const pagamentoService = {
 
-    async pagarPix(pedido) {
-        const pedidoId = pedido.pedido_id;
+    async pagarPix(pedidoId) {        
         try {
-            return await api.pagarPix(pedidoId);        
+            return await api.pagarPix(pedidoId);
         } catch (error) {
         console.error("Erro ao gerar pagamento para PIX:", error);
         }        

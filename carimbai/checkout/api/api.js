@@ -63,13 +63,8 @@ export const api = {
       body: JSON.stringify({ pedido_id })
     });
 
-    const data = await res.json();
-
-    const qr = document.getElementById("qr");
-    if (qr) {
-      qr.src = "data:image/png;base64," + data.qr_code_base64;
-      qr.style.display = "block";
-    }
+    return await res.json();
+     
   },
 
   async pagarCartao(pedido_id) {
@@ -82,6 +77,29 @@ export const api = {
     const data = await res.json();
 
     window.location.href = data.init_point;
+  },
+
+  async iniciarConsultaPagamento() {
+    const interval = setInterval(async () => {
+
+      const res = await fetch(
+        `${API_URL}/pedido/status?id=${pedido_id}`
+      );
+
+      const data = await res.json();
+
+      if (data.status_pagamento === "approved") {
+
+        clearInterval(interval);
+
+        document.getElementById("pixStatus")
+          .innerHTML = "Pagamento aprovado ✔";
+
+        window.location.href =
+          "/sucesso.html";
+      }
+
+    }, 5000);
   }
 
 };

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Página de Pagamento PIX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="pix.css">
+</head>
+
+<body>
+  <div class="container">
+
+  <section class="pix-checkout">
+
+    <div class="pix-card">
+
+      <h2>Pagamento via PIX</h2>
+
+      <p class="pix-sub">
+        Copie o código abaixo e pague no app do seu banco.
+      </p>
+
+      <button id="btnCopiarPix" class="btn-pix">
+        Copiar código PIX
+      </button>
+
+      <textarea
+        id="pixCode"
+        class="pix-code"
+        readonly
+      ></textarea>
+
+      <p class="pix-small">
+        Ou escaneie o QR Code:
+      </p>
+
+      <button id="toggleQr" class="btn-secondary">
+        Ver QR Code
+      </button>
+
+      <div id="qrArea" class="qr-area hidden">
+        <img id="qr" alt="QR Code PIX">
+      </div>
+
+      <div id="pixStatus" class="pix-status">
+        Aguardando pagamento...
+      </div>
+
+    </div>
+
+  </section>
+  <div id="footer"></div>
+</div>
+
+<!--<script src="script.js"></script>-->
+<script type="module" src="pix.js"></script>
+<script src="/carimbai/js/components.js"></script>
+<script>
+    loadHeader({
+        title: "PÁGINA DE PAGAMENTO",
+        description: "Finalize seu pedido realizando o pagamento",
+        extra: `
+            <a class="btn-secondary" href="/carimbai/links">
+                📲 Links de Contato
+            </a>
+        `
+    });
+</script>
+
+</body>
+</html>

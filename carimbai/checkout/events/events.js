@@ -115,18 +115,20 @@ export function initEvents() {
     }
 
     try {
-      // chamar api pagamento
+      // chamar pagamento
       if(dados.pagamento === "pix") {
-        await pagamentoService.pagarPix(pedido); 
+          window.location.href="/carimbai/pagamento/pix.html?pedido_id=${pedido.pedido_id}";
+         
       } else {
         await pagamentoService.pagarCartao(pedido);
       }
       
     } catch (error) {
       console.error("Erro:", error);
-      alert("Erro na API de pagamento");
+      alert("Erro ao porcessar pedido");
     }
 
+    /*
     try {
       //Enviar mensagem  de pedido para WP
       mensagemService.setMessageData(dados, pedido);
@@ -134,6 +136,7 @@ export function initEvents() {
       console.error("Erro:", error);
       alert("Erro ao enviar mensagem com pedido");      
     }
+    */
 
   });  
 
