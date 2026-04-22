@@ -6,23 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/form.css">
   <link rel="stylesheet" href="pix.css">
 </head>
 
 <body>
   <div class="container">
+    <div id="header"></div>
 
-  <section class="pix-checkout">
+  <div class="pix-card">
 
-    <div class="pix-card">
+    <h1>Pagamento via PIX</h1>
 
-      <h2>Pagamento via PIX</h2>
+    <p class="sub">
+      Copie o código abaixo e pague no app do seu banco.
+    </p>
 
-      <p class="pix-sub">
-        Copie o código abaixo e pague no app do seu banco.
-      </p>
+    <div id="loading" class="loading">
+      Gerando PIX...
+    </div>
 
-      <button id="btnCopiarPix" class="btn-pix">
+    <div id="conteudoPix" style="display:none;">
+
+      <button id="btnCopiar" class="btn btn-primary">
         Copiar código PIX
       </button>
 
@@ -32,29 +38,27 @@
         readonly
       ></textarea>
 
-      <p class="pix-small">
-        Ou escaneie o QR Code:
-      </p>
+      <p class="small">Ou escaneie o QR Code</p>
 
-      <button id="toggleQr" class="btn-secondary">
+      <button id="btnQr" class="btn btn-secondary">
         Ver QR Code
       </button>
 
-      <div id="qrArea" class="qr-area hidden">
-        <img id="qr" alt="QR Code PIX">
+      <div id="qrBox" class="qr-box">
+        <img id="qrImg" alt="QR Code PIX">
       </div>
 
-      <div id="pixStatus" class="pix-status">
+      <div id="status" class="status">
         Aguardando pagamento...
       </div>
 
     </div>
 
-  </section>
+  </div>
   <div id="footer"></div>
+
 </div>
 
-<!--<script src="script.js"></script>-->
 <script type="module" src="pix.js"></script>
 <script src="../../carimbai/js/components.js"></script>
 <script>
