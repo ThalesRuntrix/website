@@ -1,4 +1,4 @@
-import { pagamentoService } from "../checkout/services/pagamentoService";
+import { pagamentoService } from "../checkout/services/pagamentoService.js";
 
 const API_URL = "https://carimbai-api.vercel.app/api";
 
