@@ -31,6 +31,7 @@ export const formService = {
     
             nome: document.getElementById("nome").value,
             email: document.getElementById("email").value,
+            tel: document.getElementById("whatsapp").value,
             cpf: document.getElementById("cpf").value,
     
             ...endereco,    
@@ -54,6 +55,15 @@ export const formService = {
             isValid =  false;
         } else {
             formUI.limparErro("cpf");
+        }
+
+        //Whats App
+        const numero = dados.whatsapp.replace(/\D/g,'');
+        if (numero.length < 10 || numero.length > 11) {
+        document.getElementById("whatsapp-erro").style.display = "block";
+        return false;
+        } else {
+        document.getElementById("whatsapp-erro").style.display = "none";
         }
 
         // FRETE
