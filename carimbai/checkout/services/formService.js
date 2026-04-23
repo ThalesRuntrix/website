@@ -31,7 +31,7 @@ export const formService = {
     
             nome: document.getElementById("nome").value,
             email: document.getElementById("email").value,
-            tel: document.getElementById("whatsapp").value,
+            whatsapp: document.getElementById("whatsapp").value,
             cpf: document.getElementById("cpf").value,
     
             ...endereco,    
