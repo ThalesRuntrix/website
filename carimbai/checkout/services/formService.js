@@ -58,7 +58,7 @@ export const formService = {
         }
 
         //Whats App
-        const numero = dados.whatsapp.replace(/\D/g,'');
+        const numero = String(dados.whatsapp).replace(/\D/g,'');
         if (numero.length < 10 || numero.length > 11) {
         document.getElementById("whatsapp-erro").style.display = "block";
         return false;
