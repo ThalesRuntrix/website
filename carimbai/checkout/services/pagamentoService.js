@@ -10,8 +10,7 @@ export const pagamentoService = {
         }        
     },
 
-    async pagarCartao(pedido) {
-        const pedidoId = pedido.pedido_id;
+    async pagarCartao(pedidoId) {        
         try {
             return await api.pagarCartao(pedidoId);        
         } catch (error) {
