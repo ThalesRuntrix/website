@@ -76,7 +76,8 @@ export const api = {
 
     const data = await res.json();
 
-    window.location.href = data.init_point;
+    window.location.href =
+      data.sandbox_init_point || data.init_point;
   },
 
   async iniciarConsultaPagamento() {
