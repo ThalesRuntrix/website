@@ -67,12 +67,17 @@ export const api = {
      
   },
 
-  async pagarCartao(id) {
-    const res = await fetch(`${API_URL}/payment/card`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({pedido_id: id})
-    });
+  async pagarCartao(pedido_id, cardFormData) {
+    const res = await fetch(`${API_URL}/payment/card-brick`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          pedido_id: pedido_id,
+          ...cardFormData
+      })
+      });
 
     const data = await res.json();
 

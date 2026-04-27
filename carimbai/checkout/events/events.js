@@ -146,9 +146,11 @@ export function initEvents() {
     }
 
     try {
+      loading(true);
       // chamar pagamento
       if(dados.pagamento === "pix") {
-          window.location.href=`/carimbai/pagamento/pix.html?pedido_id=${pedido.pedido_id}`;
+        await pagamentoService.pagarPix(pedido.pedido_id);
+        //window.location.href=`/carimbai/pagamento/pix.html?pedido_id=${pedido.pedido_id}`;
          
       } else {
         await pagamentoService.pagarCartao(pedido.pedido_id);
@@ -157,6 +159,8 @@ export function initEvents() {
     } catch (error) {
       console.error("Erro:", error);
       alert("Erro ao porcessar pedido");
+    } finally {
+      loading(false);
     }
 
     /*
@@ -171,4 +175,17 @@ export function initEvents() {
 
   });  
 
+}
+
+function loading(status) {
+
+  const btn = form.querySelector("button[type='submit']");
+
+  if (!btn) return;
+
+  btn.disabled = status;
+
+  btn.innerText = status
+    ? "Processando..."
+    : "🚀 Enviar Pedido Agora";
 }
