@@ -123,6 +123,7 @@ export const pagamentoService = {
             },
 
             onSubmit: async (formData) => {
+              console.log(formData);
 
                 try {
 
