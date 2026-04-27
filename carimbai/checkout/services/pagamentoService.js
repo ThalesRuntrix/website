@@ -82,149 +82,91 @@ export const pagamentoService = {
 
   
   async pagarCartao(pedido) {
-
     try {
+        const box = getPaymentBox();
 
-      ui.loading(true);
-
-      const box = ui.getPaymentBox();
-
-      box.innerHTML = `
+        box.innerHTML = `
         <div class="payment-card">
-
-          <h2>Pagar com Cartão</h2>
-
-          <div id="paymentBrick_container"></div>
-
+            <h2>Pagamento com Cartão</h2>
+            <div id="paymentBrick_container"></div>
         </div>
-      `;
+        `;
 
-      if (brickController) {
+        if (brickController) {
         await brickController.unmount();
-      }
+        }
 
-      const bricksBuilder =
-        mp.bricks();
+        const bricksBuilder = mp.bricks();
 
-      brickController =
-        await bricksBuilder.create(
-          "payment",
-          "paymentBrick_container",
-          {
+        brickController = await bricksBuilder.create(
+        "payment",
+        "paymentBrick_container",
+        {
             initialization: {
-              amount: Number(
-                pedido.total
-              )
+            amount: Number(pedido.total)
             },
 
             customization: {
-              paymentMethods: {
-                creditCard:
-                  "all",
-
-                debitCard:
-                  "all",
-
-                bankTransfer:
-                  false,
-
-                ticket:
-                  false
-              }
+            paymentMethods: {
+                creditCard: "all",
+                debitCard: "all",
+                ticket: false,
+                bankTransfer: false
+            }
             },
 
             callbacks: {
 
-              onReady: () => {
-                ui.loading(false);
-                ui.scroll();
-              },
+            onReady: () => {
+                console.log("Brick carregado");
+                scrollPagamento();
+            },
 
-              onSubmit:
-                async (
-                  cardFormData
-                ) => {
+            onSubmit: async (formData) => {
 
                 try {
 
-                  ui.loading(
-                    true,
-                    "Processando pagamento..."
-                  );
+                const pagamento = await api.pagarCartao(
+                    pedido.pedido_id,
+                    formData
+                );
 
-                  const pagamento =
-                    await api.pagarCartao(
-                      pedido.pedido_id,
-                      cardFormData
-                    );
-
-                  if (
-                    pagamento.status ===
-                      "approved"
-                  ) {
-
+                if (
+                    pagamento.status === "approved"
+                ) {
                     window.location.href =
-                      "/carimbai/pagamento/sucesso";
+                    "/carimbai/pagamento/sucesso.html";
 
-                    return;
-                  }
-
-                  if (
-                    pagamento.status ===
-                    "in_process"
-                  ) {
-
+                } else if (
+                    pagamento.status === "in_process"
+                ) {
                     window.location.href =
-                      "/carimbai/pagamento/pendente";
+                    "/carimbai/pagamento/pendente.html";
 
-                    return;
-                  }
-
-                  ui.error(
-                    "Pagamento recusado."
-                  );
-
-                } catch (error) {
-
-                  console.error(
-                    error
-                  );
-
-                  ui.error(
-                    "Erro ao processar pagamento."
-                  );
-
-                } finally {
-                  ui.loading(false);
+                } else {
+                    window.location.href =
+                    "/carimbai/pagamento/erro.html";
                 }
-              },
 
-              onError:
-                (error) => {
+                } catch (err) {
+                console.error(err);
+                alert("Erro ao processar pagamento.");
+                }
 
-                console.error(
-                  error
-                );
+            },
 
-                ui.error(
-                  "Erro no formulário do cartão."
-                );
-              }
+            onError: (err) => {
+                console.error("Brick error:", err);
             }
-          }
+            }
+        }
         );
 
     } catch (error) {
-
-      console.error(error);
-
-      ui.error(
-        "Erro ao abrir pagamento."
-      );
-
-      ui.loading(false);
+        console.error(error);
+        alert("Erro ao carregar pagamento.");
     }
-  }
+    }
 };
 
 // ========================================

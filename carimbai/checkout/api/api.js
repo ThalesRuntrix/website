@@ -67,23 +67,20 @@ export const api = {
      
   },
 
-  async pagarCartao(pedido_id, cardFormData) {
-    const res = await fetch(`${API_URL}/payment/card-brick`, {
+  async pagarCartao(pedido_id, dadosCartao) {
+    const res = await fetch(`${API_URL}/payment/card-bricks`, {
       method: "POST",
       headers: {
-          "Content-Type": "application/json"
+        "Content-Type":"application/json"
       },
       body: JSON.stringify({
-          pedido_id: pedido_id,
-          ...cardFormData
+        pedido_id,
+        ...dadosCartao
       })
-      });
+    });
 
-    const data = await res.json();
-
-    window.location.href =
-      data.sandbox_init_point || data.init_point;
-  },
+    return await res.json();
+},
 
   async iniciarConsultaPagamento() {
     const interval = setInterval(async () => {

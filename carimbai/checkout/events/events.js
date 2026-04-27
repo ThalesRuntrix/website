@@ -154,7 +154,7 @@ export function initEvents() {
         //window.location.href=`/carimbai/pagamento/pix.html?pedido_id=${pedido.pedido_id}`;
          
       } else {
-        await pagamentoService.pagarCartao(pedido.pedido_id);
+        await pagamentoService.pagarCartao(pedido);
       }
       
     } catch (error) {
