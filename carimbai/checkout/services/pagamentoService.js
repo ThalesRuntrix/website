@@ -30,44 +30,44 @@ export const pagamentoService = {
       }
 
       box.innerHTML = `
-        <div class="payment-card">
+        <div class="payment-card pix-card">
 
           <h2>Pagamento via PIX</h2>
 
-          <img
-            src="data:image/png;base64,${data.qr_code_base64}"
-            class="pix-qrcode"
-          >
-
-          <textarea
-            readonly
-            class="pix-code"
-          >${data.qr_code}</textarea>
-
-          <button
-            type="button"
-            class="btn-secondary copiar-pix"
-          >
-            Copiar código PIX
+          <button id="copiarPix" class="btn-pix">
+            📋 Copiar código PIX
           </button>
 
-          <p class="payment-msg">
-            Após o pagamento, a confirmação é automática.
+          <p class="pix-info">
+            Abra o app do banco e cole no PIX Copia e Cola.
+          </p>
+
+          <details class="pix-details">
+            <summary>Mostrar QR Code</summary>
+
+            <img
+              src="data:image/png;base64,${data.qr_code_base64}"
+              class="pix-qr"
+            >
+          </details>
+
+          <p class="pix-ok">
+            Após o pagamento a confirmação é automática.
           </p>
 
         </div>
       `;
 
       document
-        .querySelector(".copiar-pix")
-        ?.addEventListener("click", async () => {
+      .getElementById("copiarPix")
+      .addEventListener("click", async () => {
+        await navigator.clipboard.writeText(data.qr_code);
 
-          await navigator.clipboard.writeText(
-            data.qr_code
-          );
+        const btn =
+          document.getElementById("copiarPix");
 
-          alert("Código PIX copiado.");
-        });
+        btn.innerText = "✅ Código copiado!";
+      });
 
       ui.scroll();
 

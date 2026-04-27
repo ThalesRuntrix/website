@@ -173,3 +173,38 @@
   opacity:.8;
   pointer-events:none;
 }
+
+#pix-box{
+  margin-top:20px;
+}
+
+.pix-card{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+}
+
+.btn-pix{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:12px;
+  font-size:18px;
+  font-weight:700;
+  background:#00c853;
+  color:#fff;
+}
+
+.pix-qr{
+  width:160px;
+  height:160px;
+  display:block;
+  margin:15px auto;
+}
+
+.pix-info,
+.pix-ok{
+  font-size:14px;
+  margin-top:12px;
+  text-align:center;
+}
