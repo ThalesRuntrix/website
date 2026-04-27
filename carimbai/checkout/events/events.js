@@ -143,6 +143,7 @@ export function initEvents() {
     } catch (error) {
       console.error("Erro:", error);
       alert("Erro ao salvar pedido");
+      return;
     }
 
     try {
@@ -163,16 +164,6 @@ export function initEvents() {
       loading(false);
     }
 
-    /*
-    try {
-      //Enviar mensagem  de pedido para WP
-      mensagemService.setMessageData(dados, pedido);
-    } catch (error) {
-      console.error("Erro:", error);
-      alert("Erro ao enviar mensagem com pedido");      
-    }
-    */
-
   });  
 
 }
@@ -183,9 +174,21 @@ function loading(status) {
 
   if (!btn) return;
 
+  // guarda texto original
+  if (!btn.dataset.originalText) {
+    btn.dataset.originalText = btn.innerHTML;
+  }
+
   btn.disabled = status;
 
-  btn.innerText = status
-    ? "Processando..."
-    : "🚀 Enviar Pedido Agora";
+  if (status) {
+    btn.innerHTML = `
+      <span class="spinner"></span>
+      Processando...
+    `;
+    form.classList.add("form-loading");
+  } else {
+    btn.innerHTML = btn.dataset.originalText;
+    form.classList.remove("form-loading");
+  }
 }
