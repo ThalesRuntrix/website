@@ -56,11 +56,11 @@ export const api = {
       
   },
 
-  async pagarPix(id) {
+  async pagarPix(pedidoId) {
     const res = await fetch(`${API_URL}/payment/pix`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id })
+      body: JSON.stringify({ pedido_id: pedidoId })
     });
 
     return await res.json();
