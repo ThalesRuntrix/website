@@ -25,6 +25,10 @@ export const pagamentoService = {
 
       const box = ui.getPaymentBox();
 
+      if (!data.qr_code_base64) {
+        throw new Error("PIX não retornou QR");
+      }
+
       box.innerHTML = `
         <div class="payment-card">
 
