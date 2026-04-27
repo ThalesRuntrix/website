@@ -12,7 +12,7 @@ export const pagamentoService = {
     async pagarPix(pedidoId) {        
         try {
             const data =  await api.pagarPix(pedidoId);
-            const box = getPaymentBox();
+            const box = pagamentoService.getPaymentBox();
             
             box.innerHTML = `
                 <div class="payment-card">
@@ -31,7 +31,7 @@ export const pagamentoService = {
                 </div>
             `;
 
-            scrollPagamento();
+            pagamentoService.scrollPagamento();
 
         } catch (error) {
         console.error("Erro ao gerar pagamento para PIX:", error);
@@ -40,7 +40,7 @@ export const pagamentoService = {
 
     async pagarCartao(pedidoId) {        
         try {
-            const box = getPaymentBox();
+            const box = pagamentoService.getPaymentBox();
 
             box.innerHTML = `
                 <div class="payment-card">
@@ -108,7 +108,7 @@ export const pagamentoService = {
                 }
             );
 
-            scrollPagamento();
+            pagamentoService.scrollPagamento();
                     
         } catch (error) {
         console.error("Erro ao gerar pagamento para cartão:", error);
@@ -117,7 +117,7 @@ export const pagamentoService = {
 
 }
 
-function scrollPagamento() {
+export function scrollPagamento() {
   document
     .getElementById("payment-box")
     ?.scrollIntoView({
@@ -126,7 +126,7 @@ function scrollPagamento() {
     });
 }
 
-function getPaymentBox() {
+export function getPaymentBox() {
 
   let el = document.getElementById("payment-box");
 
