@@ -69,11 +69,6 @@ export const api = {
 
   async pagarCartao(pedido_id, dadosCartao) {
 
-    console.log("ENVIANDO:", {
-      pedido_id,
-      ...dadosCartao
-    });
-
     const res = await fetch(`${API_URL}/payment/card-bricks`, {
       method: "POST",
       headers: {
