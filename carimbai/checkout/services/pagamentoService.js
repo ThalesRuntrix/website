@@ -1,143 +1,301 @@
 import { api } from "../api/api.js";
 
-const mp = new MercadoPago("TEST-e6b63ae7-a61b-47e4-b4c4-2f974134bb41", {
-  locale: "pt-BR"
-});
+
+const mp = new MercadoPago(
+  "TEST-e6b63ae7-a61b-47e4-b4c4-2f974134bb41",
+  {
+    locale: "pt-BR"
+  }
+);
+
+const form = document.getElementById("pedido-form");
 
 let brickController = null;
 
 
 export const pagamentoService = {
 
-    async pagarPix(pedidoId) {        
-        try {
-            const data =  await api.pagarPix(pedidoId);
-            const box = pagamentoService.getPaymentBox();
-            
-            box.innerHTML = `
-                <div class="payment-card">
-                <h2>Pagamento via PIX</h2>
+  async pagarPix(pedidoId) {
 
-                <img
-                    src="data:image/png;base64,${data.qr_code_base64}"
-                    style="max-width:280px;width:100%;margin:20px auto;display:block;"
-                >
+    try {
 
-                <textarea style="width:100%;height:120px;">${data.qr_code}</textarea>
+      ui.loading(true);
 
-                <p style="margin-top:15px;">
-                    Após pagamento a confirmação é automática.
-                </p>
-                </div>
-            `;
+      const data = await api.pagarPix(pedidoId);
 
-            pagamentoService.scrollPagamento();
+      const box = ui.getPaymentBox();
 
-        } catch (error) {
-        console.error("Erro ao gerar pagamento para PIX:", error);
-        }        
-    },
+      box.innerHTML = `
+        <div class="payment-card">
 
-    async pagarCartao(pedidoId) {        
-        try {
-            const box = pagamentoService.getPaymentBox();
+          <h2>Pagamento via PIX</h2>
 
-            box.innerHTML = `
-                <div class="payment-card">
-                <h2>Pagar com Cartão</h2>
-                <div id="paymentBrick_container"></div>
-                </div>
-            `;
+          <img
+            src="data:image/png;base64,${data.qr_code_base64}"
+            class="pix-qrcode"
+          >
 
-            if (brickController) {
-                await brickController.unmount();
+          <textarea
+            readonly
+            class="pix-code"
+          >${data.qr_code}</textarea>
+
+          <button
+            type="button"
+            class="btn-secondary copiar-pix"
+          >
+            Copiar código PIX
+          </button>
+
+          <p class="payment-msg">
+            Após o pagamento, a confirmação é automática.
+          </p>
+
+        </div>
+      `;
+
+      document
+        .querySelector(".copiar-pix")
+        ?.addEventListener("click", async () => {
+
+          await navigator.clipboard.writeText(
+            data.qr_code
+          );
+
+          alert("Código PIX copiado.");
+        });
+
+      ui.scroll();
+
+    } catch (error) {
+
+      console.error(error);
+
+      ui.error(
+        "Erro ao gerar PIX."
+      );
+
+    } finally {
+      ui.loading(false);
+    }
+  },
+
+  
+  async pagarCartao(pedido) {
+
+    try {
+
+      ui.loading(true);
+
+      const box = ui.getPaymentBox();
+
+      box.innerHTML = `
+        <div class="payment-card">
+
+          <h2>Pagar com Cartão</h2>
+
+          <div id="paymentBrick_container"></div>
+
+        </div>
+      `;
+
+      if (brickController) {
+        await brickController.unmount();
+      }
+
+      const bricksBuilder =
+        mp.bricks();
+
+      brickController =
+        await bricksBuilder.create(
+          "payment",
+          "paymentBrick_container",
+          {
+            initialization: {
+              amount: Number(
+                pedido.total
+              )
+            },
+
+            customization: {
+              paymentMethods: {
+                creditCard:
+                  "all",
+
+                debitCard:
+                  "all",
+
+                bankTransfer:
+                  false,
+
+                ticket:
+                  false
+              }
+            },
+
+            callbacks: {
+
+              onReady: () => {
+                ui.loading(false);
+                ui.scroll();
+              },
+
+              onSubmit:
+                async (
+                  cardFormData
+                ) => {
+
+                try {
+
+                  ui.loading(
+                    true,
+                    "Processando pagamento..."
+                  );
+
+                  const pagamento =
+                    await api.pagarCartao(
+                      pedido.pedido_id,
+                      cardFormData
+                    );
+
+                  if (
+                    pagamento.status ===
+                      "approved"
+                  ) {
+
+                    window.location.href =
+                      "/carimbai/pagamento/sucesso";
+
+                    return;
+                  }
+
+                  if (
+                    pagamento.status ===
+                    "in_process"
+                  ) {
+
+                    window.location.href =
+                      "/carimbai/pagamento/pendente";
+
+                    return;
+                  }
+
+                  ui.error(
+                    "Pagamento recusado."
+                  );
+
+                } catch (error) {
+
+                  console.error(
+                    error
+                  );
+
+                  ui.error(
+                    "Erro ao processar pagamento."
+                  );
+
+                } finally {
+                  ui.loading(false);
+                }
+              },
+
+              onError:
+                (error) => {
+
+                console.error(
+                  error
+                );
+
+                ui.error(
+                  "Erro no formulário do cartão."
+                );
+              }
             }
+          }
+        );
 
-            const bricksBuilder = mp.bricks();
+    } catch (error) {
 
-            brickController = await bricksBuilder.create(
-                "payment",
-                "paymentBrick_container",
-                {
-                initialization: {
-                    amount: Number(pedido.total)
-                },
+      console.error(error);
 
-                customization: {
-                    paymentMethods: {
-                    creditCard: "all",
-                    debitCard: "all",
-                    bankTransfer: false,
-                    ticket: false
-                    }
-                },
+      ui.error(
+        "Erro ao abrir pagamento."
+      );
 
-                callbacks: {
+      ui.loading(false);
+    }
+  }
+};
 
-                    onReady: () => {
-                    console.log("Brick pronto");
-                    },
+// ========================================
+// UI HELPERS
+// ========================================
+const ui = {
 
-                    onSubmit: async (cardFormData) => {
+  getPaymentBox() {
 
-                    try {
-                        const res =  await api.pagarCartao(pedidoId, cardFormData);                        
+    let el =
+      document.getElementById(
+        "payment-box"
+      );
 
-                        const pagamento = await res.json();
+    if (!el) {
 
-                        if (
-                        pagamento.status === "approved" ||
-                        pagamento.status === "in_process"
-                        ) {
-                        window.location.href =
-                            "/carimbai/pagamento/sucesso";
-                        } else {
-                        alert("Pagamento não aprovado.");
-                        }
+      el =
+        document.createElement(
+          "div"
+        );
 
-                    } catch (error) {
-                        console.error(error);
-                        alert("Erro ao pagar.");
-                    }
-                    },
+      el.id =
+        "payment-box";
 
-                    onError: (error) => {
-                    console.error(error);
-                    }
-                }
-                }
-            );
+      el.style.marginTop =
+        "30px";
 
-            pagamentoService.scrollPagamento();
-                    
-        } catch (error) {
-        console.error("Erro ao gerar pagamento para cartão:", error);
-        }  
+      form.appendChild(el);
     }
 
-}
+    return el;
+  },
 
-export function scrollPagamento() {
-  document
-    .getElementById("payment-box")
-    ?.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-}
+  scroll() {
 
-export function getPaymentBox() {
+    document
+      .getElementById(
+        "payment-box"
+      )
+      ?.scrollIntoView({
+        behavior:
+          "smooth",
+        block:
+          "start"
+      });
+  },
 
-  let el = document.getElementById("payment-box");
+  loading(
+    active,
+    text =
+      "🚀 Enviar Pedido Agora"
+  ) {
 
-  if (!el) {
-    el = document.createElement("div");
-    el.id = "payment-box";
-    el.style.marginTop = "30px";
+    const btn =
+      form.querySelector(
+        "button[type='submit']"
+      );
 
-    form.appendChild(el);
+    if (!btn) return;
+
+    btn.disabled =
+      active;
+
+    btn.innerText =
+      active
+        ? text
+        : "🚀 Enviar Pedido Agora";
+  },
+
+  error(msg) {
+
+    alert(msg);
   }
-
-  return el;
-}
-
+};
