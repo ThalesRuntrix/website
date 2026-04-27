@@ -12,6 +12,7 @@ export const pagamentoService = {
 
     async pagarCartao(pedidoId) {        
         try {
+            
             return await api.pagarCartao(pedidoId);        
         } catch (error) {
         console.error("Erro ao gerar pagamento para cartão:", error);
