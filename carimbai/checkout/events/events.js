@@ -178,7 +178,7 @@ export function initEvents() {
 }
 
 function loading(status) {
-
+  const form = document.getElementById("pedido-form");
   const btn = form.querySelector("button[type='submit']");
 
   if (!btn) return;
