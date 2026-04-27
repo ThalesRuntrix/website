@@ -83,7 +83,7 @@ export const pagamentoService = {
   
   async pagarCartao(pedido) {
     try {
-        const box = getPaymentBox();
+        const box = ui.getPaymentBox();
 
         box.innerHTML = `
         <div class="payment-card">
@@ -119,7 +119,7 @@ export const pagamentoService = {
 
             onReady: () => {
                 console.log("Brick carregado");
-                scrollPagamento();
+                ui.scroll();
             },
 
             onSubmit: async (formData) => {
