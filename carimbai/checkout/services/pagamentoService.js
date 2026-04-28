@@ -51,6 +51,10 @@ export const pagamentoService = {
             >
           </details>
 
+          <button id="pix-paid-test" class="btn-success">
+            Já paguei (modo teste)
+          </button>
+
           <p class="pix-ok">
             Após o pagamento a confirmação é automática.
           </p>
@@ -58,6 +62,47 @@ export const pagamentoService = {
         </div>
       `;
 
+      //TEST PAGAMENTO APROVADO
+      document
+      .getElementById("pix-paid-test")
+      .addEventListener("click", async () => {
+
+        const btn = document.getElementById("pix-paid-test");
+
+        btn.disabled = true;
+        btn.innerText = "Confirmando...";
+
+        try {
+
+          const res = await fetch(
+            `${API_URL}/payment/dev-approve`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                pedido_id: pedidoId
+              })
+            }
+          );
+
+          const json = await res.json();
+
+          if(json.success){
+            window.location.href =
+            "/carimbai/pagamento/sucesso";
+          } else {
+            alert("Erro ao aprovar PIX teste");
+          }
+
+        } catch(e){
+          alert("Erro no teste");
+        }
+
+      });
+
+      //EVENTO COPIAR PIX
       document
       .getElementById("copiarPix")
       .addEventListener("click", async () => {
