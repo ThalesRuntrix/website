@@ -22,6 +22,7 @@ export const pagamentoService = {
       ui.loading(true);
 
       const data = await api.pagarPix(pedidoId);
+      
 
       const box = ui.getPaymentBox();
 
@@ -91,9 +92,10 @@ export const pagamentoService = {
 
           if(json.success){
             window.location.href =
-            "/carimbai/pagamento/sucesso";
+            "/carimbai/pagamento/sucesso.html";
           } else {
-            alert("Erro ao aprovar PIX teste");
+            window.location.href =
+            "/carimbai/pagamento/erro.html";
           }
 
         } catch(e){
@@ -166,8 +168,7 @@ export const pagamentoService = {
 
             callbacks: {
 
-            onReady: () => {
-                console.log("Brick carregado");
+            onReady: () => {                
                 ui.scroll();
             },
 
