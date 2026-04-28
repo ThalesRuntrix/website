@@ -2,34 +2,76 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>PAGAMENTO RECEBIDO</title>
+  <title>Pagamento Recebido</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/form.css">
   <link rel="stylesheet" href="pix.css">
+  <link rel="stylesheet" href="sucesso.css">
+
 </head>
 
 <body>
-  <div class="container">
-    <div id="header"></div>
+
+<div class="container">
+
+  <div id="header"></div>
+
+  <div class="success-box">
+
+    <div class="success-icon">✅</div>
+
+    <div class="success-title">
+      Pagamento Confirmado!
+    </div>
+
+    <p class="success-text">
+      Recebemos seu pagamento com sucesso.
+      Seu pedido entrou em produção.
+    </p>
+
+    <div class="steps">
+      <strong>Próximo passo:</strong><br><br>
+
+      📩 Envie agora no WhatsApp:<br>
+      • Texto / Conteúdo que deseja gravado no material<br>      
+      • Observações
+    </div>
+
+    <a
+      class="btn-main"
+      href="https://wa.me/5511943722620"
+      target="_blank"
+    >
+      📲 Enviar Arte no WhatsApp
+    </a>
+
+    <a
+      class="btn-secondary"
+      href="/carimbai/links"
+    >
+      Outros Canais de Contato
+    </a>
+
+    <p class="mini">
+      Se preferir, aguarde. Também entraremos em contato.
+    </p>
 
   </div>
-  <div id="footer"></div>
 
 </div>
 
+<div id="footer"></div>
+
 <script src="../../carimbai/js/components.js"></script>
+
 <script>
-    loadHeader({
-        title: "Pagamento realizado com sucesso!",
-        description: "Obrigado por seu pedido. Em instantes entraremos em contato",
-        extra: `
-            <a class="btn-secondary" href="/carimbai/links">
-                📲 Links de Contato
-            </a>
-        `
-    });
+loadHeader({
+  title: "Pagamento realizado com sucesso!",
+  description: "Seu pedido foi confirmado e já estamos preparando tudo.",
+  extra: ""
+});
 </script>
 
 </body>
