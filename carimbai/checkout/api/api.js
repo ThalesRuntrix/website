@@ -57,7 +57,7 @@ export const api = {
   },
 
   async pagarPix(pedidoId) {
-    const res = await fetch(`${API_URL}/payment/pix`, {
+    const res = await fetch(`${API_URL}/payment?action=pix`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ pedido_id: pedidoId })
@@ -69,7 +69,7 @@ export const api = {
 
   async pagarCartao(pedido_id, dadosCartao) {
 
-    const res = await fetch(`${API_URL}/payment/card-bricks`, {
+    const res = await fetch(`${API_URL}/payment?action=card`, {
       method: "POST",
       headers: {
         "Content-Type":"application/json"
