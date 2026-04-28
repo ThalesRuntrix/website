@@ -75,7 +75,7 @@ export const pagamentoService = {
         try {
 
           const res = await fetch(
-            `${API_URL}/payment?action=dev-approve`,
+            `https://carimbai-api.vercel.app/api/payment?action=dev-approve`,
             {
               method: "POST",
               headers: {
