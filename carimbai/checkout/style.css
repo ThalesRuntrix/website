@@ -181,6 +181,7 @@
 .pix-card{
   background:#fff;
   color: #111827;
+  text-align:center;
   border-radius:16px;
   padding:20px;
 }
@@ -204,7 +205,7 @@
 }
 
 .pix-info,
-.pix-ok{
+.pix-ok, .pix-details{
   font-size:14px;
   color: #111827;
   margin-top:12px;
