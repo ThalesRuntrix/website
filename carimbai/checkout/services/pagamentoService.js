@@ -97,8 +97,7 @@ export const pagamentoService = {
           }
 
         } catch(e){
-          console.error(e);
-          alert("Erro no teste");
+          console.error("ERRO REAL:", e.message, e);
         }
 
       });
