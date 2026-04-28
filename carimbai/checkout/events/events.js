@@ -121,7 +121,7 @@ export function initEvents() {
   });
 
  
-  // 🔥 SUBMIT -> Enviar Pedido | Enviar Mensagem WP
+  // 🔥 SUBMIT
   document.getElementById("pedido-form")
   .addEventListener("submit", async function (e) {
     e.preventDefault();
