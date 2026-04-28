@@ -53,14 +53,6 @@ export const pagamentoService = {
             >
           </details>
 
-          <button id="verificarPix" class="btn-success">
-            ✅ Já paguei
-          </button>
-
-          <button id="pix-paid-test" class="btn-secondary">
-            🧪 Aprovar teste
-          </button>
-
           <p class="pix-ok">
             Após o pagamento a confirmação costuma ser automática.
           </p>
@@ -84,53 +76,6 @@ export const pagamentoService = {
 
           btn.innerText =
             "✅ Código copiado!";
-        });
-
-      // ==========================
-      // VERIFICAR AGORA
-      // ==========================
-      document
-        .getElementById("verificarPix")
-        .addEventListener("click", async () => {
-
-          await verificarStatusPix();
-        });
-
-      // ==========================
-      // TESTE SANDBOX
-      // ==========================
-      document
-        .getElementById("pix-paid-test")
-        .addEventListener("click", async () => {
-
-          try {
-
-            const res = await fetch(
-              "https://carimbai-api.vercel.app/api/payment?action=dev-approve",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body: JSON.stringify({
-                  pedido_id: pedidoId
-                })
-              }
-            );
-
-            const json =
-              await res.json();
-
-            if (json.success) {
-              window.location.href =
-                "/carimbai/pagamento/sucesso.html";
-            }
-
-          } catch (e) {
-            console.error(e);
-          }
-
         });
 
       // ==========================
