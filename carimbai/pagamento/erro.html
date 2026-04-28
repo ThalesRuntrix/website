@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento não concluído</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="pix.css">
+  <link rel="stylesheet" href="erro.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div id="header"></div>
+
+  <div class="status-box">
+
+    <div class="status-icon">❌</div>
+
+    <div class="status-title">
+      Pagamento não concluído
+    </div>
+
+    <p class="status-text">
+      Não conseguimos confirmar seu pagamento desta vez.
+    </p>
+
+    <div class="steps">
+      <strong>Você pode tentar novamente:</strong><br><br>
+
+      • Revisar os dados do cartão<br>
+      • Escolher PIX<br>
+      • Usar outro cartão<br>
+      • Falar conosco para ajuda
+    </div>
+
+    <a
+      class="btn-main"
+      href="/carimbai"
+    >
+      🔁 Tentar Novamente
+    </a>
+
+    <a
+      class="btn-secondary"
+      href="/carimbai/links"
+    >
+      📲 Preciso de Ajuda
+    </a>
+
+    <p class="mini">
+      Seu pedido não foi perdido. Você pode refazer a compra.
+    </p>
+
+  </div>
+
+</div>
+
+<div id="footer"></div>
+
+<script src="../../carimbai/js/components.js"></script>
+
+<script>
+loadHeader({
+  title: "Pagamento não concluído",
+  description: "Não se preocupe, você pode tentar novamente.",
+  extra: ""
+});
+</script>
+
+</body>
+</html>
