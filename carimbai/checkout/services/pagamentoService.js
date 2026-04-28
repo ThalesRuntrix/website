@@ -17,12 +17,13 @@ export const pagamentoService = {
 
   async pagarPix(pedidoId) {
 
+    let pixInterval = null;
+
     try {
 
       ui.loading(true);
 
       const data = await api.pagarPix(pedidoId);
-      
 
       const box = ui.getPaymentBox();
 
@@ -52,69 +53,145 @@ export const pagamentoService = {
             >
           </details>
 
-          <button id="pix-paid-test" class="btn-success">
-            Já paguei (modo teste)
+          <button id="verificarPix" class="btn-success">
+            ✅ Já paguei
+          </button>
+
+          <button id="pix-paid-test" class="btn-secondary">
+            🧪 Aprovar teste
           </button>
 
           <p class="pix-ok">
-            Após o pagamento a confirmação é automática.
+            Após o pagamento a confirmação costuma ser automática.
           </p>
 
         </div>
       `;
 
-      //TEST PAGAMENTO APROVADO
+      // ==========================
+      // COPIAR PIX
+      // ==========================
       document
-      .getElementById("pix-paid-test")
-      .addEventListener("click", async () => {
+        .getElementById("copiarPix")
+        .addEventListener("click", async () => {
 
-        const btn = document.getElementById("pix-paid-test");
+          await navigator.clipboard.writeText(
+            data.qr_code
+          );
 
-        btn.disabled = true;
-        btn.innerText = "Confirmando...";
+          const btn =
+            document.getElementById("copiarPix");
+
+          btn.innerText =
+            "✅ Código copiado!";
+        });
+
+      // ==========================
+      // VERIFICAR AGORA
+      // ==========================
+      document
+        .getElementById("verificarPix")
+        .addEventListener("click", async () => {
+
+          await verificarStatusPix();
+        });
+
+      // ==========================
+      // TESTE SANDBOX
+      // ==========================
+      document
+        .getElementById("pix-paid-test")
+        .addEventListener("click", async () => {
+
+          try {
+
+            const res = await fetch(
+              "https://carimbai-api.vercel.app/api/payment?action=dev-approve",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  pedido_id: pedidoId
+                })
+              }
+            );
+
+            const json =
+              await res.json();
+
+            if (json.success) {
+              window.location.href =
+                "/carimbai/pagamento/sucesso.html";
+            }
+
+          } catch (e) {
+            console.error(e);
+          }
+
+        });
+
+      // ==========================
+      // POLLING AUTOMÁTICO
+      // ==========================
+      pixInterval = setInterval(
+        verificarStatusPix,
+        5000
+      );
+
+      // encerra após 15 min
+      setTimeout(() => {
+        clearInterval(pixInterval);
+      }, 900000);
+
+      async function verificarStatusPix() {
 
         try {
 
           const res = await fetch(
-            `https://carimbai-api.vercel.app/api/payment?action=dev-approve`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                pedido_id: pedidoId
-              })
-            }
+            `https://carimbai-api.vercel.app/api/payment?action=status&pedido_id=${pedidoId}`
           );
 
-          const json = await res.json();
+          const json =
+            await res.json();
 
-          if(json.success){
+          if (
+            json.status_pagamento ===
+            "approved"
+          ) {
+
+            clearInterval(
+              pixInterval
+            );
+
             window.location.href =
-            "/carimbai/pagamento/sucesso.html";
-          } else {
-            window.location.href =
-            "/carimbai/pagamento/erro.html";
+              "/carimbai/pagamento/sucesso.html";
           }
 
-        } catch(e){
-          console.error("ERRO REAL:", e.message, e);
+          if (
+            json.status_pagamento ===
+              "rejected" ||
+            json.status_pagamento ===
+              "cancelled"
+          ) {
+
+            clearInterval(
+              pixInterval
+            );
+
+            window.location.href =
+              "/carimbai/pagamento/erro.html";
+          }
+
+        } catch (e) {
+          console.error(
+            "Erro status PIX",
+            e
+          );
         }
-
-      });
-
-      //EVENTO COPIAR PIX
-      document
-      .getElementById("copiarPix")
-      .addEventListener("click", async () => {
-        await navigator.clipboard.writeText(data.qr_code);
-
-        const btn =
-          document.getElementById("copiarPix");
-
-        btn.innerText = "✅ Código copiado!";
-      });
+      }
 
       ui.scroll();
 
@@ -127,6 +204,7 @@ export const pagamentoService = {
       );
 
     } finally {
+
       ui.loading(false);
     }
   },
