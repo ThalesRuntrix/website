@@ -1,0 +1,76 @@
+<!-- pendente.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento Pendente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="pix.css">
+  <link rel="stylesheet" href="pendente.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div id="header"></div>
+
+  <div class="status-box">
+
+    <div class="status-icon">⏳</div>
+
+    <div class="status-title">
+      Pagamento em Análise
+    </div>
+
+    <p class="status-text">
+      Seu pagamento foi recebido e está sendo processado.
+      Isso pode levar alguns minutos.
+    </p>
+
+    <div class="steps">
+      <strong>O que acontece agora?</strong><br><br>
+
+      ✅ Assim que aprovado, seu pedido será liberado automaticamente.<br>
+      📲 Também poderemos entrar em contato pelo WhatsApp.
+    </div>
+
+    <a
+      class="btn-main"
+      href="/carimbai/links"
+    >
+      📲 Falar Conosco
+    </a>
+
+    <a
+      class="btn-secondary"
+      href="/carimbai"
+    >
+      Voltar ao Site
+    </a>
+
+    <p class="mini">
+      Se pagou via PIX, a confirmação costuma ser rápida.
+    </p>
+
+  </div>
+
+</div>
+
+<div id="footer"></div>
+
+<script src="../../carimbai/js/components.js"></script>
+
+<script>
+loadHeader({
+  title: "Pagamento pendente",
+  description: "Estamos aguardando a confirmação financeira.",
+  extra: ""
+});
+</script>
+
+</body>
+</html>
