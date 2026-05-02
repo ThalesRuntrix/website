@@ -123,3 +123,9 @@ h2 {
     max-height: 500px;
     margin-bottom: 10px;
 }
+
+.img-capa {
+    max-width: 500px;
+    max-height: 250px;
+    margin-bottom: 10px;
+}
