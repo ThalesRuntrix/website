@@ -21,12 +21,6 @@ body {
     width: 100%;
 }
 
-
-.img-capa {
-    max-width: 250px;
-    margin-bottom: 10px;
-}
-
 /* SECTIONS */
 section {
     margin-bottom: 25px;
@@ -122,4 +116,10 @@ h2 {
 .card-grid p {
     padding: 0 15px 15px;
     color: #94a3b8;
+}
+
+.img-grid {
+    max-width: 250px;
+    max-height: 500px;
+    margin-bottom: 10px;
 }
