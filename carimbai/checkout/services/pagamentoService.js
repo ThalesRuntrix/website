@@ -53,6 +53,10 @@ export const pagamentoService = {
             >
           </details>
 
+          <button id="pix-paid-test" class="btn-success">
+            Já paguei (modo teste)
+          </button>
+
           <p class="pix-ok">
             Após o pagamento a confirmação costuma ser automática.
           </p>
