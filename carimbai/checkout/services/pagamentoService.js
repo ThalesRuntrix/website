@@ -204,11 +204,13 @@ export const pagamentoService = {
                     pedido.pedido_id,
                     formData
                 );
-
-                console.log("PEDIDO: " ,pedido);
-                console.log("FORMDATA: " ,formData);
                 
-                if (pagamento.status === "approved") {                  
+                if (pagamento.status === "approved") {  
+                  
+                  console.log("PEDIDO pagamentoService: " ,pedido);
+                  console.log("FORMDATA: " ,formData);
+                  alert(JSON.stringify(pedido, null, 2));
+
                   localStorage.setItem(
                     "pedido_sucesso",
                     JSON.stringify({
@@ -216,9 +218,7 @@ export const pagamentoService = {
                       pedido_codigo: pedido.pedido_codigo
                     })
                     
-                  );
-
-                  // redireciona
+                  );                  
                   window.location.href =
                     "/carimbai/pagamento/sucesso.html";
 
