@@ -205,6 +205,9 @@ export const pagamentoService = {
                     formData
                 );
 
+                console.log("PEDIDO: " ,pedido);
+                console.log("FORMDATA: " ,formData);
+                
                 if (pagamento.status === "approved") {                  
                   localStorage.setItem(
                     "pedido_sucesso",
@@ -212,6 +215,7 @@ export const pagamentoService = {
                       nome_cliente: pedido.nome_cliente,
                       pedido_codigo: pedido.pedido_codigo
                     })
+                    
                   );
 
                   // redireciona
