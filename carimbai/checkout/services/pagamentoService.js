@@ -205,10 +205,17 @@ export const pagamentoService = {
                     formData
                 );
 
-                if (
-                    pagamento.status === "approved"
-                ) {
-                    window.location.href =
+                if (pagamento.status === "approved") {                  
+                  localStorage.setItem(
+                    "pedido_sucesso",
+                    JSON.stringify({
+                      nome_cliente: pedido.nome_cliente,
+                      pedido_codigo: pedido.pedido_codigo
+                    })
+                  );
+
+                  // redireciona
+                  window.location.href =
                     "/carimbai/pagamento/sucesso.html";
 
                 } else if (

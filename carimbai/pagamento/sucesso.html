@@ -28,7 +28,8 @@
 
     <p class="success-text">
       Recebemos seu pagamento com sucesso.
-      Seu pedido entrou em produção.
+      Agora você precisa nos enviar o conteúdo que deseja gravar no material.
+      Após isso, seu pedido já entra em produção!
     </p>
 
     <div class="steps">
@@ -41,10 +42,10 @@
 
     <a
       class="btn-main"
-      href="https://wa.me/5511943722620"
+      id="btn-whatsapp"
       target="_blank"
     >
-      📲 Enviar Arte no WhatsApp
+      📲 Enviar Agora no WhatsApp
     </a>
 
     <a
@@ -72,6 +73,32 @@ loadHeader({
   description: "Seu pedido foi confirmado e já estamos preparando tudo.",
   extra: ""
 });
+</script>
+
+<script>
+
+  const pedido = JSON.parse(
+    localStorage.getItem("pedido_sucesso")
+  );
+  
+  if (pedido) {
+    
+    const mensagem =
+      `Olá, meu nome é ${pedido.nome_cliente}. ` +
+      `Fiz uma compra no site referente ao pedido ${pedido.pedido_codigo}. ` +
+      `Agora vou te enviar as informações para confecção do material.`;
+    
+    const whatsappUrl =
+      `https://wa.me/5511943722620?text=${encodeURIComponent(mensagem)}`;
+    
+    document
+      .getElementById("btn-whatsapp")
+      .href = whatsappUrl;
+
+    localStorage.removeItem("pedido_sucesso");
+
+  }
+
 </script>
 
 </body>
