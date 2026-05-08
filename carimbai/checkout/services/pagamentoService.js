@@ -205,10 +205,8 @@ export const pagamentoService = {
                     formData
                 );
                 
-                if (pagamento.status === "approved") {  
+                if (pagamento.status === "approved") {                    
                   
-                  console.log("PEDIDO pagamentoService: " ,pedido);
-                  console.log("FORMDATA: " ,formData);
                   alert(JSON.stringify(pedido, null, 2));
 
                   localStorage.setItem(
