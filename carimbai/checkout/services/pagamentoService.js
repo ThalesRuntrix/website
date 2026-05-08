@@ -207,16 +207,18 @@ export const pagamentoService = {
                 
                 if (pagamento.status === "approved") {                    
                   
-                  alert(JSON.stringify(pedido, null, 2));
+                  alert(JSON.stringify("Antes do setLocalStorage", pedido, null, 2));
 
                   localStorage.setItem(
                     "pedido_sucesso",
                     JSON.stringify({
                       nome_cliente: pedido.nome_cliente,
                       pedido_codigo: pedido.pedido_codigo
-                    })
-                    
-                  );                  
+                    })                    
+                  );      
+                  
+                  alert(JSON.stringify("Depois do setLocalStorage", pedido, null, 2));
+                  
                   window.location.href =
                     "/carimbai/pagamento/sucesso.html";
 
