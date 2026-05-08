@@ -15,7 +15,7 @@ let brickController = null;
 
 export const pagamentoService = {
 
-  async pagarPix(pedidoId) {
+  async pagarPix(pedido, pedidoId) {
 
     let pixInterval = null;
 
@@ -24,6 +24,8 @@ export const pagamentoService = {
       ui.loading(true);
 
       const data = await api.pagarPix(pedidoId);
+
+      //
 
       const box = ui.getPaymentBox();
 
@@ -111,6 +113,14 @@ export const pagamentoService = {
               pixInterval
             );
 
+            localStorage.setItem(
+              "pedido_sucesso",
+              JSON.stringify({
+                nome_cliente: pedido?.nome_cliente,
+                pedido_codigo: pedido?.pedido_codigo
+              })                    
+            );  
+            
             window.location.href =
               "/carimbai/pagamento/sucesso.html";
           }
@@ -124,7 +134,7 @@ export const pagamentoService = {
 
             clearInterval(
               pixInterval
-            );
+            );            
 
             window.location.href =
               "/carimbai/pagamento/erro.html";

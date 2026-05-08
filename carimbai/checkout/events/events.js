@@ -150,7 +150,7 @@ export function initEvents() {
       loading(true);
       
       if(dados.pagamento === "pix") {
-        await pagamentoService.pagarPix(pedido.pedido_id);
+        await pagamentoService.pagarPix(pedido, pedido.pedido_id);
          
       } else {
         await pagamentoService.pagarCartao(pedido);
