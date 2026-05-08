@@ -205,14 +205,7 @@ export const pagamentoService = {
                     formData
                 );
                 
-                if (pagamento.status === "approved") {                    
-                  
-                  console.log("PEDIDO COMPLETO:", pedido);
-                  
-                  alert(
-                    "PEDIDO:\n\n" +
-                    JSON.stringify(pedido, null, 2)
-                  );
+                if (pagamento.status === "approved") { 
 
                   localStorage.setItem(
                     "pedido_sucesso",
@@ -221,9 +214,7 @@ export const pagamentoService = {
                       pedido_codigo: pedido?.pedido_codigo
                     })                    
                   );      
-                  
-                  alert("SALVOU NO STORAGE");
-                  
+                                    
                   window.location.href =
                     "/carimbai/pagamento/sucesso.html";
 
