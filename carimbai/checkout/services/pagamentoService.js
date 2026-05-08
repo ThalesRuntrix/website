@@ -207,17 +207,22 @@ export const pagamentoService = {
                 
                 if (pagamento.status === "approved") {                    
                   
-                  alert(JSON.stringify("Antes do setLocalStorage", pedido, null, 2));
+                  console.log("PEDIDO COMPLETO:", pedido);
+                  
+                  alert(
+                    "PEDIDO:\n\n" +
+                    JSON.stringify(pedido, null, 2)
+                  );
 
                   localStorage.setItem(
                     "pedido_sucesso",
                     JSON.stringify({
-                      nome_cliente: pedido.nome_cliente,
-                      pedido_codigo: pedido.pedido_codigo
+                      nome_cliente: pedido?.nome_cliente,
+                      pedido_codigo: pedido?.pedido_codigo
                     })                    
                   );      
                   
-                  alert(JSON.stringify("Depois do setLocalStorage", pedido, null, 2));
+                  alert("SALVOU NO STORAGE");
                   
                   window.location.href =
                     "/carimbai/pagamento/sucesso.html";
@@ -234,10 +239,13 @@ export const pagamentoService = {
                 }
 
                 } catch (err) {
-                console.error(err);
-                alert("Erro ao processar pagamento.");
-                }
+                  console.error("ERRO:", err);
 
+                  alert(
+                    "ERRO:\n\n" +
+                    err.message
+                  );
+                }
             },
 
             onError: (err) => {
