@@ -55,12 +55,52 @@ export const pagamentoService = {
             >
           </details>
 
+          <button id="pix-paid-test" class="btn-success">
+            Aprovar Pagamento (modo teste)
+          </button>
+
           <p class="pix-ok">
             Após o pagamento a confirmação costuma ser automática.
           </p>
 
         </div>
       `;
+
+      // ==========================
+      // CHAMAR DEV-APPROVE ROUTE
+      // ==========================
+      document
+        .getElementById("pix-paid-test")
+        .addEventListener("click", async () => {
+
+          const btn = document.getElementById("pix-paid-test");
+
+          btn.disabled = true;
+          btn.innerText = "Confirmando...";
+
+          try {
+
+            const res = await fetch(
+              `${API_URL}/payment?action=dev-approve-pix`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  pedido_id: pedidoId
+                })
+              }
+            );
+
+            const json = await res.json();
+            
+
+          } catch(e){
+            alert("Erro no teste");
+          }
+
+        });
       
       // ==========================
       // COPIAR PIX
