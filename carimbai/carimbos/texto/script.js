@@ -20,16 +20,15 @@ async function carregarProdutos() {
     produtos.forEach(produto => {
       const div = document.createElement("div");
       div.classList.add("product-card");
-
-      console.log(produto);
-      const imagem = "../img/texto1.jpg";
+      
+      const imagem = produto.imagem_url;
 
       div.innerHTML = `
         <img src="${imagem}" alt="${produto.nome}">
         
         <div class="product-info">
           <h3>${produto.nome}</h3>
-          <p>${produto.detalhes?.modelo || ""}</p>
+          <p>${produto.detalhes?.medida || ""}</p>
 
           <div class="price">
             R$ ${Number(produto.preco).toFixed(2)}
