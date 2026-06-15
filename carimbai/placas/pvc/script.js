@@ -4,7 +4,7 @@ async function carregarProdutos() {
   try {    
     // 🔥 FILTRO
     const response = await fetch(
-      `${API_URL}/produtos?categoria=placa&tipo_material=metal`
+      `${API_URL}/produtos?categoria=placa&tipo_material=pvc`
     );
 
     const produtos = await response.json();
@@ -34,7 +34,7 @@ async function carregarProdutos() {
             R$ ${Number(produto.preco).toFixed(2)}
           </div>
 
-          <a href="../../produto/index.html?id=${produto.id}&from=placas-metal" class="btn-primary">
+          <a href="../../produto/index.html?id=${produto.id}&from=placas-pvc" class="btn-primary">
             Ver detalhes
           </a>
         </div>
