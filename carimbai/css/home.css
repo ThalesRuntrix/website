@@ -1,0 +1,26 @@
+details {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+summary {
+    cursor: pointer;
+    font-weight: bold;
+    list-style: none; /* remove marcador padrão */
+}
+
+summary::-webkit-details-marker {
+    display: none; /* remove seta padrão no Chrome */
+}
+
+summary::before {
+    content: "▶";
+    display: inline-block;
+    margin-right: 10px;
+    transition: transform 0.3s;
+}
+
+details[open] summary::before {
+    transform: rotate(90deg);
+}
