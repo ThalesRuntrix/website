@@ -4,12 +4,12 @@ async function carregarProdutos() {
   try {    
     // 🔥 FILTRO
     const response = await fetch(
-      `${API_URL}/produtos?categoria=cracha&tipo_material=plastificado`
+      `${API_URL}/produtos?categoria=placa&tipo_material=metal`
     );
 
     const produtos = await response.json();
 
-    const container = document.getElementById("crachas");
+    const container = document.getElementById("placas");
     container.innerHTML = "";
 
     if (!produtos.length) {
@@ -34,7 +34,7 @@ async function carregarProdutos() {
             R$ ${Number(produto.preco).toFixed(2)}
           </div>
 
-          <a href="../../produto/index.html?id=${produto.id}&from=crachas-plastificado" class="btn-primary">
+          <a href="../../produto/index.html?id=${produto.id}&from=placas-metal" class="btn-primary">
             Ver detalhes
           </a>
         </div>

@@ -4,12 +4,12 @@ async function carregarProdutos() {
   try {    
     // 🔥 FILTRO
     const response = await fetch(
-      `${API_URL}/produtos?categoria=cartao&tipo_material=acrilico`
+      `${API_URL}/produtos?categoria=cracha&tipo_material=pvc`
     );
 
     const produtos = await response.json();
 
-    const container = document.getElementById("cartoes");
+    const container = document.getElementById("crachas");
     container.innerHTML = "";
 
     if (!produtos.length) {
@@ -34,7 +34,7 @@ async function carregarProdutos() {
             R$ ${Number(produto.preco).toFixed(2)}
           </div>
 
-          <a href="../../produto/index.html?id=${produto.id}&from=cartoes-acrilico" class="btn-primary">
+          <a href="../../produto/index.html?id=${produto.id}&from=crachas-pvc" class="btn-primary">
             Ver detalhes
           </a>
         </div>
