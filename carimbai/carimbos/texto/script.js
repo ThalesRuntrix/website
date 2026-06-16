@@ -27,8 +27,8 @@ async function carregarProdutos() {
         <img src="${imagem}" alt="${produto.nome}">
         
         <div class="product-info">
-          <h3>${produto.nome}</h3>
-          <p>${produto.detalhes?.medida || ""}</p>
+          <h3>Modelo: ${produto.nome}</h3>
+          <p>Medida: ${produto.detalhes?.medida || ""}</p>
 
           <div class="price">
             R$ ${Number(produto.preco).toFixed(2)}
