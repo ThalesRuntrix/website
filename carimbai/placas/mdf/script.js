@@ -21,7 +21,7 @@ async function carregarProdutos() {
       const div = document.createElement("div");
       div.classList.add("product-card");
 
-      const imagem = "../img/texto1.jpg";
+      const imagem = produto.imagem_url;
 
       div.innerHTML = `
         <img src="${imagem}" alt="${produto.nome}">
