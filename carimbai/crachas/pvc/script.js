@@ -18,17 +18,28 @@ async function carregarProdutos() {
     }
 
     produtos.forEach(produto => {
+
+      const imagens = produto.imagens?.length?produto.imagens:[produto.imagem_url];
+
+      const slides = imagens.map((img, index) => `
+        <img
+          src="${img}"
+          class="carousel-image ${index === 0 ? 'active' : ''}"
+          alt="${produto.nome}"
+        >
+      `).join("");
+
       const div = document.createElement("div");
       div.classList.add("product-card");
 
-      const imagem = produto.imagem_url;
-
       div.innerHTML = `
-        <img src="${imagem}" alt="${produto.nome}">
-        
+        <div class="carousel">
+          ${slides}
+        </div>
+
         <div class="product-info">
           <h3>${produto.nome}</h3>
-          <p>${produto.detalhes?.modelo || ""}</p>
+          <p>Medida: ${produto.detalhes?.medida || ""}</p>
 
           <div class="price">
             R$ ${Number(produto.preco).toFixed(2)}
@@ -39,6 +50,19 @@ async function carregarProdutos() {
           </a>
         </div>
       `;
+
+      const imagensCard = div.querySelectorAll(".carousel-image");
+      if (imagensCard.length > 1) {
+        let atual = 0;
+
+        setInterval(() => {
+          imagensCard[atual].classList.remove("active");
+
+          atual = (atual + 1) % imagensCard.length;
+
+          imagensCard[atual].classList.add("active");
+        }, 3000);
+      }
 
       container.appendChild(div);
     });
