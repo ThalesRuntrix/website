@@ -4,12 +4,12 @@ async function carregarProdutos() {
   try {    
     // 🔥 FILTRO
     const response = await fetch(
-      `${API_URL}/produtos?categoria=carimbo&tipo_material=madeira`
+      `${API_URL}/produtos?categoria=placa&tipo_material=acrilico`
     );
 
     const produtos = await response.json();
 
-    const container = document.getElementById("carimbos");
+    const container = document.getElementById("placas");
     container.innerHTML = "";
 
     if (!produtos.length) {
@@ -21,7 +21,7 @@ async function carregarProdutos() {
       const div = document.createElement("div");
       div.classList.add("product-card");
 
-      const imagem = produto.imagem_url;
+      const imagem = "../img/texto1.jpg";
 
       div.innerHTML = `
         <img src="${imagem}" alt="${produto.nome}">
@@ -34,7 +34,7 @@ async function carregarProdutos() {
             R$ ${Number(produto.preco).toFixed(2)}
           </div>
 
-          <a href="../../produto/index.html?id=${produto.id}&from=carimbos-embalagem" class="btn-primary">
+          <a href="../../produto/index.html?id=${produto.id}&from=placas-acrilico" class="btn-primary">
             Ver detalhes
           </a>
         </div>
