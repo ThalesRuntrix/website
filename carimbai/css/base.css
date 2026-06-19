@@ -21,6 +21,11 @@ body {
     width: 100%;
 }
 
+.logo-container a {
+    display: inline-block;
+    text-decoration: none;
+}
+
 /* HERO */
 .hero {
     background: url('../img/hero.jpg') center/cover no-repeat;
