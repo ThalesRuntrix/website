@@ -23,6 +23,8 @@ function trocarCor(index) {
 function renderProduto(produto) {
   const container = document.getElementById("produto-container");
 
+  console.log("PRODUTO RETORNADO: ", produto);
+
   let coresHTML = "";
 
   // 🔥 cores dinâmicas vindas da API
@@ -109,21 +111,21 @@ function getContextFromParam() {
   if (from.includes("carimbos")) {
     return {
       title: "Carimbo",
-      description: "Confira se o produto abaixo é o que procura e clique no Botão: Comprar Agora"
+      description: "Confira se o carimbo abaixo é o que procura e clique no Botão: Comprar Agora"
     };
   }
 
   if (from.includes("placas")) {
     return {
       title: "Placa",
-      description: "Confira se o produto abaixo é o que procura e clique no Botão: Comprar Agora"
+      description: "Confira se a placa abaixo é o que procura e clique no Botão: Comprar Agora"
     };
   }
 
   if (from.includes("crachas")) {
     return {
       title: "Crachá",
-      description: "Confira se o produto abaixo é o que procura e clique no Botão: Comprar Agora"
+      description: "Confira se o crachá abaixo é o que procura e clique no Botão: Comprar Agora"
     };
   }
 
