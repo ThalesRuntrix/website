@@ -28,7 +28,7 @@ function renderProduto(produto) {
   let coresHTML = "";
 
   // 🔥 cores dinâmicas vindas da API
-  if (produto.categoria === 'carimbo' && produto.variacoes && produto.variacoes.length > 0) {
+  if (produto.variacoes && produto.variacoes.length > 1) {
     coresHTML = `
       <div class="cores">
         <p>Escolha a cor:</p>
