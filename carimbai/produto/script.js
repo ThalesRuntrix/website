@@ -85,9 +85,7 @@ function trocarCor(index) {
 function renderProduto(produto) {
 
   const container =
-    document.getElementById("produto-container");
-
-  console.log("PRODUTO RETORNADO:", produto);
+    document.getElementById("produto-container");  
 
   // salva estado
   window._produto = produto;
