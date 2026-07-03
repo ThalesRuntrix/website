@@ -52,3 +52,36 @@
 .cor-option.ativa {
     border: 2px solid #22c55e;
 }
+
+.produto-galeria{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.galeria-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+
+    width:38px;
+    height:38px;
+
+    border:none;
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    font-size:18px;
+}
+
+.esquerda{
+    left:10px;
+}
+
+.direita{
+    right:10px;
+}

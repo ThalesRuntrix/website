@@ -63,25 +63,6 @@ async function carregarProdutos() {
           imagensCard[atual].classList.add("active");
         }, 3000);
       }
-      
-      /*const imagem = produto.imagem_url;
-
-      div.innerHTML = `
-        <img src="${imagem}" alt="${produto.nome}">
-        
-        <div class="product-info">
-          <h3>${produto.nome}</h3>
-          <p>Medida: ${produto.detalhes?.medida || ""}</p>
-
-          <div class="price">
-            R$ ${Number(produto.preco).toFixed(2)}
-          </div>
-          
-          <a href="../../produto/index.html?id=${produto.id}&from=carimbos-texto" class="btn-primary">
-            Ver detalhes
-          </a>
-        </div>
-      `; */
 
       container.appendChild(div);
     });
