@@ -169,17 +169,25 @@ function renderProduto(produto) {
 
       ${coresHTML}
 
-      <a
+      <button
         class="btn-primary"
-        href="/carimbai/checkout/index.html?id=${produto.id}">
-
+        onclick="irCheckout()">
         📲 Comprar Agora
-
-      </a>
+      </button>
 
     </div>
 
   `;
+
+}
+
+function irCheckout(){
+
+    const variacao =
+        window._variacoes[window._corAtual]?.cor || "";
+
+    window.location.href =
+        `/carimbai/checkout/index.html?id=${window._produto.id}&variacao=${encodeURIComponent(variacao)}`;
 
 }
 
