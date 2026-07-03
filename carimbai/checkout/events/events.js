@@ -128,6 +128,8 @@ export function initEvents() {
     
     const dados = formService.getFormData();  
     
+    console.log(dados);
+    
     const isValid = formService.validateFields(dados);
 
     if (!isValid) return;
