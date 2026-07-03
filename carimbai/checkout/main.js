@@ -10,6 +10,7 @@ async function init() {
     return params.get(name);
   }
   const id = getParam("id");
+  const variacao = getParam("variacao");
   
   const produto = await getProdutoById(id);
 
@@ -17,6 +18,8 @@ async function init() {
   state.precoBase = Number(produto.preco);
 
   document.getElementById("produto-nome").textContent = produto.nome;
+  document.getElementById("variacao").textContent =
+    variacao ? ` (${variacao})` : "";
 
   formUI.atualizarResumo();
   initEvents();
