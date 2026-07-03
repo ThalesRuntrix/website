@@ -27,6 +27,7 @@ export const formService = {
         return dados = {
             produto_id: getParam("id"),
             produto_nome: state.produto.nome,
+            produto_variacao: state.produto.variacao,
             total: state.totalPedido,
     
             nome: document.getElementById("nome").value,
