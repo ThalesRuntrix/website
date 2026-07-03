@@ -126,9 +126,7 @@ export function initEvents() {
   .addEventListener("submit", async function (e) {
     e.preventDefault();
     
-    const dados = formService.getFormData();  
-    
-    console.log(dados);
+    const dados = formService.getFormData();      
     
     const isValid = formService.validateFields(dados);
 

@@ -25,9 +25,6 @@ export const formService = {
         const entrega = document.getElementById("entrega").value; 
         let dados={}; 
 
-        console.log("ID:", getParam("id"));
-        console.log("Variação:", getParam("variacao"));
-        
         return dados = {
             produto_id: getParam("id"),
             produto_nome: state.produto.nome,

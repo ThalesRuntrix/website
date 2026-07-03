@@ -39,8 +39,6 @@ export const api = {
 
   async postPedido(dados) {
 
-    console.log(JSON.stringify(dados, null, 2));
-    
     const res = await fetch(`${API_URL}/pedidos`, {
         method: "POST",
         headers: {
