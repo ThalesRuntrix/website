@@ -187,7 +187,7 @@ function irCheckout(){
         window._variacoes[window._corAtual]?.cor || "";
 
     if (window._variacoes.length > 1) {
-        variacao = window._variacoes[window._variacaoAtual].cor;
+        variacao = window._variacoes[window._corAtual].cor;
     }
 
     window.location.href =
