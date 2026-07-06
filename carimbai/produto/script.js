@@ -186,6 +186,10 @@ function irCheckout(){
     const variacao =
         window._variacoes[window._corAtual]?.cor || "";
 
+    if (window._variacoes.length > 1) {
+        variacao = window._variacoes[window._variacaoAtual].cor;
+    }
+
     window.location.href =
         `/carimbai/checkout/index.html?id=${window._produto.id}&variacao=${encodeURIComponent(variacao)}`;
 
