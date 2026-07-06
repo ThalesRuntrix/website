@@ -183,7 +183,7 @@ function renderProduto(produto) {
 
 function irCheckout(){
 
-    const variacao =
+    let variacao =
         window._variacoes[window._corAtual]?.cor || "";
 
     if (window._variacoes.length > 1) {
