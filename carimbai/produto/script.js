@@ -11,6 +11,7 @@ window._produto = null;
 window._variacoes = [];
 window._corAtual = 0;
 window._imagemAtual = 0;
+window._temEscolhaCor = false;
 
 // ATUALIZA IMAGEM
 function atualizarImagem() {
@@ -92,6 +93,8 @@ function renderProduto(produto) {
   window._variacoes = produto.variacoes || [];
   window._corAtual = 0;
   window._imagemAtual = 0;
+  window._temEscolhaCor =
+  (produto.variacoes?.length || 0) > 1;
 
   let coresHTML = "";
 
@@ -183,15 +186,21 @@ function renderProduto(produto) {
 
 function irCheckout(){
 
-    let variacao =
-        window._variacoes[window._corAtual]?.cor || "";
+  let url = `/carimbai/checkout/index.html?id=${window._produto.id}`;
 
-    if (window._variacoes.length > 1) {
-        variacao = window._variacoes[window._corAtual].cor;
+  // Só envia a cor quando o cliente realmente escolheu uma
+  if (window._temEscolhaCor) {
+
+    const cor =
+      window._variacoes[window._corAtual]?.cor;
+
+    if (cor) {
+      url += `&variacao=${encodeURIComponent(cor)}`;
     }
 
-    window.location.href =
-        `/carimbai/checkout/index.html?id=${window._produto.id}&variacao=${encodeURIComponent(variacao)}`;
+  }
+
+  window.location.href = url;
 
 }
 
