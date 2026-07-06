@@ -25,8 +25,6 @@ export const pagamentoService = {
 
       const data = await api.pagarPix(pedidoId);
 
-      //
-
       const box = ui.getPaymentBox();
 
       if (!data.qr_code_base64) {
@@ -55,10 +53,6 @@ export const pagamentoService = {
             >
           </details>
 
-          <button id="pix-paid-test" class="btn-success">
-            Aprovar Pagamento (modo teste)
-          </button>
-
           <p class="pix-ok">
             Após o pagamento a confirmação costuma ser automática.
           </p>
@@ -66,9 +60,12 @@ export const pagamentoService = {
         </div>
       `;
 
-      // ==========================
-      // CHAMAR DEV-APPROVE ROUTE
-      // ==========================
+      
+      // DEV-APPROVE
+      /*
+      <button id="pix-paid-test" class="btn-success">
+            Aprovar Pagamento (modo teste)
+      </button>
       document
         .getElementById("pix-paid-test")
         .addEventListener("click", async () => {
@@ -100,7 +97,7 @@ export const pagamentoService = {
             alert("Erro no teste");
           }
 
-        });
+        }); */
       
       // ==========================
       // COPIAR PIX
