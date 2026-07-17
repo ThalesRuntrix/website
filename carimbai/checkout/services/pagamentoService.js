@@ -242,8 +242,7 @@ export const pagamentoService = {
                 ui.scroll();
             },
 
-            onSubmit: async (formData) => {
-              console.log(formData);
+            onSubmit: async (formData) => {             
 
                 try {
 
