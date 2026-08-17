@@ -48,10 +48,10 @@ formLogin.addEventListener("submit", async (event) => {
         senhaBackoffice = senha;
 
         document.getElementById("login-backoffice")
-            .style.display = "none";
+          .classList.add("auth-hidden");
 
         document.getElementById("backoffice")
-            .style.display = "block";
+          .classList.remove("auth-hidden");
 
         input.value = "";
 
@@ -80,10 +80,10 @@ async function apiBackoffice(url, options = {}) {
         senhaBackoffice = null;
 
         document.getElementById("backoffice")
-            .style.display = "none";
+          .classList.add("auth-hidden");
 
         document.getElementById("login-backoffice")
-            .style.display = "block";
+          .classList.remove("auth-hidden");
 
         throw new Error("Sessão inválida");
     }

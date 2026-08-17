@@ -20,6 +20,18 @@
       cursor: pointer;
     }
 
+    /* =====================================================
+   AUTENTICAÇÃO DO BACKOFFICE
+   ===================================================== */
+
+    #login-backoffice.auth-hidden {
+        display: none !important;
+    }
+
+    #backoffice.auth-hidden {
+        display: none !important;
+    }
+
     /* =========================
        LAYOUT
     ========================= */
@@ -477,4 +489,3 @@
         grid-template-columns: 1fr;
       }
     }
-    
