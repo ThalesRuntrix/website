@@ -1,56 +1,148 @@
 const API_URL = "https://carimbai-api.vercel.app/api/estoque";
 
-  let estoqueData = [];
-  let skuSelecionado = null;
+// =====================================================
+// AUTENTICAÇÃO BACKOFFICE
+// =====================================================
+let senhaBackoffice = null;
 
-  const $ = (id) => document.getElementById(id);
+const formLogin = document.getElementById("form-login");
 
+formLogin.addEventListener("submit", async (event) => {
 
-  // =====================================================
-  // CARREGAR ESTOQUE
-  // =====================================================
+    event.preventDefault();
 
-  async function carregarEstoque() {
+    const input = document.getElementById("senha-backoffice");
+    const erro = document.getElementById("login-erro");
 
-    $("estadoTabela").style.display = "block";
-    $("estadoTabela").className = "state";
-    $("estadoTabela").textContent = "Carregando estoque...";
+    const senha = input.value;
 
-    $("tableWrapper").style.display = "none";
+    erro.textContent = "";
 
     try {
 
-      const response = await fetch(API_URL);
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data?.error || "Erro ao buscar estoque"
+        const response = await fetch(
+            `${API_URL}?acao=login`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    senha
+                })
+            }
         );
-      }
 
-      estoqueData = Array.isArray(data)
-        ? data
-        : [];
+        const data = await response.json();
 
-      atualizarResumo();
+        if (!response.ok) {
+            erro.textContent =
+                data.error || "Senha incorreta.";
 
-      renderizarTabela();
+            input.select();
+
+            return;
+        }
+
+        // Guarda apenas em memória
+        senhaBackoffice = senha;
+
+        document.getElementById("login-backoffice")
+            .style.display = "none";
+
+        document.getElementById("backoffice")
+            .style.display = "block";
+
+        input.value = "";
+
+        carregarEstoque();
 
     } catch (error) {
 
-      console.error(error);
+        console.error(error);
 
-      $("estadoTabela").className =
-        "state error";
-
-      $("estadoTabela").textContent =
-        error.message || "Erro ao carregar estoque";
-
-      $("tableWrapper").style.display = "none";
+        erro.textContent =
+            "Não foi possível conectar ao servidor.";
     }
+});
+
+async function apiBackoffice(url, options = {}) {
+
+    options.headers = {
+        ...(options.headers || {}),
+        "X-Backoffice-Password": senhaBackoffice
+    };
+
+    const response = await fetch(url, options);
+
+    if (response.status === 401) {
+
+        senhaBackoffice = null;
+
+        document.getElementById("backoffice")
+            .style.display = "none";
+
+        document.getElementById("login-backoffice")
+            .style.display = "block";
+
+        throw new Error("Sessão inválida");
+    }
+
+    return response;
+}
+
+// =====================================================
+// CARREGAR ESTOQUE
+// =====================================================
+
+let estoqueData = [];
+let skuSelecionado = null;
+
+const $ = (id) => document.getElementById(id);
+
+async function carregarEstoque() {
+
+  $("estadoTabela").style.display = "block";
+  $("estadoTabela").className = "state";
+  $("estadoTabela").textContent = "Carregando estoque...";
+
+  $("tableWrapper").style.display = "none";
+
+  try {
+
+    const response = await apiBackoffice(
+        `${API_URL}?acao=estoque`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data?.error || "Erro ao buscar estoque"
+      );
+    }
+
+    estoqueData = Array.isArray(data)
+      ? data
+      : [];
+
+    atualizarResumo();
+
+    renderizarTabela();
+
+  } catch (error) {
+
+    console.error(error);
+
+    $("estadoTabela").className =
+      "state error";
+
+    $("estadoTabela").textContent =
+      error.message || "Erro ao carregar estoque";
+
+    $("tableWrapper").style.display = "none";
   }
+}
 
 
   // =====================================================
@@ -529,19 +621,16 @@ const API_URL = "https://carimbai-api.vercel.app/api/estoque";
 
     try {
 
-      const response =
-        await fetch(API_URL, {
-
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify(payload)
-        });
+        const response = await apiBackoffice(
+          `${API_URL}?acao=movimentacao`,
+            {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify(payload)
+            }
+        );
 
 
       const data =
@@ -604,11 +693,10 @@ const API_URL = "https://carimbai-api.vercel.app/api/estoque";
 
 
     try {
-
-      const response =
-        await fetch(
-          `${API_URL}?id=${item.id}&historico=true`
-        );
+      
+      const response = await apiBackoffice(
+        `${API_URL}?acao=estoque?id=${item.id}&historico=true`
+      );  
 
       const data =
         await response.json();

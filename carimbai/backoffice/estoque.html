@@ -12,7 +12,34 @@
 
 <body>
 
-<div class="layout">
+    <div id="login-backoffice">
+
+        <h2>Acesso ao Backoffice</h2>
+
+            <form id="form-login">
+
+                <label for="senha-backoffice">
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    id="senha-backoffice"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit">
+                    Entrar
+                </button>
+
+                <div id="login-erro"></div>
+
+            </form>
+
+    </div>
+
+<div class="layout" id="backoffice" style="display:none;">
 
   <!-- =========================
        SIDEBAR
