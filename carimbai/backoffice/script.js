@@ -979,11 +979,4 @@ async function carregarEstoque() {
       fecharHistorico();
     }
   );
-
-
-  // =====================================================
-  // INICIALIZAÇÃO
-  // =====================================================
-
-  carregarEstoque();
   
