@@ -2,7 +2,7 @@ import { api } from "../api/api.js";
 
 
 const mp = new MercadoPago(
-  "APP_USR-b669d1f5-d7ce-43d5-a672-f2cb1043ead6",
+  "TEST-02d3a526-f156-46d2-b951-11d85b8cf308",
   {
     locale: "pt-BR"
   }
