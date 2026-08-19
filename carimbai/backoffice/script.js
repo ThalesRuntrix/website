@@ -850,7 +850,7 @@ async function carregarEstoque() {
     try {
       
       const response = await apiBackoffice(
-        `${API_URL}?acao=estoque?id=${item.id}&historico=true`
+        `${API_URL}?acao=estoque&id=${item.id}&historico=true`
       );  
 
       const data =
