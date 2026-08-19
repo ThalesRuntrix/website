@@ -470,6 +470,90 @@ async function carregarEstoque() {
     skuSelecionado = null;
   }
 
+  // ======================================================
+  // SALVAR EDIÇÃO DO SKU
+  // ======================================================
+
+  async function salvarEdicaoSKU() {
+
+    if (!skuSelecionado?.id) {
+      console.error("Nenhum SKU selecionado para edição.");
+      return;
+    }
+
+    const estoqueMinimo = Number(
+      $("edicaoEstoqueMinimo").value
+    );
+
+    const ativo =
+      $("edicaoAtivo").checked;
+
+    // ----------------------------
+    // VALIDAÇÃO
+    // ----------------------------
+
+    if (
+      !Number.isInteger(estoqueMinimo) ||
+      estoqueMinimo < 0
+    ) {
+      alert("Informe um estoque mínimo válido.");
+      return;
+    }
+
+    const btnSalvar =
+      $("btnSalvarEdicaoSKU");
+
+    try {
+
+      btnSalvar.disabled = true;
+      btnSalvar.textContent = "Salvando...";
+
+      const response = await apiBackoffice(
+        `/api/estoque?id=${skuSelecionado.id}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            estoque_minimo: estoqueMinimo,
+            ativo: ativo
+          })
+        }
+      );
+
+      if (!response) {
+        throw new Error("Resposta inválida da API.");
+      }
+
+      // ----------------------------
+      // FECHA MODAL
+      // ----------------------------
+
+      fecharModalEdicaoSKU();
+
+      // ----------------------------
+      // ATUALIZA A TABELA
+      // ----------------------------
+
+      await carregarEstoque();
+
+    } catch (err) {
+
+      console.error(
+        "Erro ao salvar edição do SKU:",
+        err
+      );
+
+      alert(
+        err.message ||
+        "Não foi possível salvar as alterações."
+      );
+
+    } finally {
+
+      btnSalvar.disabled = false;
+      btnSalvar.textContent = "Salvar";
+    }
+  }
+
 
   // =====================================================
   // EVENTOS DA TABELA
@@ -998,7 +1082,13 @@ async function carregarEstoque() {
     .addEventListener(
       "click",
       fecharModalEdicaoSKU
-  );  
+  );
+  
+  $("btnSalvarEdicaoSKU")
+  .addEventListener(
+    "click",
+    salvarEdicaoSKU
+  );
 
   $("modalEdicaoSKU")
   .addEventListener(
