@@ -396,6 +396,14 @@ async function carregarEstoque() {
 
             <button
               class="btn btn-small btn-secondary"
+              data-action="editar"
+              data-id="${item.id}"
+            >
+              Editar
+            </button>
+
+            <button
+              class="btn btn-small btn-secondary"
               data-action="movimentar"
               data-id="${item.id}"
             >
@@ -418,6 +426,48 @@ async function carregarEstoque() {
 
       body.appendChild(tr);
     }
+  }
+
+  // =====================================================
+  // MODAL EDIÇÃO SKU
+  // =====================================================
+
+  function abrirModalEdicaoSKU(item) {
+
+    skuSelecionado = item;
+
+    $("edicaoSkuNome").textContent =
+      `${item.produto} • ${item.sku}`;
+
+    $("edicaoProduto").textContent =
+      item.produto || "-";
+
+    $("edicaoCor").textContent =
+      item.cor || "-";
+
+    $("edicaoSKU").textContent =
+      item.sku || "-";
+
+    $("edicaoEstoqueAtual").textContent =
+      Number(item.estoque);
+
+    $("edicaoEstoqueMinimo").value =
+      Number(item.estoque_minimo);
+
+    $("edicaoAtivo").checked =
+      item.ativo === true;
+
+    $("modalEdicaoSKU")
+      .classList.add("open");
+  }
+
+
+  function fecharModalEdicaoSKU() {
+
+    $("modalEdicaoSKU")
+      .classList.remove("open");
+
+    skuSelecionado = null;
   }
 
 
@@ -445,6 +495,16 @@ async function carregarEstoque() {
         );
 
       if (!item) {
+        return;
+      }
+
+      if (
+        button.dataset.action ===
+        "editar"
+      ) {
+
+        abrirModalEdicaoSKU(item);
+
         return;
       }
 
@@ -927,6 +987,34 @@ async function carregarEstoque() {
       fecharModalMovimentacao
     );
 
+  $("btnCancelarEdicaoSKU")
+  .addEventListener(
+    "click",
+    fecharModalEdicaoSKU
+  );
+
+
+  $("btnFecharEdicaoSKU")
+    .addEventListener(
+      "click",
+      fecharModalEdicaoSKU
+  );  
+
+  $("modalEdicaoSKU")
+  .addEventListener(
+    "click",
+    (event) => {
+
+      if (
+        event.target ===
+        $("modalEdicaoSKU")
+      ) {
+
+        fecharModalEdicaoSKU();
+      }
+    }
+  );
+
 
   $("btnFecharHistorico")
     .addEventListener(
@@ -977,6 +1065,7 @@ async function carregarEstoque() {
 
       fecharModalMovimentacao();
       fecharHistorico();
+      fecharModalEdicaoSKU();
     }
   );
   
