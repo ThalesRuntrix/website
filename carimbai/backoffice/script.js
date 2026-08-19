@@ -509,9 +509,12 @@ async function carregarEstoque() {
       btnSalvar.textContent = "Salvando...";
 
       const response = await apiBackoffice(
-        `/api/estoque?id=${skuSelecionado.id}`,
+        `${API_URL}?id=${skuSelecionado.id}`,
         {
           method: "PATCH",
+          headers: {
+              "Content-Type": "application/json"
+          },
           body: JSON.stringify({
             estoque_minimo: estoqueMinimo,
             ativo: ativo
@@ -519,9 +522,17 @@ async function carregarEstoque() {
         }
       );
 
-      if (!response) {
-        throw new Error("Resposta inválida da API.");
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+
+        throw new Error(
+          data?.error ||
+          "Erro ao atualizar sku"
+        );
       }
+            
 
       // ----------------------------
       // FECHA MODAL
