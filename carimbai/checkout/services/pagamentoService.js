@@ -246,6 +246,14 @@ export const pagamentoService = {
 
                 try {
 
+                console.log("MP onSubmit:", {
+                    tokenExists: Boolean(formData?.token),
+                    tokenLength: formData?.token?.length,
+                    paymentMethodId: formData?.payment_method_id,
+                    installments: formData?.installments,
+                    issuerId: formData?.issuer_id
+                });  
+
                 const pagamento = await api.pagarCartao(
                     pedido.pedido_id,
                     formData
