@@ -477,6 +477,179 @@
   </div>
 
 </div>
+  <!-- =========================
+     MODAL EDIÇÃO SKU
+========================== -->
+
+<div
+  class="modal-backdrop"
+  id="modalEdicaoSKU"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+          Editar SKU
+        </h2>
+
+        <p id="edicaoSkuNome"></p>
+
+      </div>
+
+      <button
+        class="close-btn"
+        id="btnFecharEdicaoSKU"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- =========================
+         DADOS DO SKU
+    ========================== -->
+
+    <div class="sku-info">
+
+      <div class="sku-info-item">
+
+        <span class="sku-info-label">
+          Produto
+        </span>
+
+        <strong id="edicaoProduto">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="sku-info-item">
+
+        <span class="sku-info-label">
+          Cor
+        </span>
+
+        <strong id="edicaoCor">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="sku-info-item">
+
+        <span class="sku-info-label">
+          SKU
+        </span>
+
+        <strong id="edicaoSKU">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="sku-info-item">
+
+        <span class="sku-info-label">
+          Estoque atual
+        </span>
+
+        <strong
+          id="edicaoEstoqueAtual"
+          class="sku-info-stock"
+        >
+          0
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         ESTOQUE MÍNIMO
+    ========================== -->
+
+    <div class="form-group">
+
+      <label for="edicaoEstoqueMinimo">
+        Estoque mínimo
+      </label>
+
+      <input
+        type="number"
+        id="edicaoEstoqueMinimo"
+        min="0"
+        step="1"
+        placeholder="Ex.: 5"
+      >
+
+      <div class="form-help">
+        Define quando o SKU será considerado com estoque baixo.
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         ATIVO
+    ========================== -->
+
+    <div class="form-group">
+
+      <label class="checkbox-label">
+
+        <input
+          type="checkbox"
+          id="edicaoAtivo"
+        >
+
+        <span>
+          SKU ativo
+        </span>
+
+      </label>
+
+      <div class="form-help">
+        SKUs inativos não ficam disponíveis para venda.
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         AÇÕES
+    ========================== -->
+
+    <div class="modal-actions">
+
+      <button
+        class="btn btn-secondary"
+        id="btnCancelarEdicaoSKU"
+      >
+        Cancelar
+      </button>
+
+      <button
+        class="btn btn-primary"
+        id="btnSalvarEdicaoSKU"
+      >
+        Salvar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 </div>
     <script src="script.js"></script>
 </body>
