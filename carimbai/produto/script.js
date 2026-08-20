@@ -68,6 +68,15 @@ function imagemAnterior() {
 // TROCAR COR
 function trocarCor(index) {
 
+  const variacao = window._variacoes[index];
+
+  if (!variacao) return;
+
+  // Não permite selecionar variação indisponível
+  if (!variacao.disponivel) {
+    return;
+  }
+
   window._corAtual = index;
   window._imagemAtual = 0;
 
@@ -77,8 +86,13 @@ function trocarCor(index) {
     el.classList.remove("ativa");
   });
 
-  document.querySelectorAll(".cor-option")[index]
-    .classList.add("ativa");
+  const opcao = document.querySelectorAll(".cor-option")[index];
+
+  if (opcao) {
+    opcao.classList.add("ativa");
+  }
+
+  atualizarInterfaceCompra();
 
 }
 
@@ -89,12 +103,15 @@ function renderProduto(produto) {
     document.getElementById("produto-container");  
 
   // salva estado
+  const primeiroIndiceDisponivel = window._variacoes.findIndex(v => v.disponivel);
   window._produto = produto;
-  window._variacoes = produto.variacoes || [];
-  window._corAtual = 0;
+  window._variacoes = produto.variacoes || [];  
   window._imagemAtual = 0;
-  window._temEscolhaCor =
-  (produto.variacoes?.length || 0) > 1;
+  window._temEscolhaCor = (produto.variacoes?.length || 0) > 1;
+  window._corAtual =
+    primeiroIndiceDisponivel >= 0
+      ? primeiroIndiceDisponivel
+      : 0;
 
   let coresHTML = "";
 
@@ -110,10 +127,14 @@ function renderProduto(produto) {
           ${produto.variacoes.map((v, i) => `
 
             <div
-              class="cor-option ${i === 0 ? "ativa" : ""}"
+              class="
+                cor-option
+                ${i === 0 && v.disponivel ? "ativa" : ""}
+                ${!v.disponivel ? "indisponivel" : ""}
+              "
               style="background:${v.hex}"
               onclick="trocarCor(${i})"
-              title="${v.cor}">
+              title="${v.cor}${!v.disponivel ? " - Indisponível" : ""}">
             </div>
 
           `).join("")}
@@ -127,11 +148,13 @@ function renderProduto(produto) {
 
   // primeira imagem da primeira cor
   const imgInicial =
-    produto.variacoes?.[0]?.imagens?.[0]?.imagem_url ||
-    "";
+  window._variacoes[window._corAtual]
+    ?.imagens?.[0]
+    ?.imagem_url || "";
 
   const totalImagens =
-    produto.variacoes?.[0]?.imagens?.length || 0;
+  window._variacoes[window._corAtual]
+    ?.imagens?.length || 0;
 
   container.innerHTML = `
 
@@ -173,6 +196,7 @@ function renderProduto(produto) {
       ${coresHTML}
 
       <button
+        id="btn-comprar"
         class="btn-primary"
         onclick="irCheckout()">
         📲 Comprar Agora
@@ -182,21 +206,64 @@ function renderProduto(produto) {
 
   `;
 
+  atualizarInterfaceCompra();
+
 }
 
-function irCheckout(){
+// ATUALIZA O ESTADO DA COMPRA
+function atualizarInterfaceCompra() {
 
-  let url = `/carimbai/checkout/index.html?id=${window._produto.id}`;
+  const botao = document.getElementById("btn-comprar");
 
-  // Só envia a cor quando o cliente realmente escolheu uma
-  if (window._temEscolhaCor) {
+  if (!botao) return;
 
-    const cor =
-      window._variacoes[window._corAtual]?.cor;
+  const variacao =
+    window._variacoes[window._corAtual];
 
-    if (cor) {
-      url += `&variacao=${encodeURIComponent(cor)}`;
-    }
+  if (!variacao || !variacao.disponivel) {
+
+    botao.disabled = true;
+    botao.textContent = "Indisponível";
+    botao.classList.add("indisponivel");
+
+    return;
+  }
+
+  botao.disabled = false;
+  botao.textContent = "📲 Comprar Agora";
+  botao.classList.remove("indisponivel");
+
+}
+
+function irCheckout() {
+
+  const variacao =
+    window._variacoes[window._corAtual];
+
+  if (!variacao) {
+    return;
+  }
+
+  // Não permite compra sem SKU disponível
+  if (
+    !variacao.sku_id ||
+    !variacao.disponivel
+  ) {
+    return;
+  }
+
+  let url =
+    `/carimbai/checkout/index.html` +
+    `?id=${window._produto.id}`;
+
+  // Envia o SKU
+  url += `&sku_id=${encodeURIComponent(variacao.sku_id)}`;
+
+  // Mantém a cor por compatibilidade com o checkout atual
+  if (variacao.cor) {
+
+    url +=
+      `&variacao=${encodeURIComponent(variacao.cor)}`;
 
   }
 

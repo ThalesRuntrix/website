@@ -85,3 +85,14 @@
 .direita{
     right:10px;
 }
+
+.cor-option.indisponivel {
+  opacity: 0.35;
+  cursor: not-allowed;
+  position: relative;
+}
+
+#btn-comprar.indisponivel {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
