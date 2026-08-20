@@ -47,10 +47,44 @@
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid transparent;
+    position: relative;
+    box-sizing: border-box;
 }
 
 .cor-option.ativa {
     border: 2px solid #22c55e;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.15);
+}
+
+.cor-option.indisponivel {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.cor-option.indisponivel::before,
+.cor-option.indisponivel::after {
+    content: "";
+    position: absolute;
+
+    width: 3px;
+    height: 34px;
+
+    top: 50%;
+    left: 50%;
+
+    background: #ef4444;
+
+    border-radius: 2px;
+
+    transform-origin: center;
+}
+
+.cor-option.indisponivel::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.cor-option.indisponivel::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .produto-galeria{
@@ -86,11 +120,6 @@
     right:10px;
 }
 
-.cor-option.indisponivel {
-  opacity: 0.35;
-  cursor: not-allowed;
-  position: relative;
-}
 
 #btn-comprar.indisponivel {
   opacity: 0.5;

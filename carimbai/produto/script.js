@@ -99,15 +99,29 @@ function trocarCor(index) {
 // RENDERIZA PRODUTO
 function renderProduto(produto) {
 
-  const container =
-    document.getElementById("produto-container");  
+   const container =
+    document.getElementById("produto-container");
 
-  // salva estado
-  const primeiroIndiceDisponivel = window._variacoes.findIndex(v => v.disponivel);
+  // =========================================================
+  // SALVA ESTADO
+  // =========================================================
+
   window._produto = produto;
-  window._variacoes = produto.variacoes || [];  
+  window._variacoes = produto.variacoes || [];
   window._imagemAtual = 0;
-  window._temEscolhaCor = (produto.variacoes?.length || 0) > 1;
+
+  window._temEscolhaCor =
+    window._variacoes.length > 1;
+
+  // =========================================================
+  // DEFINE A VARIAÇÃO INICIAL
+  // =========================================================
+
+  const primeiroIndiceDisponivel =
+    window._variacoes.findIndex(
+      v => v.disponivel === true
+    );
+
   window._corAtual =
     primeiroIndiceDisponivel >= 0
       ? primeiroIndiceDisponivel
@@ -129,10 +143,10 @@ function renderProduto(produto) {
             <div
               class="
                 cor-option
-                ${i === 0 && v.disponivel ? "ativa" : ""}
+                ${i === window._corAtual ? "ativa" : ""}
                 ${!v.disponivel ? "indisponivel" : ""}
               "
-              style="background:${v.hex}"
+              style="background:${v.hex || "#ccc"}"
               onclick="trocarCor(${i})"
               title="${v.cor}${!v.disponivel ? " - Indisponível" : ""}">
             </div>
