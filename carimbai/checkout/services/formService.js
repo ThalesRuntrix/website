@@ -25,6 +25,12 @@ export const formService = {
         const entrega = document.getElementById("entrega").value; 
         let dados={}; 
 
+        console.log("DADOS CHECKOUT:", {
+        produto_id: getParam("id"),
+        variacao: getParam("variacao"),
+        sku_id: getParam("sku_id")
+});
+
         return dados = {
             produto_id: getParam("id"),
             produto_sku_id: getParam("sku_id"),
