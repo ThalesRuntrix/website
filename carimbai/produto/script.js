@@ -96,6 +96,20 @@ function trocarCor(index) {
 
 }
 
+
+// BUSCA PREÇO DO PRODUTO
+function obterPrecoProduto(produto) {
+  const variacaoComPreco = produto.variacoes?.find(
+    v => v.preco !== null && v.preco !== undefined
+  );
+
+  if (variacaoComPreco) {
+    return Number(variacaoComPreco.preco);
+  }
+
+  return Number(produto.preco || 0);
+}
+
 // RENDERIZA PRODUTO
 function renderProduto(produto) {
 
@@ -204,7 +218,7 @@ function renderProduto(produto) {
       </div>
 
       <div class="produto-preco">
-        R$ ${Number(produto.preco).toFixed(2)}
+        R$ ${obterPrecoProduto(produto).toFixed(2)}
       </div>
 
       ${coresHTML}
