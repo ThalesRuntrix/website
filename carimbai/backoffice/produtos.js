@@ -364,32 +364,33 @@ function renderizarProdutos() {
 function renderLinhaProduto(produto) {
 
   const categoria =
+    produto.categoria ||
+    produto.categoria_nome ||
     produto.categorias?.nome ||
     produto.categoria?.nome ||
-    produto.categoria_nome ||
     "-";
 
-
-  const skus =
-    produto.produto_skus ||
-    produto.skus ||
-    [];
-
-
-  const ativos =
-    skus.filter(
-      sku => sku.ativo !== false
-    );
-
+  const totalSkus =
+    Number(produto.total_skus ?? 0);
 
   const preco =
-    Number(
-      produto.preco || 0
-    );
+    Number(produto.preco ?? 0);
 
+  /*
+   * O endpoint da listagem retorna total_skus,
+   * mas não retorna os detalhes individuais dos SKUs.
+   *
+   * Portanto, nesta tela consideramos que:
+   * - 0 SKUs = Inativo
+   * - 1 ou mais SKUs = Ativo
+   *
+   * O status individual dos SKUs será tratado
+   * dentro da edição do produto.
+   */
+  const ativo =
+    totalSkus > 0;
 
   return `
-
     <tr>
 
       <td>
@@ -407,34 +408,29 @@ function renderLinhaProduto(produto) {
       </td>
 
       <td>
-        ${skus.length}
+        ${totalSkus}
       </td>
 
       <td>
-
         ${
-          ativos.length
-            ? `<span class="status ativo">Ativo</span>`
-            : `<span class="status inativo">Inativo</span>`
+          ativo
+            ? `<span class="status status-ok">Ativo</span>`
+            : `<span class="status status-off">Inativo</span>`
         }
-
       </td>
 
       <td>
-
         <button
+          type="button"
           class="btn btn-small"
           onclick="editarProduto(${produto.id})"
         >
           Editar
         </button>
-
       </td>
 
     </tr>
-
   `;
-
 }
 
 
@@ -490,34 +486,29 @@ window.editarProduto =
 
       const response =
         await fetch(
-          `${API_URL}/produto/${id}`,
-          {
-            headers: getHeaders()
-          }
+          `${API_URL}/produto/${id}`
         );
-
 
       if (!response.ok) {
-
         throw new Error(
-          "Erro ao carregar produto."
+          `Erro ao carregar produto (${response.status}).`
         );
-
       }
-
 
       const produto =
         await response.json();
 
+      console.log(
+        "Produto carregado para edição:",
+        produto
+      );
 
       produtoEditando =
         produto;
 
-
       preencherFormulario(
         produto
       );
-
 
       document
         .getElementById(
@@ -526,7 +517,6 @@ window.editarProduto =
         .textContent =
           "Editar produto";
 
-
       document
         .getElementById(
           "subtituloModalProduto"
@@ -534,20 +524,19 @@ window.editarProduto =
         .textContent =
           `Editando produto #${id}`;
 
-
       abrirModal();
-
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "Erro ao editar produto:",
+        error
+      );
 
       alert(
         "Não foi possível carregar o produto."
       );
-
     }
-
   };
 
 
@@ -1714,7 +1703,7 @@ function abrirModal() {
     .getElementById(
       "modalProduto"
     )
-    .classList.add("ativo");
+    .classList.add("open");
 
 }
 
@@ -1725,7 +1714,7 @@ function fecharModal() {
     .getElementById(
       "modalProduto"
     )
-    .classList.remove("ativo");
+    .classList.remove("open");
 
 }
 
