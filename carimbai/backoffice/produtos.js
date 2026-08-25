@@ -1,0 +1,1773 @@
+const API_URL =
+  "https://carimbai-api.vercel.app/api";
+
+
+// =========================================================
+// ESTADO
+// =========================================================
+
+let senhaBackoffice = null;
+
+let produtos = [];
+
+let categorias = [];
+
+let produtoEditando = null;
+
+
+// =========================================================
+// ELEMENTOS
+// =========================================================
+
+const loginBackoffice =
+  document.getElementById("login-backoffice");
+
+const backoffice =
+  document.getElementById("backoffice");
+
+
+// =========================================================
+// LOGIN
+// =========================================================
+
+document
+  .getElementById("form-login")
+  .addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const senha =
+      document
+        .getElementById("senha-backoffice")
+        .value
+        .trim();
+
+    if (!senha) return;
+
+    senhaBackoffice = senha;
+
+    try {
+
+      await carregarProdutos();
+
+      loginBackoffice.style.display = "none";
+
+      backoffice.classList.remove("auth-hidden");
+
+    } catch (error) {
+
+      senhaBackoffice = null;
+
+      document
+        .getElementById("login-erro")
+        .textContent =
+          "Senha inválida ou erro ao acessar o backoffice.";
+
+      console.error(error);
+
+    }
+
+  });
+
+
+// =========================================================
+// HEADERS
+// =========================================================
+
+function getHeaders() {
+
+  return {
+
+    "Content-Type": "application/json",
+
+    "X-Backoffice-Password":
+      senhaBackoffice
+
+  };
+
+}
+
+
+// =========================================================
+// GET PRODUTOS
+// =========================================================
+
+async function carregarProdutos() {
+
+  const response =
+    await fetch(
+      `${API_URL}/produtos?acao=backoffice`,
+      {
+        headers: getHeaders()
+      }
+    );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Não foi possível carregar os produtos."
+    );
+
+  }
+
+
+  const data =
+    await response.json();
+
+
+  /*
+   * Mantemos flexibilidade caso o endpoint
+   * retorne diretamente o array ou um objeto.
+   */
+
+  produtos =
+    Array.isArray(data)
+      ? data
+      : data.produtos || [];
+
+
+  prepararCategorias();
+
+  renderizarProdutos();
+
+}
+
+
+// =========================================================
+// CATEGORIAS
+// =========================================================
+
+function prepararCategorias() {
+
+  const mapa =
+    new Map();
+
+
+  produtos.forEach(produto => {
+
+    const categoria =
+      produto.categorias ||
+      produto.categoria;
+
+
+    if (!categoria) return;
+
+
+    const id =
+      categoria.id ??
+      produto.categoria_id;
+
+
+    const nome =
+      categoria.nome ??
+      produto.categoria_nome;
+
+
+    if (id !== undefined && nome) {
+
+      mapa.set(
+        String(id),
+        nome
+      );
+
+    }
+
+  });
+
+
+  categorias =
+    [...mapa.entries()]
+      .map(([id, nome]) => ({
+        id,
+        nome
+      }))
+      .sort((a, b) =>
+        a.nome.localeCompare(
+          b.nome,
+          "pt-BR"
+        )
+      );
+
+
+  const select =
+    document.getElementById(
+      "filtroCategoria"
+    );
+
+
+  select.innerHTML = `
+    <option value="">
+      Todas as categorias
+    </option>
+  `;
+
+
+  categorias.forEach(categoria => {
+
+    select.innerHTML += `
+      <option value="${categoria.id}">
+        ${categoria.nome}
+      </option>
+    `;
+
+  });
+
+
+  const selectForm =
+    document.getElementById(
+      "produtoCategoria"
+    );
+
+
+  selectForm.innerHTML = `
+    <option value="">
+      Selecione
+    </option>
+  `;
+
+
+  categorias.forEach(categoria => {
+
+    selectForm.innerHTML += `
+      <option value="${categoria.id}">
+        ${categoria.nome}
+      </option>
+    `;
+
+  });
+
+}
+
+
+// =========================================================
+// FILTROS
+// =========================================================
+
+document
+  .getElementById("buscaProduto")
+  .addEventListener(
+    "input",
+    renderizarProdutos
+  );
+
+
+document
+  .getElementById("filtroCategoria")
+  .addEventListener(
+    "change",
+    renderizarProdutos
+  );
+
+
+// =========================================================
+// RENDER TABELA
+// =========================================================
+
+function renderizarProdutos() {
+
+  const busca =
+    document
+      .getElementById("buscaProduto")
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const categoriaFiltro =
+    document
+      .getElementById("filtroCategoria")
+      .value;
+
+
+  const filtrados =
+    produtos.filter(produto => {
+
+      const nome =
+        String(
+          produto.nome || ""
+        ).toLowerCase();
+
+
+      const correspondeBusca =
+        !busca ||
+        nome.includes(busca);
+
+
+      const categoriaId =
+        produto.categoria_id ??
+        produto.categorias?.id ??
+        produto.categoria?.id;
+
+
+      const correspondeCategoria =
+        !categoriaFiltro ||
+        String(categoriaId) ===
+          String(categoriaFiltro);
+
+
+      return (
+        correspondeBusca &&
+        correspondeCategoria
+      );
+
+    });
+
+
+  const estado =
+    document.getElementById(
+      "estadoTabela"
+    );
+
+  const wrapper =
+    document.getElementById(
+      "tableWrapper"
+    );
+
+  const body =
+    document.getElementById(
+      "produtosBody"
+    );
+
+
+  if (!filtrados.length) {
+
+    estado.textContent =
+      "Nenhum produto encontrado.";
+
+    estado.style.display = "block";
+
+    wrapper.style.display = "none";
+
+    return;
+
+  }
+
+
+  estado.style.display = "none";
+
+  wrapper.style.display = "block";
+
+
+  body.innerHTML =
+    filtrados
+      .map(renderLinhaProduto)
+      .join("");
+
+}
+
+
+// =========================================================
+// LINHA
+// =========================================================
+
+function renderLinhaProduto(produto) {
+
+  const categoria =
+    produto.categorias?.nome ||
+    produto.categoria?.nome ||
+    produto.categoria_nome ||
+    "-";
+
+
+  const skus =
+    produto.produto_skus ||
+    produto.skus ||
+    [];
+
+
+  const ativos =
+    skus.filter(
+      sku => sku.ativo !== false
+    );
+
+
+  const preco =
+    Number(
+      produto.preco || 0
+    );
+
+
+  return `
+
+    <tr>
+
+      <td>
+        <strong>
+          ${escapeHtml(produto.nome || "-")}
+        </strong>
+      </td>
+
+      <td>
+        ${escapeHtml(categoria)}
+      </td>
+
+      <td>
+        R$ ${preco.toFixed(2)}
+      </td>
+
+      <td>
+        ${skus.length}
+      </td>
+
+      <td>
+
+        ${
+          ativos.length
+            ? `<span class="status ativo">Ativo</span>`
+            : `<span class="status inativo">Inativo</span>`
+        }
+
+      </td>
+
+      <td>
+
+        <button
+          class="btn btn-small"
+          onclick="editarProduto(${produto.id})"
+        >
+          Editar
+        </button>
+
+      </td>
+
+    </tr>
+
+  `;
+
+}
+
+
+// =========================================================
+// NOVO PRODUTO
+// =========================================================
+
+document
+  .getElementById("btnNovoProduto")
+  .addEventListener(
+    "click",
+    novoProduto
+  );
+
+
+function novoProduto() {
+
+  produtoEditando = null;
+
+
+  document
+    .getElementById(
+      "tituloModalProduto"
+    )
+    .textContent =
+      "Novo produto";
+
+
+  document
+    .getElementById(
+      "subtituloModalProduto"
+    )
+    .textContent =
+      "Cadastre as informações do produto.";
+
+
+  limparFormulario();
+
+
+  abrirModal();
+
+}
+
+
+// =========================================================
+// EDITAR
+// =========================================================
+
+window.editarProduto =
+  async function editarProduto(id) {
+
+    try {
+
+      const response =
+        await fetch(
+          `${API_URL}/produto/${id}`,
+          {
+            headers: getHeaders()
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Erro ao carregar produto."
+        );
+
+      }
+
+
+      const produto =
+        await response.json();
+
+
+      produtoEditando =
+        produto;
+
+
+      preencherFormulario(
+        produto
+      );
+
+
+      document
+        .getElementById(
+          "tituloModalProduto"
+        )
+        .textContent =
+          "Editar produto";
+
+
+      document
+        .getElementById(
+          "subtituloModalProduto"
+        )
+        .textContent =
+          `Editando produto #${id}`;
+
+
+      abrirModal();
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Não foi possível carregar o produto."
+      );
+
+    }
+
+  };
+
+
+// =========================================================
+// FORMULÁRIO
+// =========================================================
+
+function limparFormulario() {
+
+  document.getElementById(
+    "produtoNome"
+  ).value = "";
+
+
+  document.getElementById(
+    "produtoCategoria"
+  ).value = "";
+
+
+  document.getElementById(
+    "produtoPreco"
+  ).value = "";
+
+
+  document.getElementById(
+    "detalhesProduto"
+  ).innerHTML = "";
+
+
+  document.getElementById(
+    "variacoesContainer"
+  ).innerHTML = "";
+
+
+  document.getElementById(
+    "skusContainer"
+  ).innerHTML = "";
+
+
+  document.getElementById(
+    "imagensContainer"
+  ).innerHTML = "";
+
+}
+
+
+// =========================================================
+// CATEGORIA → DETALHES
+// =========================================================
+
+document
+  .getElementById("produtoCategoria")
+  .addEventListener(
+    "change",
+    renderDetalhes
+  );
+
+
+function renderDetalhes() {
+
+  const categoria =
+    obterNomeCategoriaSelecionada();
+
+
+  const container =
+    document.getElementById(
+      "detalhesProduto"
+    );
+
+
+  if (!categoria) {
+
+    container.innerHTML = "";
+
+    return;
+
+  }
+
+
+  if (categoria === "carimbo") {
+
+    container.innerHTML = `
+
+      <div class="form-grid">
+
+        ${campo(
+          "marca",
+          "Marca"
+        )}
+
+        ${campo(
+          "modelo",
+          "Modelo"
+        )}
+
+        ${campo(
+          "medida",
+          "Medida"
+        )}
+
+        ${campo(
+          "tipo_material",
+          "Tipo de material"
+        )}
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  if (categoria === "placa") {
+
+    container.innerHTML = `
+
+      <div class="form-grid">
+
+        ${campo(
+          "medida",
+          "Medida"
+        )}
+
+        ${campo(
+          "tipo_material",
+          "Tipo de material"
+        )}
+
+        ${campo(
+          "espessura",
+          "Espessura"
+        )}
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  if (categoria === "cracha") {
+
+    container.innerHTML = `
+
+      <div class="form-grid">
+
+        ${campo(
+          "medida",
+          "Medida"
+        )}
+
+        ${campo(
+          "tipo_material",
+          "Tipo de material"
+        )}
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = "";
+
+}
+
+
+function campo(nome, label) {
+
+  return `
+
+    <div class="form-group">
+
+      <label>
+        ${label}
+      </label>
+
+      <input
+        type="text"
+        data-detalhe="${nome}"
+      >
+
+    </div>
+
+  `;
+
+}
+
+
+function obterNomeCategoriaSelecionada() {
+
+  const select =
+    document.getElementById(
+      "produtoCategoria"
+    );
+
+
+  const option =
+    select.options[
+      select.selectedIndex
+    ];
+
+
+  return option
+    ?.textContent
+    ?.trim()
+    ?.toLowerCase() || "";
+
+}
+
+
+// =========================================================
+// VARIAÇÕES
+// =========================================================
+
+document
+  .getElementById(
+    "btnAdicionarVariacao"
+  )
+  .addEventListener(
+    "click",
+    () => adicionarVariacao()
+  );
+
+
+function adicionarVariacao(
+  variacao = {}
+) {    
+
+  const container =
+    document.getElementById(
+      "variacoesContainer"
+    );
+
+
+  const div =
+    document.createElement("div");
+
+    if (variacao.id) {
+        div.dataset.id = variacao.id;
+    }
+
+
+  div.className =
+    "produto-item-form";
+
+
+  div.innerHTML = `
+
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label>
+          Cor
+        </label>
+
+        <input
+          type="text"
+          data-campo="cor"
+          value="${escapeAttr(
+            variacao.cor || ""
+          )}"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          HEX
+        </label>
+
+        <input
+          type="text"
+          data-campo="hex"
+          value="${escapeAttr(
+            variacao.hex || ""
+          )}"
+          placeholder="#000000"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Imagem da variação
+        </label>
+
+        <input
+          type="text"
+          data-campo="imagem_url"
+          value="${escapeAttr(
+            variacao.imagem_url || ""
+          )}"
+        >
+
+      </div>
+
+    </div>
+
+
+    <label class="checkbox-label">
+
+      <input
+        type="checkbox"
+        data-campo="principal"
+        ${variacao.principal ? "checked" : ""}
+      >
+
+      <span>
+        Variação principal
+      </span>
+
+    </label>
+
+
+    <button
+      type="button"
+      class="btn btn-small btn-danger"
+      onclick="this.closest('.produto-item-form').remove()"
+    >
+      Remover
+    </button>
+
+  `;
+
+
+  container.appendChild(div);
+
+}
+
+
+// =========================================================
+// SKUS
+// =========================================================
+
+document
+  .getElementById(
+    "btnAdicionarSku"
+  )
+  .addEventListener(
+    "click",
+    () => adicionarSku()
+  );
+
+
+function adicionarSku(
+  sku = {}
+) {
+
+  const container =
+    document.getElementById(
+      "skusContainer"
+    );
+
+
+  const div =
+    document.createElement("div");
+
+  if (sku.id) {
+    div.dataset.id = sku.id;
+    }
+
+
+  div.className =
+    "produto-item-form";
+
+
+  div.innerHTML = `
+
+    <div class="form-grid">
+
+      ${campoSku(
+        "sku",
+        "SKU",
+        sku.sku
+      )}
+
+      ${campoSku(
+        "nome",
+        "Nome",
+        sku.nome
+      )}
+
+      ${campoSku(
+        "cor",
+        "Cor",
+        sku.cor
+      )}
+
+      ${campoSku(
+        "medida",
+        "Medida",
+        sku.medida
+      )}
+
+      ${campoSku(
+        "material",
+        "Material",
+        sku.material
+      )}
+
+      ${campoSku(
+        "preco",
+        "Preço",
+        sku.preco,
+        "number"
+      )}
+
+      ${campoSku(
+        "estoque_minimo",
+        "Estoque mínimo",
+        sku.estoque_minimo,
+        "number"
+      )}
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Descrição
+      </label>
+
+      <textarea
+        data-campo="descricao"
+      >${escapeHtml(
+        sku.descricao || ""
+      )}</textarea>
+
+    </div>
+
+
+    <label class="checkbox-label">
+
+      <input
+        type="checkbox"
+        data-campo="ativo"
+        ${sku.ativo !== false ? "checked" : ""}
+      >
+
+      <span>
+        SKU ativo
+      </span>
+
+    </label>
+
+
+    <div class="form-group">
+
+      <label>
+        Variação vinculada
+      </label>
+
+      <select
+        data-campo="produto_variacao_id"
+      >
+
+        ${renderOpcoesVariacoes(
+          sku.produto_variacao_id
+        )}
+
+      </select>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="btn btn-small btn-danger"
+      onclick="this.closest('.produto-item-form').remove()"
+    >
+      Remover
+    </button>
+
+  `;
+
+
+  container.appendChild(div);
+
+}
+
+
+function campoSku(
+  nome,
+  label,
+  valor = "",
+  tipo = "text"
+) {
+
+  return `
+
+    <div class="form-group">
+
+      <label>
+        ${label}
+      </label>
+
+      <input
+        type="${tipo}"
+        data-campo="${nome}"
+        value="${escapeAttr(
+          valor ?? ""
+        )}"
+        ${tipo === "number"
+          ? 'step="0.01" min="0"'
+          : ""}
+      >
+
+    </div>
+
+  `;
+
+}
+
+
+function renderOpcoesVariacoes(
+  selecionada
+) {
+
+  const elementos =
+    document.querySelectorAll(
+      "#variacoesContainer .produto-item-form"
+    );
+
+
+  let html = `
+    <option value="">
+      Sem variação
+    </option>
+  `;
+
+
+  elementos.forEach((el, index) => {
+
+    const cor =
+      el.querySelector(
+        '[data-campo="cor"]'
+      )?.value;
+
+
+    html += `
+
+      <option
+        value="${index}"
+        ${String(selecionada) === String(index)
+          ? "selected"
+          : ""}
+      >
+        ${escapeHtml(
+          cor || `Variação ${index + 1}`
+        )}
+      </option>
+
+    `;
+
+  });
+
+
+  return html;
+
+}
+
+
+// =========================================================
+// IMAGENS
+// =========================================================
+
+document
+  .getElementById(
+    "btnAdicionarImagem"
+  )
+  .addEventListener(
+    "click",
+    () => adicionarImagem()
+  );
+
+
+function adicionarImagem(
+  imagem = {}
+) {
+
+  const container =
+    document.getElementById(
+      "imagensContainer"
+    );
+
+
+  const div =
+    document.createElement("div");
+
+
+  div.className =
+    "produto-item-form";
+
+
+  div.innerHTML = `
+
+    <div class="form-grid">
+
+      ${campoImagem(
+        "imagem_url",
+        "URL da imagem",
+        imagem.imagem_url
+      )}
+
+      ${campoImagem(
+        "tipo",
+        "Tipo",
+        imagem.tipo
+      )}
+
+      ${campoImagem(
+        "ordem",
+        "Ordem",
+        imagem.ordem ?? 0,
+        "number"
+      )}
+
+      ${campoImagem(
+        "cor",
+        "Cor",
+        imagem.cor
+      )}
+
+    </div>
+
+
+    <button
+      type="button"
+      class="btn btn-small btn-danger"
+      onclick="this.closest('.produto-item-form').remove()"
+    >
+      Remover
+    </button>
+
+  `;
+
+
+  container.appendChild(div);
+
+}
+
+
+function campoImagem(
+  nome,
+  label,
+  valor = "",
+  tipo = "text"
+) {
+
+  return `
+
+    <div class="form-group">
+
+      <label>
+        ${label}
+      </label>
+
+      <input
+        type="${tipo}"
+        data-campo="${nome}"
+        value="${escapeAttr(
+          valor ?? ""
+        )}"
+        ${tipo === "number"
+          ? 'step="1" min="0"'
+          : ""}
+      >
+
+    </div>
+
+  `;
+
+}
+
+
+// =========================================================
+// SALVAR
+// =========================================================
+
+document
+  .getElementById(
+    "btnSalvarProduto"
+  )
+  .addEventListener(
+    "click",
+    salvarProduto
+  );
+
+
+async function salvarProduto() {
+
+  const botao =
+    document.getElementById(
+      "btnSalvarProduto"
+    );
+
+
+  try {
+
+    botao.disabled = true;
+
+    botao.textContent =
+      "Salvando...";
+
+
+    const payload =
+      montarPayload();
+
+
+    const metodo =
+      produtoEditando
+        ? "PATCH"
+        : "POST";
+
+
+    let url =
+      `${API_URL}/produtos?acao=backoffice`;
+
+
+    if (produtoEditando) {
+
+      url +=
+        `&id=${produtoEditando.id}`;
+
+    }
+
+
+    const response =
+      await fetch(
+        url,
+        {
+
+          method: metodo,
+
+          headers:
+            getHeaders(),
+
+          body:
+            JSON.stringify(
+              payload
+            )
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Erro ao salvar produto."
+      );
+
+    }
+
+
+    fecharModal();
+
+    await carregarProdutos();
+
+
+    alert(
+      produtoEditando
+        ? "Produto atualizado com sucesso."
+        : "Produto cadastrado com sucesso."
+    );
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      error.message ||
+      "Erro ao salvar produto."
+    );
+
+  } finally {
+
+    botao.disabled = false;
+
+    botao.textContent =
+      "Salvar produto";
+
+  }
+
+}
+
+
+// =========================================================
+// MONTA PAYLOAD
+// =========================================================
+
+function montarPayload() {
+
+  const nome =
+    document
+      .getElementById(
+        "produtoNome"
+      )
+      .value
+      .trim();
+
+
+  const categoria_id =
+    Number(
+      document
+        .getElementById(
+          "produtoCategoria"
+        )
+        .value
+    );
+
+
+  const preco =
+    Number(
+      document
+        .getElementById(
+          "produtoPreco"
+        )
+        .value || 0
+    );
+
+
+  const detalhes = {};
+
+
+  document
+    .querySelectorAll(
+      "#detalhesProduto [data-detalhe]"
+    )
+    .forEach(input => {
+
+      detalhes[
+        input.dataset.detalhe
+      ] =
+        input.value.trim();
+
+    });
+
+
+  const variacoes =
+    [...document.querySelectorAll(
+      "#variacoesContainer .produto-item-form"
+    )]
+    .map(el => {
+
+      const objeto = {};
+
+
+      const id =
+        el.dataset.id;
+
+
+      if (id) {
+        objeto.id =
+          Number(id);
+      }
+
+
+      el.querySelectorAll(
+        "[data-campo]"
+      )
+      .forEach(input => {
+
+        if (
+          input.type ===
+          "checkbox"
+        ) {
+
+          objeto[
+            input.dataset.campo
+          ] =
+            input.checked;
+
+        } else {
+
+          objeto[
+            input.dataset.campo
+          ] =
+            input.value.trim();
+
+        }
+
+      });
+
+
+      return objeto;
+
+    });
+
+
+  const skus =
+    [...document.querySelectorAll(
+      "#skusContainer .produto-item-form"
+    )]
+    .map(el => {
+
+      const objeto = {};
+
+
+      if (el.dataset.id) {
+
+        objeto.id =
+          Number(el.dataset.id);
+
+      }
+
+
+      el.querySelectorAll(
+        "[data-campo]"
+      )
+      .forEach(input => {
+
+        const campo =
+          input.dataset.campo;
+
+
+        if (
+          input.type ===
+          "checkbox"
+        ) {
+
+          objeto[campo] =
+            input.checked;
+
+        } else if (
+          campo === "preco"
+        ) {
+
+          objeto[campo] =
+            input.value === ""
+              ? null
+              : Number(
+                  input.value
+                );
+
+        } else if (
+          campo ===
+          "estoque_minimo"
+        ) {
+
+          objeto[campo] =
+            Number(
+              input.value || 0
+            );
+
+        } else if (
+          campo ===
+          "produto_variacao_id"
+        ) {
+
+          objeto[campo] =
+            input.value === ""
+              ? null
+              : Number(
+                  input.value
+                );
+
+        } else {
+
+          objeto[campo] =
+            input.value.trim();
+
+        }
+
+      });
+
+
+      return objeto;
+
+    });
+
+
+  const imagens =
+    [...document.querySelectorAll(
+      "#imagensContainer .produto-item-form"
+    )]
+    .map(el => {
+
+      const objeto = {};
+
+
+      el.querySelectorAll(
+        "[data-campo]"
+      )
+      .forEach(input => {
+
+        const campo =
+          input.dataset.campo;
+
+
+        if (
+          campo === "ordem"
+        ) {
+
+          objeto[campo] =
+            Number(
+              input.value || 0
+            );
+
+        } else {
+
+          objeto[campo] =
+            input.value.trim();
+
+        }
+
+      });
+
+
+      return objeto;
+
+    });
+
+
+  return {
+
+    nome,
+
+    categoria_id,
+
+    preco,
+
+    detalhes,
+
+    variacoes,
+
+    skus,
+
+    imagens
+
+  };
+
+}
+
+
+// =========================================================
+// PREENCHER EDIÇÃO
+// =========================================================
+
+function preencherFormulario(
+  produto
+) {
+
+  limparFormulario();
+
+
+  document.getElementById(
+    "produtoNome"
+  ).value =
+    produto.nome || "";
+
+
+  document.getElementById(
+    "produtoCategoria"
+  ).value =
+    produto.categoria_id ||
+    produto.categorias?.id ||
+    produto.categoria?.id ||
+    "";
+
+
+  document.getElementById(
+    "produtoPreco"
+  ).value =
+    produto.preco ?? "";
+
+
+  renderDetalhes();
+
+
+  const detalhes =
+    produto.detalhes ||
+    produto.carimbos?.[0] ||
+    produto.placas?.[0] ||
+    produto.crachas?.[0] ||
+    {};
+
+
+  document
+    .querySelectorAll(
+      "#detalhesProduto [data-detalhe]"
+    )
+    .forEach(input => {
+
+      input.value =
+        detalhes[
+          input.dataset.detalhe
+        ] || "";
+
+    });
+
+
+  const variacoes =
+    produto.produto_variacoes ||
+    produto.variacoes ||
+    [];
+
+
+  variacoes.forEach(
+    variacao =>
+      adicionarVariacao(
+        variacao
+      )
+  );
+
+
+  const skus =
+    produto.produto_skus ||
+    produto.skus ||
+    [];
+
+
+  skus.forEach(
+    sku =>
+      adicionarSku(
+        sku
+      )
+  );
+
+
+  const imagens =
+    produto.produto_imagens ||
+    produto.imagens ||
+    [];
+
+
+  imagens.forEach(
+    imagem =>
+      adicionarImagem(
+        imagem
+      )
+  );
+
+}
+
+
+// =========================================================
+// MODAL
+// =========================================================
+
+function abrirModal() {
+
+  document
+    .getElementById(
+      "modalProduto"
+    )
+    .classList.add("ativo");
+
+}
+
+
+function fecharModal() {
+
+  document
+    .getElementById(
+      "modalProduto"
+    )
+    .classList.remove("ativo");
+
+}
+
+
+document
+  .getElementById(
+    "btnFecharProduto"
+  )
+  .addEventListener(
+    "click",
+    fecharModal
+  );
+
+
+document
+  .getElementById(
+    "btnCancelarProduto"
+  )
+  .addEventListener(
+    "click",
+    fecharModal
+  );
+
+
+// =========================================================
+// UTILITÁRIOS
+// =========================================================
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+function escapeAttr(value) {
+
+  return escapeHtml(value);
+
+}
