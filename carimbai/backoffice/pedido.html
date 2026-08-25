@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Backoffice | Carimbai</title>
+
+   <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div id="login-backoffice">
+
+        <h2>Acesso ao Backoffice</h2>
+
+            <form id="form-login">
+
+                <label for="senha-backoffice">
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    id="senha-backoffice"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit">
+                    Entrar
+                </button>
+
+                <div id="login-erro"></div>
+
+            </form>
+
+    </div>
+<div id="backoffice" class="auth-hidden">
+<div class="layout">
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      Carimbai
+    </div>
+
+    <nav class="menu">
+
+      <a href="/carimbai/backoffice/index.html">
+        Dashboard
+      </a>
+
+      <a href="/carimbai/backoffice/pedidos.html">
+        Pedidos
+      </a>
+
+      <a href="/carimbai/backoffice/produtos.html">
+        Produtos
+      </a>
+
+      <a href="/carimbai/backoffice/estoque.html" class="active">
+        Estoque
+      </a>
+
+    </nav>
+
+  </aside>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
