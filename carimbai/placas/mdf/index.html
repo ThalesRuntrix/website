@@ -45,7 +45,7 @@
 
     </div>
 
-    <script src="script.js"></script>
+    <script src="../../js/listar-produtos.js"></script>
     <script src="/carimbai/js/components.js"></script>
     <script>
         loadHeader({
@@ -57,6 +57,18 @@
                 </a>
             `
         });
+        carregarProdutos({
+            containerId: "placas",
+
+            categoria: "placa",
+
+            filtros: {
+                tipo_material: "mdf"
+            },
+
+            from: "placas-mdf"
+        });
+    </script>
     </script>
 
 </body>
