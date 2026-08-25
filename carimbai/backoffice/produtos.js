@@ -140,41 +140,43 @@ async function carregarProdutos() {
 
 function prepararCategorias() {
 
-  const mapa =
-    new Map();
-
+  const mapa = new Map();
 
   produtos.forEach(produto => {
 
-    const categoria =
-      produto.categorias ||
-      produto.categoria;
+    const categoriaId =
+      produto.categoria_id ??
+      produto.categorias?.id ??
+      produto.categoria?.id;
 
+    let categoriaNome =
+      produto.categoria_nome ??
+      produto.categorias?.nome ??
+      produto.categoria?.nome;
 
-    if (!categoria) return;
+    // Caso o endpoint retorne:
+    // categoria: "carimbo"
+    if (
+      !categoriaNome &&
+      typeof produto.categoria === "string"
+    ) {
+      categoriaNome = produto.categoria;
+    }
 
-
-    const id =
-      categoria.id ??
-      produto.categoria_id;
-
-
-    const nome =
-      categoria.nome ??
-      produto.categoria_nome;
-
-
-    if (id !== undefined && nome) {
+    if (
+      categoriaId !== undefined &&
+      categoriaId !== null &&
+      categoriaNome
+    ) {
 
       mapa.set(
-        String(id),
-        nome
+        String(categoriaId),
+        String(categoriaNome)
       );
 
     }
 
   });
-
 
   categorias =
     [...mapa.entries()]
@@ -190,52 +192,64 @@ function prepararCategorias() {
       );
 
 
+  // =========================================================
+  // FILTRO DA TABELA
+  // =========================================================
+
   const select =
     document.getElementById(
       "filtroCategoria"
     );
 
+  if (select) {
 
-  select.innerHTML = `
-    <option value="">
-      Todas as categorias
-    </option>
-  `;
-
-
-  categorias.forEach(categoria => {
-
-    select.innerHTML += `
-      <option value="${categoria.id}">
-        ${categoria.nome}
+    select.innerHTML = `
+      <option value="">
+        Todas as categorias
       </option>
     `;
 
-  });
+    categorias.forEach(categoria => {
 
+      select.innerHTML += `
+        <option value="${categoria.id}">
+          ${escapeHtml(categoria.nome)}
+        </option>
+      `;
+
+    });
+
+  }
+
+
+  // =========================================================
+  // SELECT DO FORMULÁRIO
+  // =========================================================
 
   const selectForm =
     document.getElementById(
       "produtoCategoria"
     );
 
+  if (selectForm) {
 
-  selectForm.innerHTML = `
-    <option value="">
-      Selecione
-    </option>
-  `;
-
-
-  categorias.forEach(categoria => {
-
-    selectForm.innerHTML += `
-      <option value="${categoria.id}">
-        ${categoria.nome}
+    selectForm.innerHTML = `
+      <option value="">
+        Selecione
       </option>
     `;
 
-  });
+    categorias.forEach(categoria => {
+
+      selectForm.innerHTML += `
+        <option value="${categoria.id}">
+          ${escapeHtml(categoria.nome)}
+        </option>
+      `;
+
+    });
+
+  }
 
 }
 
