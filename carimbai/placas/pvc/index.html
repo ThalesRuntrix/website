@@ -45,7 +45,7 @@
 
     </div>
 
-    <script src="script.js"></script>
+    <script src="../../js/listar-produtos.js"></script>
     <script src="/carimbai/js/components.js"></script>
     <script>
         loadHeader({
@@ -56,6 +56,17 @@
                     📲 Links de Contato
                 </a>
             `
+        });
+        carregarProdutos({
+            containerId: "placas",
+
+            categoria: "placa",
+
+            filtros: {
+                tipo_material: "pvc"
+            },
+
+            from: "placas-pvc"
         });
     </script>
 
