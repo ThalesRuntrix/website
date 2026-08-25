@@ -45,7 +45,7 @@
 
     </div>
 
-    <script src="script.js"></script>
+    <script src="../../js/listar-produtos.js"></script>
     <script src="/carimbai/js/components.js"></script>
     <script>
         loadHeader({
@@ -56,6 +56,18 @@
                     📲 Links de Contato
                 </a>
             `
+        });
+
+        carregarProdutos({
+            containerId: "crachas",
+
+            categoria: "cracha",
+
+            filtros: {
+                tipo_material: "plastificado"
+            },
+
+            from: "crachas-plastificado"
         });
     </script>
 
