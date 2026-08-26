@@ -387,6 +387,7 @@ function renderLinhaProduto(produto) {
   const preco =
     Number(produto.preco ?? 0);
 
+
   return `
     <tr>
 
@@ -396,24 +397,14 @@ function renderLinhaProduto(produto) {
         </strong>
       </td>
 
+
       <td>
         ${escapeHtml(categoria)}
       </td>
 
+
       <td>
         R$ ${preco.toFixed(2)}
-      </td>
-
-      <td>
-        ${produto.skus}
-      </td>
-
-      <td>
-        ${
-          ativo
-            ? `<span class="status status-ok">Ativo</span>`
-            : `<span class="status status-off">Inativo</span>`
-        }
       </td>
 
       <td>
