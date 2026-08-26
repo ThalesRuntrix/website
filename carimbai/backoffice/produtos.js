@@ -982,13 +982,6 @@ function adicionarSku(
         "number"
       )}
 
-      ${campoSku(
-        "estoque_minimo",
-        "Estoque mínimo",
-        sku.estoque_minimo,
-        "number"
-      )}
-
     </div>
 
 
@@ -1542,17 +1535,7 @@ function montarPayload() {
               ? null
               : Number(
                   input.value
-                );
-
-        } else if (
-          campo ===
-          "estoque_minimo"
-        ) {
-
-          objeto[campo] =
-            Number(
-              input.value || 0
-            );
+                );        
 
         } else if (
           campo ===
