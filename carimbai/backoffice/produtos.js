@@ -405,7 +405,7 @@ function renderLinhaProduto(produto) {
       </td>
 
       <td>
-        ${totalSkus}
+        ${produto.skus}
       </td>
 
       <td>
