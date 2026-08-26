@@ -384,25 +384,8 @@ function renderLinhaProduto(produto) {
     produto.categoria?.nome ||
     "-";
 
-  const totalSkus =
-    Number(produto.total_skus ?? 0);
-
   const preco =
     Number(produto.preco ?? 0);
-
-  /*
-   * O endpoint da listagem retorna total_skus,
-   * mas não retorna os detalhes individuais dos SKUs.
-   *
-   * Portanto, nesta tela consideramos que:
-   * - 0 SKUs = Inativo
-   * - 1 ou mais SKUs = Ativo
-   *
-   * O status individual dos SKUs será tratado
-   * dentro da edição do produto.
-   */
-  const ativo =
-    totalSkus > 0;
 
   return `
     <tr>
@@ -500,7 +483,10 @@ window.editarProduto =
 
       const response =
         await fetch(
-          `${API_URL}/produto/${id}`
+          `${API_URL}/produtos?acao=backoffice&id=${id}`,
+          {
+            headers: getHeaders()
+          }
         );
 
       if (!response.ok) {
@@ -609,16 +595,34 @@ document
   );
 
 
-function renderDetalhes() {
+function renderDetalhes(valores = null) {
 
   const categoria =
     obterNomeCategoriaSelecionada();
-
 
   const container =
     document.getElementById(
       "detalhesProduto"
     );
+
+  /*
+   * Se não recebemos valores explicitamente,
+   * preservamos os valores que já estão na tela.
+   */
+  if (valores === null) {
+
+    valores = {};
+
+    container
+      .querySelectorAll("[data-detalhe]")
+      .forEach(input => {
+
+        valores[input.dataset.detalhe] =
+          input.value;
+
+      });
+
+  }
 
 
   if (!categoria) {
@@ -633,7 +637,6 @@ function renderDetalhes() {
   if (categoria === "carimbo") {
 
     container.innerHTML = `
-
       <div class="form-grid">
 
         ${campo(
@@ -657,18 +660,14 @@ function renderDetalhes() {
         )}
 
       </div>
-
     `;
-
-    return;
 
   }
 
 
-  if (categoria === "placa") {
+  else if (categoria === "placa") {
 
     container.innerHTML = `
-
       <div class="form-grid">
 
         ${campo(
@@ -687,18 +686,14 @@ function renderDetalhes() {
         )}
 
       </div>
-
     `;
-
-    return;
 
   }
 
 
-  if (categoria === "cracha") {
+  else if (categoria === "cracha") {
 
     container.innerHTML = `
-
       <div class="form-grid">
 
         ${campo(
@@ -712,23 +707,49 @@ function renderDetalhes() {
         )}
 
       </div>
-
     `;
+
+  }
+
+
+  else {
+
+    container.innerHTML = "";
 
     return;
 
   }
 
 
-  container.innerHTML = "";
+  /*
+   * Depois de criar os campos,
+   * restauramos os valores existentes.
+   */
+  container
+    .querySelectorAll("[data-detalhe]")
+    .forEach(input => {
+
+      const valor =
+        valores[input.dataset.detalhe];
+
+      if (valor !== undefined && valor !== null) {
+
+        input.value = valor;
+
+      }
+
+    });
 
 }
 
 
-function campo(nome, label) {
+function campo(
+  nome,
+  label,
+  valor = ""
+) {
 
   return `
-
     <div class="form-group">
 
       <label>
@@ -738,12 +759,11 @@ function campo(nome, label) {
       <input
         type="text"
         data-detalhe="${nome}"
+        value="${escapeAttr(valor ?? "")}"
       >
 
     </div>
-
   `;
-
 }
 
 
@@ -998,15 +1018,13 @@ function adicionarSku(
 
     <label class="checkbox-label">
 
-      <input
-        type="checkbox"
-        data-campo="ativo"
-        ${sku.ativo !== false ? "checked" : ""}
-      >
+      <div class="sku-status">
+        <span class="sku-status-label">Status:</span>
 
-      <span>
-        SKU ativo
-      </span>
+        <span class="status ${sku.ativo === true ? "status-ok" : "status-off"}">
+          ${sku.ativo === true ? "Ativo" : "Inativo"}
+        </span>
+      </div>
 
     </label>
 
@@ -1088,39 +1106,62 @@ function renderOpcoesVariacoes(
       "#variacoesContainer .produto-item-form"
     );
 
-
   let html = `
     <option value="">
       Sem variação
     </option>
   `;
 
-
   elementos.forEach((el, index) => {
 
     const cor =
       el.querySelector(
         '[data-campo="cor"]'
-      )?.value;
+      )?.value || "";
 
+    const id =
+      el.dataset.id;
 
+    /*
+     * Variação já existente no banco:
+     * usamos o ID real.
+     */
+    if (id) {
+
+      html += `
+        <option
+          value="${escapeAttr(id)}"
+          ${String(selecionada) === String(id)
+            ? "selected"
+            : ""}
+        >
+          ${escapeHtml(
+            cor || `Variação ${index + 1}`
+          )}
+        </option>
+      `;
+
+      return;
+    }
+
+    /*
+     * Variação nova ainda não possui ID.
+     *
+     * Nesse caso não criamos aqui um falso
+     * produto_variacao_id.
+     */
     html += `
-
       <option
-        value="${index}"
-        ${String(selecionada) === String(index)
-          ? "selected"
-          : ""}
+        value=""
+        disabled
       >
         ${escapeHtml(
           cor || `Variação ${index + 1}`
-        )}
+        )} (nova)
       </option>
-
     `;
 
   });
-
 
   return html;
 
@@ -1486,6 +1527,12 @@ function montarPayload() {
         const campo =
           input.dataset.campo;
 
+        // O status do SKU é controlado exclusivamente
+        // pela tela de estoque.
+        if (campo === "ativo") {
+          return;
+        }
+
 
         if (
           input.type ===
@@ -1610,35 +1657,53 @@ function montarPayload() {
 // PREENCHER EDIÇÃO
 // =========================================================
 
-function preencherFormulario(
-  produto
-) {
+function preencherFormulario(produto) {
 
   limparFormulario();
 
+  // =========================================================
+  // DADOS BÁSICOS
+  // =========================================================
 
   document.getElementById(
     "produtoNome"
   ).value =
-    produto.nome || "";
+    produto.nome ?? "";
 
 
-  document.getElementById(
-    "produtoCategoria"
-  ).value =
-    produto.categoria_id ||
-    produto.categorias?.id ||
-    produto.categoria?.id ||
-    "";
+  const categoriaId =
+    produto.categoria_id ??
+    produto.categorias?.id ??
+    produto.categoria?.id ??
+    null;
+
+
+  const selectCategoria =
+    document.getElementById(
+      "produtoCategoria"
+    );
+
+
+  if (
+    categoriaId !== null &&
+    categoriaId !== undefined &&
+    categoriaId !== ""
+  ) {
+
+    selectCategoria.value =
+      String(categoriaId);
+
+  } else {
+
+    selectCategoria.value = "";
+
+  }  
 
 
   document.getElementById(
     "produtoPreco"
   ).value =
     produto.preco ?? "";
-
-
-  renderDetalhes();
 
 
   const detalhes =
@@ -1649,18 +1714,7 @@ function preencherFormulario(
     {};
 
 
-  document
-    .querySelectorAll(
-      "#detalhesProduto [data-detalhe]"
-    )
-    .forEach(input => {
-
-      input.value =
-        detalhes[
-          input.dataset.detalhe
-        ] || "";
-
-    });
+  renderDetalhes(detalhes);
 
 
   const variacoes =
@@ -1668,12 +1722,9 @@ function preencherFormulario(
     produto.variacoes ||
     [];
 
-
   variacoes.forEach(
     variacao =>
-      adicionarVariacao(
-        variacao
-      )
+      adicionarVariacao(variacao)
   );
 
 
@@ -1682,12 +1733,9 @@ function preencherFormulario(
     produto.skus ||
     [];
 
-
   skus.forEach(
     sku =>
-      adicionarSku(
-        sku
-      )
+      adicionarSku(sku)
   );
 
 
@@ -1696,12 +1744,9 @@ function preencherFormulario(
     produto.imagens ||
     [];
 
-
   imagens.forEach(
     imagem =>
-      adicionarImagem(
-        imagem
-      )
+      adicionarImagem(imagem)
   );
 
 }
