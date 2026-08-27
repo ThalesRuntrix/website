@@ -103,6 +103,9 @@ async function carregarProdutos(config = {}) {
 
       div.classList.add("product-card");
 
+      const produtoDisponivel =
+        produto.disponivel === true;
+
       if (!produtoDisponivel) {
         div.classList.add("produto-indisponivel");
       }
@@ -119,10 +122,7 @@ async function carregarProdutos(config = {}) {
       if (from) {
         query.set("from", from);
       }
-
-
-      const produtoDisponivel =
-        produto.disponivel === true;
+      
 
       // ========================================
       // HTML
