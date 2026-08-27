@@ -40,9 +40,7 @@ document
     senhaBackoffice = senha;
 
     try {
-
-      await carregarProdutos();
-
+     
       loginBackoffice.style.display = "none";
 
       backoffice.classList.remove("auth-hidden");
