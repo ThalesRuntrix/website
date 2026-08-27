@@ -1,78 +1,417 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Backoffice | Carimbai Pedidos</title>
 
-   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-    <div id="login-backoffice">
-
-        <h2>Acesso ao Backoffice</h2>
-
-            <form id="form-login">
-
-                <label for="senha-backoffice">
-                    Senha
-                </label>
-
-                <input
-                    type="password"
-                    id="senha-backoffice"
-                    autocomplete="current-password"
-                    required
-                >
-
-                <button type="submit">
-                    Entrar
-                </button>
-
-                <div id="login-erro"></div>
-
-            </form>
-
-    </div>
-<div id="backoffice" class="auth-hidden">
-<div class="layout">
-
   <!-- =========================
-       SIDEBAR
+       LOGIN
   ========================== -->
 
-  <aside class="sidebar">
+  <div id="login-backoffice">
 
-    <div class="logo">
-      Carimbai
+    <h2>Acesso ao Backoffice</h2>
+
+    <form id="form-login">
+
+      <label for="senha-backoffice">
+        Senha
+      </label>
+
+      <input
+        type="password"
+        id="senha-backoffice"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit">
+        Entrar
+      </button>
+
+      <div id="login-erro"></div>
+
+    </form>
+
+  </div>
+
+
+  <!-- =========================
+       BACKOFFICE
+  ========================== -->
+
+  <div id="backoffice" class="auth-hidden">
+
+    <div class="layout">
+
+      <!-- =========================
+           SIDEBAR
+      ========================== -->
+
+      <aside class="sidebar">
+
+        <div class="logo">
+          Carimbai
+        </div>
+
+        <nav class="menu">
+
+          <a href="/carimbai/backoffice/index.html">
+            Dashboard
+          </a>
+
+          <a
+            href="/carimbai/backoffice/pedidos.html"
+            class="active"
+          >
+            Pedidos
+          </a>
+
+          <a href="/carimbai/backoffice/produtos.html">
+            Produtos
+          </a>
+
+          <a href="/carimbai/backoffice/estoque.html">
+            Estoque
+          </a>
+
+        </nav>
+
+      </aside>
+
+
+      <!-- =========================
+           CONTEÚDO
+      ========================== -->
+
+      <main class="main">
+
+        <div class="page-header">
+
+          <div>
+
+            <h1>Pedidos</h1>
+
+            <p>
+              Gerenciamento dos pedidos realizados na loja.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             FILTROS
+        ========================== -->
+
+        <section class="filtros">
+
+          <div class="campo-filtro">
+
+            <label for="buscaPedido">
+              Buscar
+            </label>
+
+            <input
+              type="text"
+              id="buscaPedido"
+              placeholder="Código, cliente, CPF ou WhatsApp..."
+            >
+
+          </div>
+
+
+          <div class="campo-filtro">
+
+            <label for="filtroStatusPedido">
+              Status do pedido
+            </label>
+
+            <select id="filtroStatusPedido">
+
+              <option value="">
+                Todos
+              </option>
+
+              <option value="novo">
+                Novo
+              </option>
+
+              <option value="aguardando_pagamento">
+                Aguardando pagamento
+              </option>
+
+              <option value="producao">
+                Produção
+              </option>
+
+              <option value="pronto">
+                Pronto
+              </option>
+
+              <option value="enviado">
+                Enviado
+              </option>
+
+              <option value="entregue">
+                Entregue
+              </option>
+
+              <option value="cancelado">
+                Cancelado
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="campo-filtro">
+
+            <label for="filtroPagamento">
+              Status do pagamento
+            </label>
+
+            <select id="filtroPagamento">
+
+              <option value="">
+                Todos
+              </option>
+
+              <option value="pending">
+                Pendente
+              </option>
+
+              <option value="approved">
+                Aprovado
+              </option>
+
+              <option value="authorized">
+                Autorizado
+              </option>
+
+              <option value="in_process">
+                Em processamento
+              </option>
+
+              <option value="rejected">
+                Rejeitado
+              </option>
+
+              <option value="cancelled">
+                Cancelado
+              </option>
+
+              <option value="refunded">
+                Reembolsado
+              </option>
+
+              <option value="charged_back">
+                Chargeback
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <button
+            type="button"
+            id="btnLimparFiltros"
+          >
+            Limpar filtros
+          </button>
+
+        </section>
+
+
+        <!-- =========================
+             ESTADO
+        ========================== -->
+
+        <div
+          id="estadoTabela"
+          class="estado-tabela"
+        >
+          Carregando pedidos...
+        </div>
+
+
+        <!-- =========================
+             TABELA
+        ========================== -->
+
+        <div
+          id="tableWrapper"
+          class="table-wrapper"
+          style="display:none;"
+        >
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>Código</th>
+
+                <th>Cliente</th>
+
+                <th>CPF</th>
+
+                <th>WhatsApp</th>
+
+                <th>E-mail</th>
+
+                <th>Rua</th>
+
+                <th>Número</th>
+
+                <th>Complemento</th>
+
+                <th>Bairro</th>
+
+                <th>Cidade</th>
+
+                <th>Estado</th>
+
+                <th>CEP</th>
+
+                <th>Entrega</th>
+
+                <th>Pagamento</th>
+
+                <th>Total</th>
+
+                <th>Frete</th>
+
+                <th>Prazo</th>
+
+                <th>Transportadora</th>
+
+                <th>Status pagamento</th>
+
+                <th>Status pedido</th>
+
+                <th>Payment ID</th>
+
+                <th>Pago em</th>
+
+                <th>Enviado em</th>
+
+                <th>Entregue em</th>
+
+                <th>Cancelado em</th>
+
+                <th>Observações</th>
+
+                <th>MP status</th>
+
+                <th>Data aprovação MP</th>
+
+                <th>Valor transação MP</th>
+
+                <th>Código autorização</th>
+
+                <th>E-mail pagador</th>
+
+                <th>Ações</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="pedidosBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </main>
+
     </div>
 
-    <nav class="menu">
+  </div>
 
-      <a href="/carimbai/backoffice/index.html">
-        Dashboard
-      </a>
 
-      <a href="/carimbai/backoffice/pedidos.html">
-        Pedidos
-      </a>
+  <!-- =========================
+       MODAL VER PEDIDO
+  ========================== -->
 
-      <a href="/carimbai/backoffice/produtos.html">
-        Produtos
-      </a>
+  <div
+    id="modalVerPedido"
+    class="modal-overlay"
+    style="display:none;"
+  >
 
-      <a href="/carimbai/backoffice/estoque.html" class="active">
-        Estoque
-      </a>
+    <div class="modal">
 
-    </nav>
+      <div class="modal-header">
 
-  </aside>
-    
-    <script src="pedidos.js"></script>
+        <h2>Pedido</h2>
+
+        <button
+          type="button"
+          class="modal-fechar"
+          onclick="fecharModal('modalVerPedido')"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div id="conteudoVerPedido"></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       MODAL EDITAR PEDIDO
+  ========================== -->
+
+  <div
+    id="modalEditarPedido"
+    class="modal-overlay"
+    style="display:none;"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h2>Editar pedido</h2>
+
+        <button
+          type="button"
+          class="modal-fechar"
+          onclick="fecharModal('modalEditarPedido')"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div id="conteudoEditarPedido"></div>
+
+    </div>
+
+  </div>
+
+
+  <script src="pedidos.js"></script>
+
 </body>
-</html> 
+
+</html>
