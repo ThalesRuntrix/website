@@ -103,6 +103,10 @@ async function carregarProdutos(config = {}) {
 
       div.classList.add("product-card");
 
+      if (!produtoDisponivel) {
+        div.classList.add("produto-indisponivel");
+      }
+
       // ========================================
       // LINK
       // ========================================
@@ -116,6 +120,10 @@ async function carregarProdutos(config = {}) {
         query.set("from", from);
       }
 
+
+      const produtoDisponivel =
+        produto.disponivel === true;
+
       // ========================================
       // HTML
       // ========================================
@@ -123,6 +131,15 @@ async function carregarProdutos(config = {}) {
       div.innerHTML = `
 
         <div class="carousel">
+          ${
+            !produtoDisponivel
+              ? `
+                <span class="produto-badge-indisponivel">
+                  Indisponível
+                </span>
+              `
+              : ""
+          }
 
           ${slides}
 
@@ -149,12 +166,26 @@ async function carregarProdutos(config = {}) {
             R$ ${Number(produto.preco).toFixed(2)}
           </div>
 
-          <a
-            href="../../produto/index.html?${query.toString()}"
-            class="btn-primary"
-          >
-            Ver detalhes
-          </a>
+          ${
+            produtoDisponivel
+              ? `
+                <a
+                  href="../../produto/index.html?${query.toString()}"
+                  class="btn-primary"
+                >
+                  Ver detalhes
+                </a>
+              `
+              : `
+                <button
+                  type="button"
+                  class="btn-primary btn-indisponivel"
+                  disabled
+                >
+                  Indisponível
+                </button>
+              `
+          }
 
         </div>
 
