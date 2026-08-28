@@ -1,0 +1,481 @@
+/* =========================================================
+   MODAIS — PADRÃO BACKOFFICE
+========================================================= */
+
+body.modal-aberto {
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.modal-overlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  box-sizing: border-box;
+
+  background: rgba(0, 0, 0, 0.55);
+
+  z-index: 9999;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.15s ease,
+    visibility 0.15s ease;
+}
+
+
+/* =========================================================
+   MODAL ABERTO
+========================================================= */
+
+.modal-overlay.modal-aberto {
+
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+}
+
+
+/* =========================================================
+   CAIXA DO MODAL
+========================================================= */
+
+.modal {
+
+  width: 100%;
+
+  max-width: 760px;
+
+  max-height: calc(100vh - 48px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: #fff;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25);
+
+  overflow: hidden;
+
+  transform: translateY(8px);
+
+  transition:
+    transform 0.15s ease;
+}
+
+
+.modal-overlay.modal-aberto .modal {
+
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   MODAL GRANDE
+========================================================= */
+
+.modal.modal-grande {
+
+  max-width: 1000px;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+.modal-header {
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 18px 22px;
+
+  border-bottom: 1px solid #e5e5e5;
+
+  background: #fff;
+}
+
+
+.modal-header h2 {
+
+  margin: 0;
+
+  font-size: 20px;
+
+  line-height: 1.3;
+}
+
+
+/* =========================================================
+   BOTÃO FECHAR
+========================================================= */
+
+.modal-fechar {
+
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #555;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+
+.modal-fechar:hover {
+
+  background: #f1f1f1;
+
+  color: #111;
+}
+
+
+/* =========================================================
+   CONTEÚDO
+========================================================= */
+
+.modal-conteudo {
+
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+
+  padding: 22px;
+}
+
+
+/* =========================================================
+   RODAPÉ
+========================================================= */
+
+.modal-footer {
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 16px 22px;
+
+  border-top: 1px solid #e5e5e5;
+
+  background: #fff;
+}
+
+
+/* =========================================================
+   ITENS DO PEDIDO
+========================================================= */
+
+.pedido-item {
+
+  padding: 18px;
+
+  margin-bottom: 16px;
+
+  border: 1px solid #e2e2e2;
+
+  border-radius: 8px;
+
+  background: #fafafa;
+}
+
+
+.pedido-item:last-child {
+
+  margin-bottom: 0;
+}
+
+
+.pedido-item h3,
+.pedido-item h4 {
+
+  margin-top: 0;
+
+  margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   DADOS
+========================================================= */
+
+.dados-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+
+.dados-grid > div {
+
+  min-width: 0;
+}
+
+
+.dados-grid label {
+
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-weight: 600;
+
+  font-size: 14px;
+}
+
+
+.dados-grid strong {
+
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 14px;
+}
+
+
+.dados-grid span {
+
+  display: block;
+
+  line-height: 1.4;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   INPUTS / SELECTS / TEXTAREA DOS MODAIS
+========================================================= */
+
+.modal input,
+.modal select,
+.modal textarea {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 9px 11px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 6px;
+
+  font: inherit;
+
+  background: #fff;
+}
+
+
+.modal input:focus,
+.modal select:focus,
+.modal textarea:focus {
+
+  outline: none;
+
+  border-color: #888;
+}
+
+
+.modal input[readonly] {
+
+  background: #f5f5f5;
+
+  color: #555;
+}
+
+
+.modal textarea {
+
+  resize: vertical;
+
+  min-height: 90px;
+}
+
+
+/* =========================================================
+   SEÇÕES DO FORMULÁRIO
+========================================================= */
+
+.modal-conteudo h3 {
+
+  margin-top: 24px;
+
+  margin-bottom: 16px;
+
+  padding-bottom: 8px;
+
+  border-bottom: 1px solid #e5e5e5;
+
+  font-size: 17px;
+}
+
+
+.modal-conteudo h3:first-child {
+
+  margin-top: 0;
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+.modal-footer button {
+
+  padding: 9px 16px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 6px;
+
+  background: #fff;
+
+  cursor: pointer;
+
+  font: inherit;
+}
+
+
+.modal-footer button:hover {
+
+  background: #f3f3f3;
+}
+
+
+#btn-salvar-pedido {
+
+  border-color: #222;
+
+  background: #222;
+
+  color: #fff;
+}
+
+
+#btn-salvar-pedido:hover {
+
+  background: #000;
+}
+
+
+#btn-salvar-pedido:disabled {
+
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .modal-overlay {
+
+    padding: 12px;
+  }
+
+
+  .modal {
+
+    max-height: calc(100vh - 24px);
+
+    border-radius: 8px;
+  }
+
+
+  .modal-header {
+
+    padding: 15px 16px;
+  }
+
+
+  .modal-conteudo {
+
+    padding: 16px;
+  }
+
+
+  .modal-footer {
+
+    padding: 14px 16px;
+
+    flex-wrap: wrap;
+  }
+
+
+  .dados-grid {
+
+    grid-template-columns: 1fr;
+  }
+
+}

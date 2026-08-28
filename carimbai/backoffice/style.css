@@ -348,6 +348,13 @@
       font-size: 13px;
     }
 
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
     .close-btn {
       border: 0;
       background: transparent;
@@ -388,14 +395,7 @@
     .stock-current span {
       font-size: 24px;
       font-weight: 700;
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 20px;
-    }
+    }    
 
     /* =========================
    EDIÇÃO SKU
