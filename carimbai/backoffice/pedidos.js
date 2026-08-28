@@ -259,8 +259,14 @@ async function carregarPedidos() {
   }
 
 
+  const queryString =
+    params.toString();
+
+
   const url =
-    `${API_URL}/pedidos?${params.toString()}`;
+    queryString
+      ? `${API_URL}/pedidos?${queryString}`
+      : `${API_URL}/pedidos`;
 
 
   try {
@@ -632,8 +638,9 @@ async function abrirModalVer(
     );
 
 
-  modal.style.display =
-    "flex";
+  abrirModal(
+    modal
+  );
 
 
   conteudo.innerHTML =
@@ -865,20 +872,21 @@ async function abrirModalEditar(
     );
 
 
-  modal.style.display =
-    "flex";
-
-
-  conteudo.innerHTML =
-    "<p>Carregando pedido...</p>";
-
-
   pedidoEmEdicao =
     pedidos.find(
       pedido =>
         pedido.pedido_codigo ===
         pedidoCodigo
     );
+
+
+  abrirModal(
+    modal
+  );
+
+
+  conteudo.innerHTML =
+    "<p>Carregando pedido...</p>";
 
 
   if (!pedidoEmEdicao) {
@@ -1309,6 +1317,8 @@ function renderizarFormularioEdicao(
 
 // =========================================================
 // RENDER — ITENS EDITÁVEIS
+//
+// MANTIDO EXATAMENTE COMO ESTAVA
 // =========================================================
 
 function renderizarItensEdicao(
@@ -1781,6 +1791,88 @@ async function salvarPedido() {
 // MODAIS
 // =========================================================
 
+function abrirModal(
+  modal
+) {
+
+  if (!modal) {
+    return;
+  }
+
+
+  modal.classList.add(
+    "modal-aberto"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.classList.add(
+    "modal-aberto"
+  );
+}
+
+
+function fecharModal(
+  id
+) {
+
+  const modal =
+    document.getElementById(
+      id
+    );
+
+  if (!modal) {
+    return;
+  }
+
+
+  modal.classList.remove(
+    "modal-aberto"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  // Só libera o scroll da página
+  // quando não houver outro modal aberto.
+
+  const existeOutroModalAberto =
+    document.querySelector(
+      ".modal-overlay.modal-aberto"
+    );
+
+
+  if (!existeOutroModalAberto) {
+
+    document.body.classList.remove(
+      "modal-aberto"
+    );
+  }
+
+
+  if (
+    id === "modal-editar"
+  ) {
+
+    pedidoEmEdicao =
+      null;
+  }
+}
+
+
+// =========================================================
+// BOTÕES DE FECHAMENTO
+// =========================================================
+
 document
   .querySelectorAll(
     "[data-fechar-modal]"
@@ -1801,6 +1893,10 @@ document
     }
   );
 
+
+// =========================================================
+// CLIQUE NO FUNDO
+// =========================================================
 
 document
   .querySelectorAll(
@@ -1827,22 +1923,35 @@ document
   );
 
 
-function fecharModal(
-  id
-) {
+// =========================================================
+// ESC
+// =========================================================
 
-  const modal =
-    document.getElementById(
-      id
-    );
+document.addEventListener(
+  "keydown",
+  (e) => {
 
-  if (!modal) {
-    return;
+    if (
+      e.key !== "Escape"
+    ) {
+      return;
+    }
+
+
+    const modalAberto =
+      document.querySelector(
+        ".modal-overlay.modal-aberto"
+      );
+
+
+    if (modalAberto) {
+
+      fecharModal(
+        modalAberto.id
+      );
+    }
   }
-
-  modal.style.display =
-    "none";
-}
+);
 
 
 // =========================================================
