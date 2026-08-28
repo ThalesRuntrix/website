@@ -758,7 +758,17 @@ function renderizarItensVisualizacao(
                   )}
                 </span>
               </div>
-
+              
+              <div>
+                <strong>Produto</strong>
+                <span>
+                  ${
+                    escapeHTML(
+                      item.produto_nome
+                    ) || "—"
+                  }
+                </span>
+              </div>
 
               <div>
                 <strong>Produto ID</strong>
@@ -1353,6 +1363,19 @@ function renderizarItensEdicao(
 
 
           <div class="dados-grid">
+          
+            <label>
+              Produto
+            </label>
+
+            <input
+              type="text"
+              value="${escapeHTML(
+                item.produto_nome
+              )}"
+              readonly
+            >
+          </div>
 
             <div>
               <label>
