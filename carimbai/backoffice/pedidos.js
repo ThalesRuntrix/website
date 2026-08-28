@@ -1442,7 +1442,7 @@ function renderizarItensEdicao(
 
               <textarea
                 class="edit-personalizacao-txt"
-                data-item-id="${item.id || ""}"
+                data-item-id="${item.pedido_item_id}"
                 rows="3"
               >${escapeHTML(
                 item.personalizacao_txt
@@ -1460,7 +1460,7 @@ function renderizarItensEdicao(
               <input
                 type="text"
                 class="edit-personalizacao-img"
-                data-item-id="${item.id || ""}"
+                data-item-id="${item.pedido_item_id}"
                 value="${escapeHTML(
                   item.personalizacao_img
                 )}"
@@ -1607,20 +1607,20 @@ async function salvarPedido() {
 
             const txt =
               document.querySelector(
-                `.edit-personalizacao-txt[data-item-id="${item.id || ""}"]`
+                `.edit-personalizacao-txt[data-item-id="${item.pedido_item_id}"]`
               );
 
 
             const img =
               document.querySelector(
-                `.edit-personalizacao-img[data-item-id="${item.id || ""}"]`
+                `.edit-personalizacao-img[data-item-id="${item.pedido_item_id}"]`
               );
 
 
             return {
 
               pedido_item_id:
-                item.id,
+                item.pedido_item_id,
 
               personalizacao_txt:
                 txt
