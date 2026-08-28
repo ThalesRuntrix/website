@@ -1354,7 +1354,7 @@ function renderizarItensEdicao(
 
         <section
           class="pedido-item"
-          data-pedido-item-id="${item.pedido_id}"
+          data-pedido-item-id="${item.pedido_item_id}"
         >
 
           <h4>
