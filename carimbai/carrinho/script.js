@@ -343,21 +343,44 @@ function criarItemCarrinho(item) {
         "carrinho-item-imagem";
 
 
-    /*
-     * Primeiro tenta obter uma imagem do produto.
-     *
-     * Como carrinho_itens ainda não guarda imagem_url,
-     * usamos a API do produto para descobrir a imagem.
-     *
-     * Por isso fazemos carregamento posterior.
-     */
+    if (item.imagem_url) {
 
-    imagemWrapper.innerHTML =
-        `
-        <div class="imagem-placeholder">
-            🛒
-        </div>
-        `;
+        const img =
+            document.createElement("img");
+
+        img.src =
+            item.imagem_url;
+
+        img.alt =
+            item.produto_nome;
+
+        img.loading =
+            "lazy";
+
+        img.onerror =
+            function () {
+
+                imagemWrapper.innerHTML =
+                    `
+                    <div class="imagem-placeholder">
+                        🛒
+                    </div>
+                    `;
+            };
+
+        imagemWrapper.appendChild(
+            img
+        );
+
+    } else {
+
+        imagemWrapper.innerHTML =
+            `
+            <div class="imagem-placeholder">
+                🛒
+            </div>
+            `;
+    }
 
 
     // --------------------------------------------------------
