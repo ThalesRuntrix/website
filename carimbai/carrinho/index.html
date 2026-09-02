@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Carimbai | Carrinho</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div id="header"></div>
+
+
+    <!-- CARRINHO -->
+
+    <main class="carrinho-page">
+
+        <section class="carrinho-box">
+
+            <div class="carrinho-header">
+
+                <h1>
+                    Seu carrinho
+                </h1>
+
+            </div>
+
+
+            <!-- ==================================================
+                 LOADING
+            =================================================== -->
+
+            <div
+                id="carrinho-loading"
+                class="carrinho-estado"
+            >
+                <p>
+                    Carregando carrinho...
+                </p>
+            </div>
+
+
+            <!-- ==================================================
+                 CARRINHO VAZIO
+            =================================================== -->
+
+            <div
+                id="carrinho-vazio"
+                class="carrinho-estado"
+                style="display:none;"
+            >
+
+                <div class="carrinho-vazio-icon">
+                    🛒
+                </div>
+
+                <h2>
+                    Seu carrinho está vazio
+                </h2>
+
+                <p>
+                    Adicione produtos ao carrinho para continuar.
+                </p>
+
+                <a
+                    href="/carimbai/"
+                    class="btn-primary"
+                >
+                    Continuar comprando
+                </a>
+
+            </div>
+
+
+            <!-- ==================================================
+                 CONTEÚDO
+            =================================================== -->
+
+            <div
+                id="carrinho-conteudo"
+                style="display:none;"
+            >
+
+                <div
+                    id="carrinho-itens"
+                    class="carrinho-itens"
+                >
+                </div>
+
+
+                <!-- ==================================================
+                     RESUMO
+                =================================================== -->
+
+                <aside class="carrinho-resumo">
+
+                    <div class="resumo-linha">
+
+                        <span>
+                            Produtos
+                        </span>
+
+                        <strong id="carrinho-subtotal">
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resumo-linha resumo-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong id="carrinho-total">
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="carrinho-acoes">
+
+                        <a
+                            href="/carimbai/"
+                            class="btn-secondary"
+                        >
+                            ← Continuar comprando
+                        </a>
+
+
+                        <button
+                            id="btn-checkout"
+                            type="button"
+                            class="btn-primary"
+                        >
+                            Finalizar compra
+                        </button>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <div id="footer"></div>
+
+</div>
+
+
+<script src="../js/components.js"></script>
+
+<script src="script.js"></script>
+
+
+<script>
+
+    loadHeader({
+
+        title: "CARRINHO",
+
+        description:
+            "Confira os produtos antes de finalizar seu pedido"
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
