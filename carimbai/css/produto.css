@@ -125,3 +125,47 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.quantidade-box {
+    margin-top: 20px;
+}
+
+.quantidade-box p {
+    margin-bottom: 8px;
+}
+
+.quantidade-controle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantidade-btn {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 6px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+#input-quantidade {
+    width: 60px;
+    height: 42px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.produto-acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.produto-acoes button {
+    width: 100%;
+}

@@ -12,6 +12,7 @@ window._variacoes = [];
 window._corAtual = 0;
 window._imagemAtual = 0;
 window._temEscolhaCor = false;
+window._quantidade = 1;
 
 // ATUALIZA IMAGEM
 function atualizarImagem() {
@@ -108,6 +109,60 @@ function obterPrecoProduto(produto) {
   }
 
   return Number(produto.preco || 0);
+}
+
+// =========================================================
+// QUANTIDADE
+// =========================================================
+
+function atualizarQuantidade(valor) {
+
+  let quantidade = Number(valor);
+
+  if (!Number.isInteger(quantidade)) {
+    quantidade = 1;
+  }
+
+  quantidade = Math.max(1, Math.min(50, quantidade));
+
+  window._quantidade = quantidade;
+
+  const input = document.getElementById("input-quantidade");
+
+  if (input) {
+    input.value = quantidade;
+  }
+}
+
+
+function diminuirQuantidade() {
+
+  atualizarQuantidade(
+    window._quantidade - 1
+  );
+}
+
+
+function aumentarQuantidade() {
+
+  const variacao =
+    window._variacoes[window._corAtual];
+
+  if (!variacao) {
+    return;
+  }
+
+  let limite = 10;
+
+  /*
+    disponibilidade já vem da API.
+    Para esta primeira implementação,
+    o backend continua sendo a autoridade.
+  */
+
+  atualizarQuantidade(
+    window._quantidade + 1
+  );
 }
 
 // RENDERIZA PRODUTO
@@ -223,12 +278,59 @@ function renderProduto(produto) {
 
       ${coresHTML}
 
-      <button
-        id="btn-comprar"
-        class="btn-primary"
-        onclick="irCheckout()">
-        📲 Comprar Agora
-      </button>
+      <div class="quantidade-box">
+
+        <p>Quantidade:</p>
+
+        <div class="quantidade-controle">
+
+          <button
+            type="button"
+            class="quantidade-btn"
+            onclick="diminuirQuantidade()"
+            aria-label="Diminuir quantidade">
+            −
+          </button>
+
+          <input
+            type="number"
+            id="input-quantidade"
+            value="1"
+            min="1"
+            max="10"
+            inputmode="numeric"
+            aria-label="Quantidade">
+
+          <button
+            type="button"
+            class="quantidade-btn"
+            onclick="aumentarQuantidade()"
+            aria-label="Aumentar quantidade">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="produto-acoes">
+
+        <button
+          id="btn-adicionar-carrinho"
+          class="btn-secondary"
+          onclick="adicionarAoCarrinho()">
+          🛒 Adicionar ao carrinho
+        </button>
+
+        <button
+          id="btn-comprar"
+          class="btn-primary"
+          onclick="comprarAgora()">
+          📲 Comprar Agora
+        </button>
+
+      </div>
 
     </div>
 
@@ -236,33 +338,495 @@ function renderProduto(produto) {
 
   atualizarInterfaceCompra();
 
+  const inputQuantidade =
+  document.getElementById("input-quantidade");
+
+  if (inputQuantidade) {
+
+    inputQuantidade.addEventListener(
+      "input",
+      function () {
+        atualizarQuantidade(this.value);
+      }
+    );
+
+  }
+
 }
 
 // ATUALIZA O ESTADO DA COMPRA
 function atualizarInterfaceCompra() {
 
-  const botao = document.getElementById("btn-comprar");
+  const botaoComprar =
+    document.getElementById("btn-comprar");
 
-  if (!botao) return;
+  const botaoCarrinho =
+    document.getElementById(
+      "btn-adicionar-carrinho"
+    );
+
+  if (!botaoComprar && !botaoCarrinho) {
+    return;
+  }
 
   const variacao =
     window._variacoes[window._corAtual];
 
-  if (!variacao || !variacao.disponivel) {
 
-    botao.disabled = true;
-    botao.textContent = "Indisponível";
-    botao.classList.add("indisponivel");
+  // =========================================================
+  // SEM VARIAÇÃO DISPONÍVEL
+  // =========================================================
+
+  if (
+    !variacao ||
+    !variacao.disponivel ||
+    !variacao.sku_id
+  ) {
+
+    if (botaoComprar) {
+
+      botaoComprar.disabled = true;
+
+      botaoComprar.textContent =
+        "Indisponível";
+
+      botaoComprar.classList.add(
+        "indisponivel"
+      );
+    }
+
+
+    if (botaoCarrinho) {
+
+      botaoCarrinho.disabled = true;
+
+      botaoCarrinho.textContent =
+        "Indisponível";
+
+      botaoCarrinho.classList.add(
+        "indisponivel"
+      );
+    }
 
     return;
   }
 
-  botao.disabled = false;
-  botao.textContent = "📲 Comprar Agora";
-  botao.classList.remove("indisponivel");
 
+  // =========================================================
+  // DISPONÍVEL
+  // =========================================================
+
+  if (botaoComprar) {
+
+    botaoComprar.disabled = false;
+
+    botaoComprar.textContent =
+      "📲 Comprar Agora";
+
+    botaoComprar.classList.remove(
+      "indisponivel"
+    );
+  }
+
+
+  if (botaoCarrinho) {
+
+    botaoCarrinho.disabled = false;
+
+    botaoCarrinho.textContent =
+      "🛒 Adicionar ao carrinho";
+
+    botaoCarrinho.classList.remove(
+      "indisponivel"
+    );
+  }
 }
 
+async function adicionarAoCarrinho() {
+
+  const variacao =
+    window._variacoes[window._corAtual];
+
+  if (!variacao) {
+    return;
+  }
+
+
+  if (
+    !variacao.sku_id ||
+    !variacao.disponivel
+  ) {
+
+    alert(
+      "Este produto está indisponível."
+    );
+
+    return;
+  }
+
+
+  const quantidade =
+    Number(window._quantidade);
+
+
+  if (
+    !Number.isInteger(quantidade) ||
+    quantidade < 1 ||
+    quantidade > 50
+  ) {
+
+    alert(
+      "Quantidade inválida."
+    );
+
+    return;
+  }
+
+
+  const botao =
+    document.getElementById(
+      "btn-adicionar-carrinho"
+    );
+
+
+  if (!botao) {
+    return;
+  }
+
+
+  const textoOriginal =
+    botao.innerHTML;
+
+
+  try {
+
+    botao.disabled = true;
+
+    botao.innerHTML =
+      "Adicionando...";
+
+
+    const token =
+      localStorage.getItem(
+        "carimbai_cart_token"
+      );
+
+
+    const payload = {
+
+      token:
+        token || undefined,
+
+      produto_id:
+        Number(window._produto.id),
+
+      produto_sku_id:
+        Number(variacao.sku_id),
+
+      quantidade,
+
+      variacao:
+        variacao.cor || null,
+
+      configuracao: {
+        cor:
+          variacao.cor || null
+      }
+    };
+
+
+    const response =
+      await fetch(
+        `${API_URL}/carrinho`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Erro ao adicionar produto ao carrinho."
+      );
+    }
+
+
+    // =======================================================
+    // SALVA TOKEN
+    // =======================================================
+
+    if (data.token) {
+
+      localStorage.setItem(
+        "carimbai_cart_token",
+        data.token
+      );
+    }
+
+
+    // =======================================================
+    // ATUALIZA CONTADOR
+    // =======================================================
+
+    atualizarContadorCarrinho(
+      data.quantidade_itens
+    );
+
+
+    // =======================================================
+    // FEEDBACK
+    // =======================================================
+
+    botao.innerHTML =
+      "✓ Adicionado ao carrinho";
+
+
+    setTimeout(() => {
+
+      botao.innerHTML =
+        textoOriginal;
+
+      botao.disabled =
+        false;
+
+    }, 1500);
+
+
+  } catch (error) {
+
+    console.error(
+      "Erro ao adicionar ao carrinho:",
+      error
+    );
+
+
+    alert(
+      error.message ||
+      "Erro ao adicionar produto ao carrinho."
+    );
+
+
+    botao.innerHTML =
+      textoOriginal;
+
+    botao.disabled =
+      false;
+  }
+}
+
+function atualizarContadorCarrinho(
+  quantidade
+) {
+
+  const contador =
+    document.getElementById(
+      "contador-carrinho"
+    );
+
+  if (!contador) {
+    return;
+  }
+
+
+  const valor =
+    Number(quantidade) || 0;
+
+
+  contador.textContent =
+    valor;
+
+
+  if (valor > 0) {
+
+    contador.classList.add(
+      "ativo"
+    );
+
+  } else {
+
+    contador.classList.remove(
+      "ativo"
+    );
+  }
+}
+
+async function comprarAgora() {
+
+  const variacao =
+    window._variacoes[window._corAtual];
+
+  if (!variacao) {
+    return;
+  }
+
+
+  if (
+    !variacao.sku_id ||
+    !variacao.disponivel
+  ) {
+
+    alert(
+      "Este produto está indisponível."
+    );
+
+    return;
+  }
+
+
+  const quantidade =
+    Number(window._quantidade);
+
+
+  if (
+    !Number.isInteger(quantidade) ||
+    quantidade < 1 ||
+    quantidade > 50
+  ) {
+
+    alert(
+      "Quantidade inválida."
+    );
+
+    return;
+  }
+
+
+  const botao =
+    document.getElementById(
+      "btn-comprar"
+    );
+
+
+  if (!botao) {
+    return;
+  }
+
+
+  const textoOriginal =
+    botao.innerHTML;
+
+
+  try {
+
+    botao.disabled = true;
+
+    botao.innerHTML =
+      "Processando...";
+
+
+    const token =
+      localStorage.getItem(
+        "carimbai_cart_token"
+      );
+
+
+    const payload = {
+
+      token:
+        token || undefined,
+
+      produto_id:
+        Number(window._produto.id),
+
+      produto_sku_id:
+        Number(variacao.sku_id),
+
+      quantidade,
+
+      variacao:
+        variacao.cor || null,
+
+      configuracao: {
+        cor:
+          variacao.cor || null
+      }
+    };
+
+
+    const response =
+      await fetch(
+        `${API_URL}/carrinho`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Erro ao adicionar produto ao carrinho."
+      );
+    }
+
+
+    if (data.token) {
+
+      localStorage.setItem(
+        "carimbai_cart_token",
+        data.token
+      );
+    }
+
+
+    // =======================================================
+    // VAI PARA O CARRINHO
+    // =======================================================
+
+    window.location.href =
+      "/carimbai/carrinho/index.html";
+
+
+  } catch (error) {
+
+    console.error(
+      "Erro em comprarAgora:",
+      error
+    );
+
+
+    alert(
+      error.message ||
+      "Erro ao processar compra."
+    );
+
+
+    botao.innerHTML =
+      textoOriginal;
+
+    botao.disabled =
+      false;
+  }
+}
+
+/*
 function irCheckout() {
 
   const variacao =
@@ -298,6 +862,7 @@ function irCheckout() {
   window.location.href = url;
 
 }
+*/
 
 // 🔥 carregar produto da API
 async function carregarProduto() {
