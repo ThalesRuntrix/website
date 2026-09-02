@@ -11,6 +11,8 @@ async function loadComponent(id, file) {
 async function loadHeader(config = {}) {
   await loadComponent("header", "/carimbai/components/header.html");
 
+  atualizarContadorCarrinhoGlobal();
+
   if (config.title) {
     document.getElementById("header-title").textContent =
       config.title;
@@ -25,6 +27,107 @@ async function loadHeader(config = {}) {
     document.getElementById("header-extra").innerHTML =
       config.extra;
   }
+}
+
+async function atualizarContadorCarrinhoGlobal() {
+
+    const contador =
+        document.getElementById(
+            "contador-carrinho"
+        );
+
+
+    if (!contador) {
+        return;
+    }
+
+
+    const token =
+        localStorage.getItem(
+            "carimbai_cart_token"
+        );
+
+
+    // --------------------------------------------------------
+    // NÃO EXISTE CARRINHO
+    // --------------------------------------------------------
+
+    if (!token) {
+
+        contador.textContent = "0";
+
+        contador.classList.remove(
+            "ativo"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "https://carimbai-api.vercel.app/api/carrinho" +
+                `?token=${encodeURIComponent(token)}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.error ||
+                "Erro ao carregar carrinho"
+            );
+        }
+
+
+        const quantidade =
+            Number(
+                data.quantidade_itens
+            ) || 0;
+
+
+        contador.textContent =
+            quantidade;
+
+
+        if (quantidade > 0) {
+
+            contador.classList.add(
+                "ativo"
+            );
+
+        } else {
+
+            contador.classList.remove(
+                "ativo"
+            );
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erro ao atualizar contador do carrinho:",
+            error
+        );
+
+        /*
+         * Em caso de erro de rede,
+         * não quebramos o header.
+         */
+
+        contador.textContent = "0";
+
+        contador.classList.remove(
+            "ativo"
+        );
+    }
 }
 
 // componentes automáticos

@@ -143,3 +143,77 @@ h2 {
     color: #64748b;
     margin-top: 30px;
 }
+
+/* ============================================================
+   CARRINHO NO HEADER
+============================================================ */
+
+.header-carrinho {
+    margin-top: 15px;
+
+    display: flex;
+
+    justify-content: center;
+}
+
+
+.header-carrinho-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    text-decoration: none;
+
+    padding: 8px 14px;
+
+    border-radius: 8px;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+
+.header-carrinho-link:hover {
+    transform: translateY(-1px);
+
+    opacity: 0.9;
+}
+
+
+.header-carrinho-icone {
+    font-size: 20px;
+}
+
+
+.header-carrinho-texto {
+    font-size: 15px;
+}
+
+
+.header-carrinho-contador {
+    min-width: 22px;
+
+    height: 22px;
+
+    padding: 0 6px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+.header-carrinho-contador:not(.ativo) {
+    opacity: 0.6;
+}
