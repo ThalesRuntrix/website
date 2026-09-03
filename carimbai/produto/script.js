@@ -899,21 +899,21 @@ function getContextFromParam() {
   if (from.includes("carimbos")) {
     return {
       title: "Carimbo",
-      description: "Escolha a quantidade e clique em 'Comprar Agora'"
+      description: "Escolha a quantidade e clique em 'COMPRAR AGORA'"
     };
   }
 
   if (from.includes("placas")) {
     return {
       title: "Placa",
-      description: "Escolha a quantidade e clique em 'Comprar Agora'"
+      description: "Escolha a quantidade e clique em 'COMPRAR AGORA'"
     };
   }
 
   if (from.includes("crachas")) {
     return {
       title: "Crachá",
-      description: "Escolha a quantidade e clique em 'Comprar Agora'"
+      description: "Escolha a quantidade e clique em 'COMPRAR AGORA'"
     };
   }
 
