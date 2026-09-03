@@ -19,7 +19,24 @@
   <section class="form-box">
 
     <form id="pedido-form">
-      <p>Você está comprando: <strong id="produto-nome"></strong> <strong id="variacao"></strong></p>
+      <section class="checkout-carrinho">
+
+        <h3>
+          🛒 Produtos do pedido
+        </h3>
+
+        <div
+          id="checkout-itens"
+          class="checkout-itens">
+        </div>
+
+      </section>
+      
+      <a
+        href="/carimbai/carrinho/index.html"
+        class="checkout-voltar-carrinho">
+        ← Voltar para o carrinho
+      </a>
 
         <h3>👤 Dados do Cliente</h3>
         <input type="text" id="nome" placeholder="Nome completo" required>
@@ -108,7 +125,7 @@
         <div id="pix-box"></div>
 
         <div class="resumo-pedido">
-          <p>Produto: <span id="resumo-produto">R$ 0,00</span></p>
+          <p>Produtos: <span id="resumo-produto">R$ 0,00</span></p>
           <p>Frete: <span id="resumo-frete">R$ 0,00</span></p>
           <p>Desconto PIX: <span id="resumo-desconto">R$ 0,00</span></p>
 
