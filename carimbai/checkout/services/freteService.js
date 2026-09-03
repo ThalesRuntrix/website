@@ -5,7 +5,7 @@ import { formatar, getParam } from "../utils/format.js";
 export const freteService =  {
   
   // buscar produto
-  async getProdutoById() {
+  /*async getProdutoById() {
     const produtoId = getParam("id");
 
     try {
@@ -27,6 +27,7 @@ export const freteService =  {
       console.error("Erro ao buscar produto:", error);
     }
   },
+  */
 
   setDeliveryData(entrega) {
     if (entrega !== "frete") {
@@ -97,8 +98,77 @@ export const freteService =  {
   },
 
   atualizarResumo() {
+
+    const preco =
+        Number(
+            state.subtotalProdutos
+        ) || 0;
+
+
+    const entrega =
+        document.getElementById(
+            "entrega"
+        ).value;
+
+
+    const pagamento =
+        document.getElementById(
+            "pagamento"
+        ).value;
+
+
+    const frete =
+        entrega === "frete"
+            ? Number(state.frete) || 0
+            : 0;
+
+
+    const desconto =
+        pagamento === "pix"
+            ? preco * 0.05
+            : 0;
+
+
+    const total =
+        preco +
+        frete -
+        desconto;
+
+
+    state.total =
+        total;
+
+
+    document.getElementById(
+        "resumo-produto"
+    ).textContent =
+        formatar(preco);
+
+
+    document.getElementById(
+        "resumo-frete"
+    ).textContent =
+        formatar(frete);
+
+
+    document.getElementById(
+        "resumo-desconto"
+    ).textContent =
+        `- ${formatar(desconto)}`;
+
+
+    document.getElementById(
+        "resumo-total"
+    ).textContent =
+        formatar(total);
+  },
+
+  /*
+  atualizarResumo() {
   
-    const preco = state.precoBase; 
+    const preco = Number(
+            state.subtotalProdutos
+        ) || 0; 
 
     const entrega = document.getElementById("entrega").value;
     const pagamento = document.getElementById("pagamento").value;
@@ -116,6 +186,7 @@ export const freteService =  {
     document.getElementById("resumo-total").textContent = formatar(totalResumo);
         
   },
+  */
 
   // mostrar opões de frete
   mostrarFrete(opcoes) {
