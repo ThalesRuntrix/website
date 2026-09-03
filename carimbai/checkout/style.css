@@ -286,6 +286,8 @@
     flex-direction: column;
 
     gap: 4px;
+
+    color: black;
 }
 
 
@@ -303,6 +305,8 @@
     white-space: nowrap;
 
     font-weight: 600;
+
+    color: black;
 }
 
 
@@ -312,6 +316,8 @@
     margin-bottom: 20px;
 
     text-decoration: none;
+
+    color: white;
 }
 
 
