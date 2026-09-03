@@ -21,6 +21,76 @@ export const formService = {
 
     getFormData() {
 
+        const endereco =
+            formService.getFormAddress();
+
+
+        const entrega =
+            document.getElementById(
+                "entrega"
+            ).value;
+
+
+        return {
+
+            cart_token:
+                localStorage.getItem(
+                    "carimbai_cart_token"
+                ),
+
+
+            nome:
+                document.getElementById(
+                    "nome"
+                ).value,
+
+
+            email:
+                document.getElementById(
+                    "email"
+                ).value,
+
+
+            whatsapp:
+                document.getElementById(
+                    "whatsapp"
+                ).value,
+
+
+            cpf:
+                document.getElementById(
+                    "cpf"
+                ).value,
+
+
+            ...endereco,
+
+
+            entrega,
+
+
+            frete_valor:
+                state.frete ?? 0,
+
+
+            frete_prazo:
+                state.prazo ?? 0,
+
+
+            frete_nome:
+                state.freteNome ?? "",
+
+
+            pagamento:
+                document.getElementById(
+                    "pagamento"
+                ).value
+        };
+    },
+
+    /*
+    getFormData() {
+
         const endereco = formService.getFormAddress();
         const entrega = document.getElementById("entrega").value; 
         let dados={}; 
@@ -52,10 +122,27 @@ export const formService = {
             pagamento: document.getElementById("pagamento").value
         };
     },
+    */
 
     validateFields(dados) {
 
-        let isValid = true;        
+        let isValid = true; 
+        
+        const token =
+            String(
+                dados.cart_token || ""
+            ).trim();
+
+
+        if (!token) {
+
+            alert(
+                "Seu carrinho não foi encontrado."
+            );
+
+            return false;
+        }
+
         const cpf = String(dados.cpf).replace(/\D/g, "");  
 
         // CPF
