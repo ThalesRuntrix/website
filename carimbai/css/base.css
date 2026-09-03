@@ -21,12 +21,10 @@ body {
     width: 100%;
 }
 
-.logo-container a {
-    display: inline-block;
-    text-decoration: none;
-}
+/* ============================================================
+   HERO
+============================================================ */
 
-/* HERO */
 .hero {
     background: url('../img/hero.jpg') center/cover no-repeat;
     border-radius: 20px;
@@ -36,13 +34,208 @@ body {
 
 .hero-overlay {
     background: rgba(2, 6, 23, 0.75);
-    padding: 40px 20px;
-    text-align: center;
+
+    min-height: 160px;
+
+    padding: 14px 16px;
+
+    display: grid;
+
+    grid-template-columns: 80px 1fr 125px;
+
+    column-gap: 12px;
+
+    align-items: center;
+}
+
+
+/* ============================================================
+   LOGO
+============================================================ */
+
+.logo-container {
+    align-self: start;
+
+    display: flex;
+
+    justify-content: flex-start;
+}
+
+.logo-container a {
+    display: inline-block;
+    text-decoration: none;
 }
 
 .logo-container img {
-    max-width: 120px;
-    margin-bottom: 10px;
+    display: block;
+
+    width: 75px;
+
+    height: auto;
+
+    margin: 0;
+}
+
+
+/* ============================================================
+   CONTEÚDO CENTRAL
+============================================================ */
+
+.hero-content {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+}
+
+#header-title {
+    margin: 0 0 5px;
+
+    font-size: 22px;
+
+    line-height: 1.15;
+}
+
+#header-desc {
+    margin: 0;
+
+    font-size: 14px;
+
+    line-height: 1.35;
+}
+
+#header-extra {
+    margin-top: 6px;
+}
+
+
+/* ============================================================
+   LINKS DIREITA
+============================================================ */
+
+.header-links {
+    align-self: start;
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 4px;
+
+    text-align: right;
+}
+
+
+/* ============================================================
+   CONTATOS
+============================================================ */
+
+.header-contatos {
+    width: 100%;
+}
+
+.header-contatos a {
+    display: block;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+    text-align: right;
+}
+
+
+/* ============================================================
+   CARRINHO
+============================================================ */
+
+.header-carrinho {
+    width: 100%;
+
+    margin: 0;
+
+    display: flex;
+
+    justify-content: flex-end;
+}
+
+.header-carrinho-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 5px;
+
+    text-decoration: none;
+
+    padding: 2px 0;
+
+    border-radius: 8px;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.header-carrinho-link:hover {
+    transform: translateY(-1px);
+
+    opacity: 0.9;
+}
+
+.header-carrinho-icone {
+    font-size: 13px;
+}
+
+.header-carrinho-texto {
+    font-size: 10px;
+
+    color: white;
+
+    white-space: nowrap;
+}
+
+.header-carrinho-contador {
+    min-width: 16px;
+
+    height: 16px;
+
+    padding: 0 4px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    color: white;
+}
+
+.header-carrinho-contador:not(.ativo) {
+    opacity: 0.6;
 }
 
 /* SECTIONS */
@@ -144,79 +337,3 @@ h2 {
     margin-top: 30px;
 }
 
-/* ============================================================
-   CARRINHO NO HEADER
-============================================================ */
-
-.header-carrinho {
-    margin-top: 15px;
-
-    display: flex;
-
-    justify-content: center;
-}
-
-
-.header-carrinho-link {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    text-decoration: none;
-
-    padding: 8px 14px;
-
-    border-radius: 8px;
-
-    transition:
-        transform 0.15s ease,
-        opacity 0.15s ease;
-}
-
-
-.header-carrinho-link:hover {
-    transform: translateY(-1px);
-
-    opacity: 0.9;
-}
-
-
-.header-carrinho-icone {
-    font-size: 20px;
-}
-
-
-.header-carrinho-texto {
-    font-size: 15px;
-    color: white;
-}
-
-
-.header-carrinho-contador {
-    min-width: 22px;
-
-    height: 22px;
-
-    padding: 0 6px;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    font-size: 12px;
-
-    font-weight: 600;
-
-    color: white;
-}
-
-
-.header-carrinho-contador:not(.ativo) {
-    opacity: 0.6;
-}
