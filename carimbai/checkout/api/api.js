@@ -7,6 +7,26 @@ export const api = {
     return res.json();
   },
 
+  async getCarrinho(token) {
+
+    const res = await fetch(
+      `${API_URL}/carrinho?token=${encodeURIComponent(token)}`
+    );
+
+    const data =
+      await res.json();
+
+    if (!res.ok) {
+
+      throw new Error(
+        data.error ||
+        "Erro ao carregar carrinho."
+      );
+    }
+
+    return data;
+  },
+
   async calcularFrete(cep) {
     const res = await fetch(`${API_URL}/frete`, {
       method: "POST",
