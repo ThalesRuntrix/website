@@ -321,11 +321,12 @@ export const formUI = {
     ).textContent =
       formatar(frete);
 
-
+    /*
     document.getElementById(
       "resumo-desconto"
     ).textContent =
       `- ${formatar(desconto)}`;
+    */
 
 
     document.getElementById(
