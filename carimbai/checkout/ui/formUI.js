@@ -292,10 +292,12 @@ export const formUI = {
         : 0;
 
 
-    const desconto =
+    const desconto = 0;
+    /*
       pagamento === "pix"
         ? preco * 0.05
         : 0;
+        */
 
 
     const total =
