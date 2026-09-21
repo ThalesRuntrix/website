@@ -2,32 +2,8 @@ import { api } from "../api/api.js";
 import { state } from "../state/state.js";
 import { formatar, getParam } from "../utils/format.js";
 
-export const freteService =  {
+export const freteService =  { 
   
-  // buscar produto
-  /*async getProdutoById() {
-    const produtoId = getParam("id");
-
-    try {
-
-      const res = api.getProduto(produtoId);
-      const produto = await res.json();
-
-      produtoGlobal = produto;
-
-      // 🔥 render nome
-      document.getElementById("produto-nome").textContent = produto.nome;
-
-      // 🔥 salva preço base
-      state.precoBase = Number(produto.preco);
-
-      freteService.atualizarResumo();
-
-    } catch (error) {
-      console.error("Erro ao buscar produto:", error);
-    }
-  },
-  */
 
   setDeliveryData(entrega) {
     if (entrega !== "frete") {
@@ -121,15 +97,14 @@ export const freteService =  {
         entrega === "frete"
             ? Number(state.frete) || 0
             : 0;
-
-    const desconto = 0;
-
+    
+    const desconto = 0
     /*
-    const desconto =
         pagamento === "pix"
-            ? preco * 0.05
+            ? preco * 0
             : 0;
-    */
+            */
+    
 
 
     const total =
@@ -154,12 +129,12 @@ export const freteService =  {
         formatar(frete);
 
 
-  /*      
+     
     document.getElementById(
         "resumo-desconto"
     ).textContent =
         `- ${formatar(desconto)}`;
-  */      
+       
 
 
     document.getElementById(
@@ -217,7 +192,7 @@ export const freteService =  {
 
       div.addEventListener("click", () => {
         freteService.selecionarFrete();
-        freteService.mostrarFreteSelecionado(opcao); // 🔥 AGORA SIM
+        freteService.mostrarFreteSelecionado(opcao); 
       });
 
       container.appendChild(div);
