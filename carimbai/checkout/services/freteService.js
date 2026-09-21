@@ -122,11 +122,14 @@ export const freteService =  {
             ? Number(state.frete) || 0
             : 0;
 
+    const desconto = 0;
 
+    /*
     const desconto =
         pagamento === "pix"
             ? preco * 0.05
             : 0;
+    */
 
 
     const total =
@@ -151,10 +154,12 @@ export const freteService =  {
         formatar(frete);
 
 
+  /*      
     document.getElementById(
         "resumo-desconto"
     ).textContent =
         `- ${formatar(desconto)}`;
+  */      
 
 
     document.getElementById(
@@ -162,31 +167,7 @@ export const freteService =  {
     ).textContent =
         formatar(total);
   },
-
-  /*
-  atualizarResumo() {
-  
-    const preco = Number(
-            state.subtotalProdutos
-        ) || 0; 
-
-    const entrega = document.getElementById("entrega").value;
-    const pagamento = document.getElementById("pagamento").value;
-
-    let frete = entrega === "frete" ? state.frete : 0;
-    let desconto = pagamento === "pix" ? preco * 0.05 : 0;
-    
-    const totalResumo = preco + frete - desconto;
-
-    state.total = totalResumo;
-
-    document.getElementById("resumo-produto").textContent = formatar(preco);
-    document.getElementById("resumo-frete").textContent = formatar(frete);
-    document.getElementById("resumo-desconto").textContent = `- ${formatar(desconto)}`;
-    document.getElementById("resumo-total").textContent = formatar(totalResumo);
-        
-  },
-  */
+ 
 
   // mostrar opões de frete
   mostrarFrete(opcoes) {
