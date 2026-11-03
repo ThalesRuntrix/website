@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Carimbai | Serviço de Afiação</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/carimbai/css/base.css">
+    <link rel="stylesheet" href="/carimbai/css/grid.css">
+    <link rel="stylesheet" href="/carimbai/css/produto-list.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <div id="header"></div>
+        
+        <!-- PRODUTOS -->
+        <div class="grid" id="afiacao"></div>
+            
+
+        <!-- BENEFÍCIOS -->
+        <div id="header"></div>
+
+        <!-- PROVA -->
+         <div id="proof"></div>
+        
+
+        <!-- CTA FINAL -->
+        <div id="cta"></div>
+
+        <!-- BREAD CRUMB -->
+        <section class="bread-crumb">
+            <a class="btn-tertiary" href="/carimbai/index.html">
+                ← Voltar
+            </a>
+        </section>
+
+        <!-- FOOTER -->
+        <div id="footer"></div>        
+
+    </div>
+
+    <script src="../js/listar-produtos.js"></script>
+    <script src="/carimbai/js/components.js"></script>
+    <script>
+        loadHeader({
+            title: "Afiação de Alicates, Espátulas e Palitos", 
+            description:"Pronto em 24 horas - De Segunda a Quinta-feira",          
+            
+        });
+        carregarProdutos({
+            containerId: "afiacao",
+
+            categoria: "afiacao",
+
+            filtros: {
+                tipo_material: "metal"
+            },
+
+            from: "afiacao"
+        }); 
+    </script>
+</body>
+
+</html>
