@@ -170,7 +170,7 @@ async function carregarProdutos(config = {}) {
             produtoDisponivel
               ? `
                 <a
-                  href="../produto/index.html?${query.toString()}"
+                  href="../../produto/index.html?${query.toString()}"
                   class="btn-primary"
                 >
                   Ver detalhes
