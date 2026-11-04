@@ -271,6 +271,17 @@ function renderProduto(produto) {
       <div class="produto-title">
         ${produto.nome}
       </div>
+      
+      <section>
+        <details>
+            <summary>
+                <h2>Descrição</h2>
+            </summary>
+              <div class="produto-title">
+                ${produto.descricao}
+              </div>
+        </details>                  
+      </section>      
 
       <div class="produto-preco">
         R$ ${obterPrecoProduto(produto).toFixed(2)}
