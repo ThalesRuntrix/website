@@ -826,43 +826,6 @@ async function comprarAgora() {
   }
 }
 
-/*
-function irCheckout() {
-
-  const variacao =
-    window._variacoes[window._corAtual];
-
-  if (!variacao) {
-    return;
-  }
-
-  // Não permite compra sem SKU disponível
-  if (
-    !variacao.sku_id ||
-    !variacao.disponivel
-  ) {
-    return;
-  }
-
-  let url =
-    `/carimbai/checkout/index.html` +
-    `?id=${window._produto.id}`;
-
-  // Envia o SKU
-  url += `&sku_id=${encodeURIComponent(variacao.sku_id)}`;
-
-  // Mantém a cor por compatibilidade com o checkout atual
-  if (variacao.cor) {
-
-    url +=
-      `&variacao=${encodeURIComponent(variacao.cor)}`;
-
-  }
-
-  window.location.href = url;
-
-}
-*/
 
 // 🔥 carregar produto da API
 async function carregarProduto() {
@@ -913,6 +876,27 @@ function getContextFromParam() {
   if (from.includes("crachas")) {
     return {
       title: "Crachá",
+      description: "Escolha a quantidade e clique em 'COMPRAR AGORA'"
+    };
+  }
+
+  if (from.includes("afiacao")) {
+    return {
+      title: "Afiação",
+      description: "Escolha a quantidade e clique em 'COMPRAR AGORA'"
+    };
+  }
+
+  if (from.includes("revelacao")) {
+    return {
+      title: "Revelação Fotográfica",
+      description: "Escolha a quantidade e clique em 'COMPRAR AGORA'"
+    };
+  }
+
+  if (from.includes("impressão")) {
+    return {
+      title: "Impressão",
       description: "Escolha a quantidade e clique em 'COMPRAR AGORA'"
     };
   }
