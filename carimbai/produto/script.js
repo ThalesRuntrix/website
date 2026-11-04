@@ -275,10 +275,10 @@ function renderProduto(produto) {
       <section>
         <details>
             <summary>
-                <h2>Descrição</h2>
+                <p>Descrição</p>
             </summary>
-              <div class="produto-title">
-                ${produto.descricao}
+              <div class="textp">
+                <p>${produto.descricao}</p>
               </div>
         </details>                  
       </section>      
