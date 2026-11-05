@@ -239,6 +239,8 @@ function renderProduto(produto) {
   window._variacoes[window._corAtual]
     ?.imagens?.length || 0;
 
+  console.log(produto);
+
   container.innerHTML = `
 
     <div class="produto-content">
@@ -836,7 +838,6 @@ async function comprarAgora() {
       false;
   }
 }
-
 
 // 🔥 carregar produto da API
 async function carregarProduto() {
