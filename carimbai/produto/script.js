@@ -117,7 +117,7 @@ function obterDescricaoProduto(produto) {
     v => v.descricao !== null && v.descricao !== undefined
   );
 
-  return variacaoComDescricao;
+  return variacaoComDescricao.descricao;
 }
 
 // =========================================================
