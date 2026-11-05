@@ -916,7 +916,7 @@ function getContextFromParam() {
     };
   }
 
-  if (from.includes("impressão")) {
+  if (from.includes("impressao")) {
     return {
       title: "Impressão",
       description: "Escolha a quantidade e clique em 'COMPRAR AGORA'"
