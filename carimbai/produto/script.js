@@ -237,9 +237,7 @@ function renderProduto(produto) {
 
   const totalImagens =
   window._variacoes[window._corAtual]
-    ?.imagens?.length || 0;
-
-  console.log(produto);
+    ?.imagens?.length || 0;  
 
   container.innerHTML = `
 
@@ -851,8 +849,9 @@ async function carregarProduto() {
   try {
     const response = await fetch(`${API_URL}/produto/${id}`);
     const produto = await response.json();
-
+    
     renderProduto(produto);
+    console.log(produto);
 
   } catch (error) {
     console.error(error);
