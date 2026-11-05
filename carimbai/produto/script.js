@@ -207,6 +207,8 @@ function renderProduto(produto) {
 
   let coresHTML = "";
 
+  const descricaoProduto = obterDescricaoProduto(produto);
+
   // cores
   if (produto.variacoes && produto.variacoes.length > 1) {
 
@@ -287,7 +289,7 @@ function renderProduto(produto) {
                 <p>Descrição</p>
             </summary>
               <div class="textp">
-                <p>${produto.descricao}</p>
+                <p>${descricaoProduto}</p>
               </div>
         </details>                  
       </section>      
