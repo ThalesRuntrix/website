@@ -111,6 +111,15 @@ function obterPrecoProduto(produto) {
   return Number(produto.preco || 0);
 }
 
+// BUSCA PREÇO DO PRODUTO
+function obterDescricaoProduto(produto) {
+  const variacaoComDescricao = produto.variacoes?.find(
+    v => v.descricao !== null && v.descricao !== undefined
+  );
+
+  return variacaoComDescricao;
+}
+
 // =========================================================
 // QUANTIDADE
 // =========================================================
