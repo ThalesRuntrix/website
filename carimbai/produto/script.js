@@ -862,7 +862,6 @@ async function carregarProduto() {
     const produto = await response.json();
     
     renderProduto(produto);
-    console.log(produto);
 
   } catch (error) {
     console.error(error);
