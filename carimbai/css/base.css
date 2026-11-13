@@ -280,8 +280,9 @@ body {
 
     font-size: 12px;
     content: url(../img/cart.webp);
-    width: 15px;
-    height: 15px;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
     
 }
 
