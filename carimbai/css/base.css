@@ -276,10 +276,10 @@ body {
 }
 
 
-.header-carrinho-icone {
+.header-carrinho-icone::before {
 
     font-size: 12px;
-    background-image: url(../img/cart.webp);
+    content: url(../img/cart.webp);
     width: 20px;
     height: 20px;
     
