@@ -303,9 +303,9 @@ body {
 
 .header-carrinho-contador {
 
-    min-width: 15px;
+    min-width: 20px;
 
-    height: 15px;
+    height: 20px;
 
     padding: 0 3px;
 
@@ -317,9 +317,9 @@ body {
 
     border-radius: 50%;
 
-    font-size: 9px;
+    font-size: 20px;
 
-    font-weight: 600;
+    font-weight: 1000;
 
     color: #00bf63;
 }
