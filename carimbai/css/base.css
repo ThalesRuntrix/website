@@ -279,6 +279,10 @@ body {
 .header-carrinho-icone {
 
     font-size: 12px;
+    background-image: url(../img/cart.webp);
+    width: 20px;
+    height: 20px;
+    
 }
 
 
