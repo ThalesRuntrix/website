@@ -281,8 +281,8 @@ body {
     font-size: 12px;
     content: "";
     display: inline-block;
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     background-image: url(../img/cart.webp);
     background-size: contain;
     background-repeat: no-repeat;
