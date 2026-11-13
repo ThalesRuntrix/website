@@ -279,9 +279,14 @@ body {
 .header-carrinho-icone::before {
 
     font-size: 12px;
-    content: url(../img/cart.webp);
-    max-width: 15px;
-    max-height: 12px;
+    content: "";
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-image: url(../img/cart.webp);
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
         
 }
 
