@@ -375,6 +375,13 @@ h2 {
     color: white;
 }
 
+.textp a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  
+}
+
 .textp a:hover {
   color: #22c55e;
   text-decoration: underline;
