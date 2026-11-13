@@ -375,6 +375,13 @@ h2 {
     color: white;
 }
 
+.textp a:hover {
+  color: #22c55e;
+  text-decoration: underline;
+  font-weight: bold;
+  
+}
+
 .benefits div section {
     margin: 5px 0;
     color: #cbd5f5;
